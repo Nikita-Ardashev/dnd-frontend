@@ -17,6 +17,7 @@
     "@types/three": "^0.177.0",
     "animejs": "^4.0.2",
     "autoprefixer": "^10.4.21",
+    "critters": "^0.0.25",
     "jose": "^6.0.11",
     "mobx": "^6.13.7",
     "mobx-react-lite": "^4.1.0",
