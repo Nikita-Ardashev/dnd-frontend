@@ -1,37 +1,43 @@
 'use client';
 
-import { Vector3 } from '@react-three/fiber';
+import { ThreeElements, ThreeEvent } from '@react-three/fiber';
 import React, { useState } from 'react';
-import { DoubleSide } from 'three';
+import { BoxGeometry, FrontSide, MeshBasicMaterial } from 'three';
 
-interface ICustomGridCell {
+type TMesh = ThreeElements['mesh'];
+
+interface ICustomGridCell extends TMesh {
 	size?: number;
-	position: Vector3;
 }
 
-export default function CustomGridCell({ position, size = 1 }: ICustomGridCell) {
+export default function CustomGridCell({ size = 1, ...meshProps }: ICustomGridCell) {
 	const [isHovered, setHovered] = useState(false);
-	const handlerPointerOver = () => {
+
+	const geometry: BoxGeometry = new BoxGeometry(size, size);
+	const material: MeshBasicMaterial = new MeshBasicMaterial({
+		transparent: true,
+		opacity: 0.5,
+		wireframe: true,
+		side: FrontSide,
+		color: isHovered ? 'red' : 'gray',
+	});
+
+	const handlerPointerOver = (e: ThreeEvent<PointerEvent>) => {
+		e.stopPropagation();
 		setHovered(true);
 	};
-	const handlerPointerOut = () => {
+	const handlerPointerOut = (e: ThreeEvent<PointerEvent>) => {
+		e.stopPropagation();
 		setHovered(false);
 	};
 
 	return (
 		<mesh
-			position={position}
 			onPointerOver={handlerPointerOver}
 			onPointerOut={handlerPointerOut}
-		>
-			<planeGeometry args={[size, size]} />
-			<meshBasicMaterial
-				color={isHovered ? 'red' : 'gray'}
-				wireframe
-				side={DoubleSide}
-				transparent
-				opacity={0.5}
-			/>
-		</mesh>
+			material={material}
+			geometry={geometry}
+			{...meshProps}
+		></mesh>
 	);
 }

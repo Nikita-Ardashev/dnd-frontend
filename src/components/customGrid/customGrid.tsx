@@ -1,50 +1,44 @@
 import { ThreeElements, Vector3 } from '@react-three/fiber';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Euler } from 'three';
 import CustomGridCell from './customGridCell';
 
 type TGroupProps = ThreeElements['group'];
-
+type TSide = 'center' | 'left' | 'right';
 interface ICustomProps extends TGroupProps {
-	isVertical?: boolean;
-	side?: 'center' | 'left' | 'right';
+	side?: TSide;
+	isViewGrid?: boolean;
 }
 
 const COUNT = 10;
 const cell = COUNT * 10;
 
-const generateGridLinesDown = () => {
+const generateGridLines = () => {
 	const lines: Vector3[] = [];
-
-	for (let i = 1; i < cell; i++) {
-		const step = Math.floor(i / COUNT);
-		lines.push([i % COUNT, step, 0]);
+	for (let i = 0; i < cell; i++) {
+		const step = -Math.floor(i / COUNT);
+		lines.push([(i % COUNT) + 0.5, step - 0.5, 0]);
 	}
 	return lines;
 };
+const { position, rotation }: { rotation: Euler; position: Vector3 } = {
+	position: [1, 0.5, 1],
+	rotation: new Euler(-Math.PI / 2, 0, 0),
+};
 
-// const generateGridLinesLeft = () => {
-// 	const lines: Vector3[] = [];
-
-// 	for (let i = 1; i < cell; i++) {
-// 		const step = Math.floor(i / COUNT);
-// 		lines.push([i % COUNT, step, 0]);
-// 	}
-// 	return lines;
-// };
-
-export default function CustomGrid({ isVertical = false, ...groupProps }: ICustomProps) {
-	const rotation: Euler = new Euler(isVertical ? Math.PI / 2 : -Math.PI / 2, 0, 0);
-
-	const lines = useMemo(() => {
-		return generateGridLinesDown().map((pos, i) => (
-			<CustomGridCell key={i} position={pos} />
-		));
-	}, []);
+export default function CustomGrid({
+	side = 'center',
+	isViewGrid = true,
+	...groupProps
+}: ICustomProps) {
+	const lines = generateGridLines().map((pos, i) => (
+		<CustomGridCell key={side + i} position={pos} />
+	));
 
 	return (
-		<group rotation={rotation} {...groupProps}>
-			{lines}
+		<group position={position} rotation={rotation} {...groupProps}>
+			{groupProps.children}
+			{isViewGrid && lines}
 		</group>
 	);
 }
