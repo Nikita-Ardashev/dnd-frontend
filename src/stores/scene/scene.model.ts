@@ -10,6 +10,10 @@ export const SceneCellModel = t.model({
 	rotation: MSTPosition,
 });
 
+export const SceneSelect = t.model({
+	position: MSTPosition,
+});
+
 export const SceneModel = t.model({
 	id: t.string,
 	isViewGrid: t.boolean,

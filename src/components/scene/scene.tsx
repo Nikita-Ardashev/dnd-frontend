@@ -10,6 +10,7 @@ import {
 } from '@react-three/drei';
 import styles from './scene.module.sass';
 import CustomGrid from '../customGrid/customGrid';
+import { BoxGeometry, MeshBasicMaterial, Vector3 } from 'three';
 interface IScene {
 	children?: React.ReactNode;
 	isControl?: boolean;
@@ -21,12 +22,14 @@ export function Scene({ children, isControl = true }: IScene) {
 			<Canvas style={{ width: '100%', height: '100%', background: 'black' }}>
 				<PivotControls autoTransform={false}>
 					{children}
-					<CustomGrid isViewGrid={true}>
-						<mesh position={[5, -5, 0]}>
-							<boxGeometry args={[10, 10, 1]} />
-							<meshBasicMaterial color={'blue'} />
-						</mesh>
-					</CustomGrid>
+					<CustomGrid
+						isViewGrid={true}
+						mesh={{
+							position: new Vector3(5, -5, 0),
+							geometry: new BoxGeometry(10, 10, 1),
+							material: new MeshBasicMaterial({ color: 'blue' }),
+						}}
+					/>
 					{isControl && (
 						<CameraControls
 							azimuthAngle={1}

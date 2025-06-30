@@ -1,13 +1,12 @@
 import { ThreeElements, Vector3 } from '@react-three/fiber';
 import React from 'react';
-import { Euler } from 'three';
+import { BoxGeometry, Euler } from 'three';
 import CustomGridCell from './customGridCell';
-
-type TGroupProps = ThreeElements['group'];
-type TSide = 'center' | 'left' | 'right';
+type TGroupProps = Omit<ThreeElements['group'], 'children'>;
+type TMeshProps = ThreeElements['mesh'];
 interface ICustomProps extends TGroupProps {
-	side?: TSide;
 	isViewGrid?: boolean;
+	mesh?: TMeshProps & { geometry: BoxGeometry };
 }
 
 const COUNT = 10;
@@ -26,18 +25,14 @@ const { position, rotation }: { rotation: Euler; position: Vector3 } = {
 	rotation: new Euler(-Math.PI / 2, 0, 0),
 };
 
-export default function CustomGrid({
-	side = 'center',
-	isViewGrid = true,
-	...groupProps
-}: ICustomProps) {
-	const lines = generateGridLines().map((pos, i) => (
-		<CustomGridCell key={side + i} position={pos} />
-	));
+const lines = generateGridLines().map((pos, i) => (
+	<CustomGridCell key={i} position={pos} />
+));
 
+export default function CustomGrid({ isViewGrid = true, ...groupProps }: ICustomProps) {
 	return (
 		<group position={position} rotation={rotation} {...groupProps}>
-			{groupProps.children}
+			<mesh {...groupProps.mesh} />
 			{isViewGrid && lines}
 		</group>
 	);
