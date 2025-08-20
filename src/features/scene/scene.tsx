@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import {
 	CameraControls,
@@ -8,8 +9,8 @@ import {
 	PivotControls,
 } from '@react-three/drei';
 import styles from './scene.module.sass';
-import { CustomGrid } from '../customGrid';
 import { BoxGeometry, MeshBasicMaterial, Vector3 } from 'three';
+import { CustomGrid } from '../customGrid';
 interface IScene {
 	children?: React.ReactNode;
 	isControl?: boolean;
