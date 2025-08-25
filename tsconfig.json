@@ -21,7 +21,6 @@
 		"paths": {
 			"@/*": ["./src/*"],
 			"@styles/*": ["./src/styles/*"],
-			"@public/*": ["./public/*"],
 			"@stores/*": ["./src/app/stores/*"]
 		}
 	},

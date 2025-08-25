@@ -11,6 +11,7 @@ import {
 import styles from './scene.module.sass';
 import { BoxGeometry, MeshBasicMaterial, Vector3 } from 'three';
 import { CustomGrid } from '../customGrid';
+import { GLTFModel } from '../GLTFModel';
 interface IScene {
 	children?: React.ReactNode;
 	isControl?: boolean;
@@ -19,7 +20,11 @@ interface IScene {
 export function Scene({ children, isControl = true }: IScene) {
 	return (
 		<div className={styles.scene}>
-			<Canvas style={{ width: '100%', height: '100%', background: 'black' }}>
+			<Canvas style={{ width: '100%', height: '100%', background: 'grey' }}>
+				<GLTFModel
+					src={'/models/barrel/gltf/medieval_barrel.gltf'}
+					scale={new Vector3(0.01, 0.01, 0.01)}
+				/>
 				<PivotControls autoTransform={false}>
 					{children}
 					<CustomGrid
@@ -35,7 +40,7 @@ export function Scene({ children, isControl = true }: IScene) {
 							azimuthAngle={1}
 							polarAngle={1}
 							distance={20}
-							maxDistance={20}
+							maxDistance={40}
 							minDistance={2}
 						/>
 					)}
@@ -43,6 +48,12 @@ export function Scene({ children, isControl = true }: IScene) {
 				<GizmoHelper alignment="bottom-right" margin={[100, 100]}>
 					<GizmoViewport labelColor="white" axisHeadScale={1} disabled />
 				</GizmoHelper>
+				<ambientLight intensity={0.5} />
+				<directionalLight
+					position={[5, 10, 7.5]}
+					intensity={1}
+					castShadow // если нужны тени
+				/>
 			</Canvas>
 		</div>
 	);

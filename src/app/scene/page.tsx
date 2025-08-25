@@ -5,7 +5,7 @@ import styles from './page.module.sass';
 export default function ScenePage() {
 	return (
 		<div className={styles.page__constructor}>
-			<div className={styles.page__constructor_snippets}></div>
+			{/* <div className={styles.page__constructor_snippets}></div> */}
 			<Scene> </Scene>
 		</div>
 	);

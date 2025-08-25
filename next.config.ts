@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
 				source: '/api/:path*',
 				destination: `${process.env.APP_URL}/api/:path*`,
 			},
+			{
+				source: '/models/:path*',
+				destination: `${process.env.SRC_MODELS}/models/:path*`,
+			},
 		];
 	},
 	images: {
