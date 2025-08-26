@@ -4,9 +4,7 @@ import { StoreScene } from '@/stores/scene/scene.store';
 import { DragControls, Gltf, GltfProps, PivotControls } from '@react-three/drei';
 import { useCallback, useState } from 'react';
 
-interface IGLTFModel extends GltfProps {}
-
-export function GLTFModel(props: IGLTFModel) {
+export function GLTFModel(props: GltfProps) {
 	const setIsControl = StoreScene.setIsControl;
 
 	const [dragging, setDragging] = useState(false);

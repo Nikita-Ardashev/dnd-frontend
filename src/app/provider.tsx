@@ -2,7 +2,7 @@
 
 import { SessionProvider } from 'next-auth/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ProfileStore } from '@/stores/profile/profile.store';
+import { StoreProfile } from '@/stores/profile/profile.store';
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { useEffect, useState } from 'react';
@@ -32,7 +32,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 		});
 	}, [queryClient]);
 
-	const { expires, ...user } = ProfileStore.getProfile;
+	const { expires, ...user } = StoreProfile.getProfile;
 	const session = expires === null ? null : { expires: expires.toString(), user };
 
 	return (

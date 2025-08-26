@@ -18,8 +18,8 @@ interface IScene {
 	children?: React.ReactNode;
 }
 
-export default observer(
-	memo(function Scene({ children }: IScene) {
+export const Scene = memo(
+	observer(function ({ children }: IScene) {
 		const control = StoreScene.getIsControl;
 
 		return (
