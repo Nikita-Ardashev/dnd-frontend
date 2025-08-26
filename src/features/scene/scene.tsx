@@ -22,8 +22,9 @@ export function Scene({ children, isControl = true }: IScene) {
 		<div className={styles.scene}>
 			<Canvas style={{ width: '100%', height: '100%', background: 'grey' }}>
 				<GLTFModel
-					src={'/models/barrel/gltf/medieval_barrel.gltf'}
-					scale={new Vector3(0.01, 0.01, 0.01)}
+					src={'/api/models/barrel/gltf/medieval_barrel.gltf'}
+					scale={new Vector3(0.1, 0.1, 0.1)}
+					position={new Vector3(0, 0, 0)}
 				/>
 				<PivotControls autoTransform={false}>
 					{children}
