@@ -8,11 +8,6 @@ export const ModelProfile = t
 		image: t.maybeNull(t.string),
 		email: t.maybeNull(t.string),
 	})
-	.views((self) => ({
-		get getProfile() {
-			return self;
-		},
-	}))
 	.actions((self) => ({
 		setProfile(session: SessionContextValue) {
 			self.expires = new Date(session.data?.expires ?? '');

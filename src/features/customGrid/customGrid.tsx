@@ -1,7 +1,7 @@
 import { ThreeElements, Vector3 } from '@react-three/fiber';
 import React from 'react';
 import { BoxGeometry, Euler } from 'three';
-import { CustomGridCell } from '.';
+import { CustomGridCell } from './customGridCell';
 type TGroupProps = Omit<ThreeElements['group'], 'children'>;
 type TMeshProps = ThreeElements['mesh'];
 interface ICustomProps extends TGroupProps {

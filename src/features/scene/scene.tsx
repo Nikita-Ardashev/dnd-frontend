@@ -1,6 +1,6 @@
 'use client';
 
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import {
 	CameraControls,
@@ -19,13 +19,25 @@ interface IScene {
 }
 
 export const Scene = memo(
-	observer(function ({ children }: IScene) {
-		const control = StoreScene.getIsControl;
+	observer(function Scene({ children }: IScene) {
+		const control = StoreScene.isControl;
+		const meshes = StoreScene.getCurrentChanges;
+		console.log(meshes);
+		const meshesRender = useMemo(
+			() =>
+				meshes.map((m) => {
+					const scale = m.scale?.getArray;
+
+					return <GLTFModel src={m.fileURL} key={m.id} scale={scale} />;
+				}),
+			[meshes],
+		);
 
 		return (
 			<div className={styles.scene}>
 				<Canvas style={{ width: '100%', height: '100%', background: 'grey' }}>
 					<PivotControls autoTransform={false}>
+						{meshesRender}
 						{children}
 						<CustomGrid
 							isViewGrid={true}
@@ -35,11 +47,7 @@ export const Scene = memo(
 								material: new MeshBasicMaterial({ color: 'blue' }),
 							}}
 						/>
-						<GLTFModel
-							src={'/api/models/barrel/gltf/medieval_barrel.gltf'}
-							scale={new Vector3(0.01, 0.01, 0.01)}
-							position={new Vector3(0, 0, 0)}
-						/>
+
 						<CameraControls
 							azimuthAngle={1}
 							polarAngle={1}

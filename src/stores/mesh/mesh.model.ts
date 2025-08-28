@@ -7,9 +7,6 @@ export const MSTXYZ = t
 		z: t.number,
 	})
 	.views((self) => ({
-		get get() {
-			return self;
-		},
 		get getArray() {
 			return Array.from(Object.values(self)) as [number, number, number];
 		},
@@ -24,17 +21,20 @@ export const ModelMesh = t
 	.model({
 		id: t.identifier,
 		name: t.string,
-		type: t.string,
+		type: t.maybeNull(t.string),
 		creator: t.maybeNull(t.identifier),
-		crated_date: t.Date,
-		file: t.string,
-		scale: MSTXYZ,
-		position: MSTXYZ,
-		rotation: MSTXYZ,
+		crated_date: t.optional(t.Date, new Date()),
+		fileURL: t.string,
+		scale: t.maybeNull(MSTXYZ),
+		position: t.maybeNull(MSTXYZ),
+		rotation: t.maybeNull(MSTXYZ),
 	})
 	.views((self) => ({
-		get get() {
-			return self;
+		get getPosition() {
+			const scale = self.scale?.getArray;
+			const position = self.position?.getArray;
+			const rotation = self.rotation?.getArray;
+			return { scale, position, rotation };
 		},
 	}))
 	.actions((self) => ({
@@ -50,11 +50,6 @@ export const ModelGroupMesh = t
 		type: t.string,
 		meshes: t.array(t.string),
 	})
-	.views((self) => ({
-		get get() {
-			return self;
-		},
-	}))
 	.actions((self) => ({
 		set(values: Partial<SnapshotIn<typeof self>>) {
 			Object.assign(self, values);

@@ -32,7 +32,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 		});
 	}, [queryClient]);
 
-	const { expires, ...user } = StoreProfile.getProfile;
+	const { expires, ...user } = StoreProfile;
 	const session = expires === null ? null : { expires: expires.toString(), user };
 
 	return (
