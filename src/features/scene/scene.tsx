@@ -1,6 +1,6 @@
 'use client';
 
-import React, { memo, useMemo } from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import {
 	CameraControls,
@@ -12,7 +12,7 @@ import styles from './scene.module.sass';
 import { BoxGeometry, MeshBasicMaterial, Vector3 } from 'three';
 import { CustomGrid } from '../customGrid';
 import { GLTFModel } from '../GLTFModel';
-import { StoreScene } from '@/stores/scene/scene.store';
+import { StoreScene, StoreSceneHistory } from '@/stores/scene/scene.store';
 import { observer } from 'mobx-react-lite';
 interface IScene {
 	children?: React.ReactNode;
@@ -21,13 +21,19 @@ interface IScene {
 export const Scene = memo(
 	observer(function Scene({ children }: IScene) {
 		const control = StoreScene.isControl;
-		const meshes = StoreScene.getCurrentChanges;
-		console.log(meshes);
+		const meshes = StoreScene.meshes;
+
+		const handlerKey = (e: KeyboardEvent) => {
+			if (e.key === 'z' && e.ctrlKey) StoreSceneHistory.undo();
+			if (e.key === 'z' && e.ctrlKey && e.shiftKey) StoreSceneHistory.redo();
+		};
+
+		window.onkeyup = handlerKey;
+
 		const meshesRender = useMemo(
 			() =>
 				meshes.map((m) => {
 					const scale = m.scale?.getArray;
-
 					return <GLTFModel src={m.fileURL} key={m.id} scale={scale} />;
 				}),
 			[meshes],

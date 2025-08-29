@@ -22,7 +22,7 @@ export const ModelMesh = t
 		id: t.identifier,
 		name: t.string,
 		type: t.maybeNull(t.string),
-		creator: t.maybeNull(t.identifier),
+		creator: t.maybeNull(t.string),
 		crated_date: t.optional(t.Date, new Date()),
 		fileURL: t.string,
 		scale: t.maybeNull(MSTXYZ),
