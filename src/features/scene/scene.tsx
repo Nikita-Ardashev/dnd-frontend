@@ -9,7 +9,6 @@ import {
 	PivotControls,
 } from '@react-three/drei';
 import styles from './scene.module.sass';
-import { BoxGeometry } from 'three';
 import { CustomGrid } from '../customGrid';
 import { GLTFModel } from '../GLTFModel';
 import { StoreScene, StoreSceneHistory } from '@/stores/scene/scene.store';
@@ -43,12 +42,7 @@ export const Scene = memo(
 				<Canvas style={{ width: '100%', height: '100%', background: 'grey' }}>
 					<PivotControls autoTransform={false}>
 						{meshesRender}
-						<CustomGrid
-							isViewGrid={true}
-							mesh={{
-								geometry: new BoxGeometry(10, 10, 1),
-							}}
-						/>
+						<CustomGrid isViewGrid={true} />
 
 						<CameraControls
 							azimuthAngle={1}
