@@ -7,6 +7,10 @@ import { BoxGeometry, FrontSide, MeshBasicMaterial, Vector3 } from 'three';
 
 type TMesh = ThreeElements['mesh'];
 
+interface ICustomGridCell extends TMesh {
+	cellId: string;
+}
+
 type TSideClick = 'right' | 'left' | 'top' | 'bottom' | 'front' | 'back' | 'unknown';
 
 const getSideFromNormal = (normal: Vector3): TSideClick => {
@@ -32,16 +36,16 @@ const createCell = (side: TSideClick, parentCellPosition: Vector3) => {
 
 	const handler: Record<TSideClick, () => void> = {
 		front: () => {
-			position.setY(position.y + 1);
+			position.setZ(position.z + 1);
 		},
 		back: () => {
-			position.setY(position.y - 1);
-		},
-		top: () => {
 			position.setZ(position.z - 1);
 		},
+		top: () => {
+			position.setY(position.y - 1);
+		},
 		bottom: () => {
-			position.setZ(position.z + 1);
+			position.setY(position.y + 1);
 		},
 		left: () => {
 			position.setX(position.x - 1);
@@ -57,7 +61,7 @@ const createCell = (side: TSideClick, parentCellPosition: Vector3) => {
 	return position;
 };
 
-export function CustomGridCell(meshProps: TMesh) {
+export function CustomGridCell({ cellId, ...meshProps }: ICustomGridCell) {
 	const [isHovered, setHovered] = useState(false);
 
 	const geometry = new BoxGeometry(1, 1);
@@ -82,21 +86,25 @@ export function CustomGridCell(meshProps: TMesh) {
 		setHovered(false);
 	};
 
-	const handlerOnClick = (e: ThreeEvent<PointerEvent>) => {
+	const handlerOnClickLeft = (e: ThreeEvent<PointerEvent>) => {
 		e.stopPropagation();
 		if (e.normal === undefined) return;
 		const side = getSideFromNormal(e.normal);
 		const { x, y, z } = createCell(side, e.object.position);
 		const position = { x, y, z };
-		console.log(side, position, e.object.position);
 		StoreScene.grid.addCell(position);
+	};
+
+	const handleOnClickRight = () => {
+		StoreScene.grid.removeCell(cellId);
 	};
 
 	return (
 		<group
 			onPointerOver={handlerPointerOver}
 			onPointerOut={handlerPointerOut}
-			onClick={handlerOnClick}
+			onClick={handlerOnClickLeft}
+			onContextMenu={handleOnClickRight}
 		>
 			<mesh material={materialCube} geometry={geometry} {...meshProps} />
 			<mesh material={materialWireframe} geometry={geometry} {...meshProps}></mesh>

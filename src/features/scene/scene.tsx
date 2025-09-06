@@ -20,8 +20,12 @@ export const Scene = memo(
 		const meshes = StoreScene.meshes;
 
 		const handlerKey = (e: KeyboardEvent) => {
-			if (e.key === 'z' && e.ctrlKey) StoreSceneHistory.undo();
-			if (e.key === 'z' && e.ctrlKey && e.shiftKey) StoreSceneHistory.redo();
+			if (e.key.toLowerCase() === 'z' && e.ctrlKey && !e.shiftKey) {
+				StoreSceneHistory.undo();
+			}
+			if (e.key.toLowerCase() === 'z' && e.ctrlKey && e.shiftKey) {
+				StoreSceneHistory.redo();
+			}
 		};
 
 		useEffect(() => {

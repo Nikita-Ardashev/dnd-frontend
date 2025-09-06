@@ -12,14 +12,10 @@ interface ICustomProps extends TGroupProps {
 export const CustomGrid = memo(
 	observer(function CustomGrid({ isViewGrid = true, ...groupProps }: ICustomProps) {
 		const lines = StoreScene.grid.cells.map((cell, i) => (
-			<CustomGridCell key={i} position={cell.position.getArray} />
+			<CustomGridCell key={i} position={cell.position.getArray} cellId={cell.id} />
 		));
 		return (
-			<group
-				position={[1, 1, 1]}
-				rotation={new Euler(-Math.PI / 2, 0, 0)}
-				{...groupProps}
-			>
+			<group position={[1, 1, 1]} rotation={new Euler(0, 0, 0)} {...groupProps}>
 				{isViewGrid && lines}
 			</group>
 		);

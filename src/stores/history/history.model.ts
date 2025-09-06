@@ -7,39 +7,40 @@ export const ModelHistory = (store: IStateTreeNode) => {
 			isNowChange: t.optional(t.boolean, false),
 		})
 		.volatile(() => ({
-			history: [] as IJsonPatch[],
+			path: [] as IJsonPatch[],
+			reversePath: [] as IJsonPatch[],
 		}))
 		.actions((self) => ({
-			addToHistory(path: IJsonPatch) {
+			addToHistory(path: IJsonPatch, reversePath: IJsonPatch) {
 				if (self.isNowChange) {
 					self.isNowChange = false;
 					return;
 				}
 
-				self.history.splice(self.currentIndex + 1, Infinity, path);
-				self.currentIndex = self.history.length - 1;
-				console.table(self.history);
+				self.path.splice(self.currentIndex + 1, Infinity, path);
+				self.reversePath.splice(self.currentIndex + 1, Infinity, reversePath);
+				self.currentIndex = self.path.length - 1;
 			},
 			undo() {
-				if (self.currentIndex <= 0) return;
+				if (self.currentIndex < 0) return;
 				self.isNowChange = true;
-				const index = --self.currentIndex;
-				const path = self.history[index];
-
+				const path = self.reversePath[self.currentIndex];
+				self.currentIndex--;
 				applyPatch(store, path);
 			},
 			redo() {
-				if (self.currentIndex >= self.history.length - 1) return;
+				if (self.currentIndex >= self.path.length - 1) return;
 				self.isNowChange = true;
-				const index = ++self.currentIndex;
-				const path = self.history[index];
+				self.currentIndex++;
+				const path = self.path[self.currentIndex];
+				console.log(path);
 				applyPatch(store, path);
 			},
 		}))
 		.create({});
 
 	onPatch(store, (path, reversePath) => {
-		StoreHistory.addToHistory(reversePath);
+		StoreHistory.addToHistory(path, reversePath);
 	});
 
 	return StoreHistory;

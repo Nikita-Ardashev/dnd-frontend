@@ -21,4 +21,9 @@ export const ModelGrid = t
 		addCell(position: SnapshotIn<typeof MSTXYZ>) {
 			self.cells.push({ position, id: generateUUID() });
 		},
+		removeCell(id: string) {
+			const cell = self.cells.find((c) => c.id === id);
+			if (cell === undefined) return;
+			self.cells.remove(cell);
+		},
 	}));
