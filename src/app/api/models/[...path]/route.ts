@@ -13,7 +13,7 @@ export async function GET(
 ) {
 	try {
 		const path = (await params).path.join('/');
-		const targetUrl = `${process.env.SRC_MODELS}/${path}`;
+		const targetUrl = `${process.env.YANDEX_URL}/${path}`;
 		const oauthToken = process.env.YANDEX_TOKEN;
 
 		// Загружаем файл с Яндекс Диска

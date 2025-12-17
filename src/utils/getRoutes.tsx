@@ -54,18 +54,13 @@ async function getRoutesFromFiles(directory: string, prefix = ''): Promise<strin
 	return parsedRoutes;
 }
 
-const Links = async () => {
-	const routes = ((await (await getRoutes()).json()) as { routes: string[] }).routes.sort(
-		(a, b) => a.localeCompare(b),
-	);
-
-	return routes.map((r, i) => {
-		return (
+const Links = async () =>
+	((await (await getRoutes()).json()) as { routes: string[] }).routes
+		.sort((a, b) => a.localeCompare(b))
+		.map((r, i) => (
 			<Link key={i + r} href={r}>
 				{r}
 			</Link>
-		);
-	});
-};
+		));
 
 export { Links, getRoutes };

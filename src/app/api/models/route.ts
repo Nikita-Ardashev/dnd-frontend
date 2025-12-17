@@ -39,7 +39,7 @@ export const zipUpload = async (file: File) => {
 };
 
 export async function POST(request: Request) {
-	const url = process.env.SRC_MODELS!;
+	const url = process.env.YANDEX_URL!;
 	const oauthToken = process.env.YANDEX_TOKEN!;
 	const searchParams = new URL(request.url).searchParams;
 	try {

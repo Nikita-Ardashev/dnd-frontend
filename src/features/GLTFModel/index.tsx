@@ -1,38 +1,67 @@
 'use client';
 
-import { StoreScene } from '@/stores/scene/scene.store';
+import { StoreScene } from '@/stores/storeScene/scene.store';
+import { StoreSceneTools } from '@/stores/storeSceneTools/storeSceneTools.store';
 import { DragControls, Gltf, GltfProps, PivotControls } from '@react-three/drei';
-import { useCallback, useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
+import { Matrix4 } from 'three';
 
-export function GLTFModel(props: GltfProps) {
-	const setIsControl = StoreScene.setIsControl;
+interface GLTFModel extends GltfProps {
+	MSTId: string;
+}
+
+export const GLTFModel = observer(function GLTFModel(props: GLTFModel) {
+	const { isTransform, isDrag } = StoreSceneTools.getCurrent;
 
 	const [dragging, setDragging] = useState(false);
 
-	const setDisabledControl = useCallback(() => {
-		setIsControl(false);
-	}, [setIsControl]);
-	const setEnabledControl = useCallback(() => {
-		setIsControl(true);
-	}, [setIsControl]);
+	const handlerDrag = (e: Matrix4) => {
+		console.log(e);
+		// StoreScene.getMesh(props.MSTId)?.set({ position: { x: 0, y: 0, z: 0 } });
+	};
 
-	return (
-		<DragControls onDragStart={setDisabledControl} onDragEnd={setEnabledControl}>
+	const model = (
+		<Gltf
+			{...props}
+			onClick={() => {
+				setDragging(true);
+			}}
+			useDraco="/draco-gltf"
+		/>
+	);
+
+	if (isTransform) {
+		return (
 			<PivotControls
-				onDragStart={setDisabledControl}
-				onDragEnd={setEnabledControl}
-				autoTransform
+				onDragStart={() => {
+					StoreScene.setIsSelectedMesh(true);
+				}}
+				onDragEnd={() => {
+					StoreScene.setIsSelectedMesh(false);
+				}}
 				anchor={[-1.5, -1.5, -1.5]}
 				enabled={dragging}
 			>
-				<Gltf
-					{...props}
-					onClick={() => {
-						setDragging(true);
-					}}
-					useDraco="/draco-gltf"
-				/>
+				{model}
 			</PivotControls>
-		</DragControls>
-	);
-}
+		);
+	}
+
+	if (isDrag) {
+		return (
+			<mesh
+				onPointerDown={() => {
+					StoreScene.setIsSelectedMesh(true);
+				}}
+				onPointerUp={() => {
+					StoreScene.setIsSelectedMesh(false);
+				}}
+			>
+				<DragControls onDrag={handlerDrag}>{model}</DragControls>
+			</mesh>
+		);
+	}
+
+	return model;
+});

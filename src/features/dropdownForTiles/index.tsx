@@ -1,7 +1,7 @@
-import React from 'react';
 import styles from './dropdownForTiles.module.sass';
 import Search from '../search';
-const DropdownForTiles = () => {
+import { observer } from 'mobx-react-lite';
+export const DropdownForTiles = observer(function DropdownForTiles() {
 	return (
 		<div className={styles.dropdown}>
 			<div className={styles.dropdown__title}>
@@ -17,6 +17,4 @@ const DropdownForTiles = () => {
 			<div className={styles.dropdown__tiles}></div>
 		</div>
 	);
-};
-
-export default DropdownForTiles;
+});
