@@ -94,7 +94,7 @@ const toolsProps = defineTools({
 	rotate: t.optional(ModelRotate, { iconURL: '/rotate.svg' }),
 	move: t.optional(ModelMove, { iconURL: '/move.svg' }),
 	build: t.optional(ModelBuild, { iconURL: '/build-cube.svg' }),
-	current: t.optional(MSTTypeLiteralTools, 'drag'),
+	current: t.optional(MSTTypeLiteralTools, 'move'),
 });
 
 export const ModelSceneTools = t

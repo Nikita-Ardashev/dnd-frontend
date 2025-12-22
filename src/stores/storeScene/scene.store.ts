@@ -7,8 +7,7 @@ const DEFAULT_MESHES: SnapshotIn<typeof ModelMesh>[] = [
 	{
 		id: '1',
 		name: 'mesh test',
-		fileURL: '/api/models/wall_low_poly/scene.gltf',
-		scale: { x: 0.01, y: 0.01, z: 0.01 },
+		fileURL: '/local_models/medieval_pack_-_wood_set_1/scene.gltf',
 	},
 ];
 

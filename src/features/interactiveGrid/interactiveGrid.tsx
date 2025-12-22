@@ -63,6 +63,7 @@ export const InteractiveGrid = observer(function InteractiveGrid() {
 				/>
 				<Grid
 					cellColor={'gray'}
+					cellThickness={0}
 					sectionColor={'gray'}
 					args={[width, height]}
 					side={2}

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { BoxGeometry, FrontSide, MeshBasicMaterial } from 'three';
 import { BuildingCubeTexture } from './buildingCubeTexture';
 import { observer } from 'mobx-react-lite';
+import { StoreSceneTools } from '@/stores/storeSceneTools/storeSceneTools.store';
 
 type TMesh = ThreeElements['mesh'];
 
@@ -47,6 +48,8 @@ export const BuildingCube = observer(function BuildingCube({
 	textureUrls,
 	...meshProps
 }: IBuildCube) {
+	const { isBuild } = StoreSceneTools.getCurrent;
+
 	const [isHovered, setHovered] = useState(false);
 
 	const validTextures = validatedTextures(textureUrls);
@@ -55,15 +58,18 @@ export const BuildingCube = observer(function BuildingCube({
 	materialCube.setValues({ color: isHovered ? '#89656A' : defaultMaterialCube.color });
 
 	const handlerPointerOver = (e: ThreeEvent<PointerEvent>) => {
+		if (!isBuild) return;
 		e.stopPropagation();
 		setHovered(true);
 	};
 	const handlerPointerOut = (e: ThreeEvent<PointerEvent>) => {
+		if (!isBuild) return;
 		e.stopPropagation();
 		setHovered(false);
 	};
 
 	const handlerOnClickLeft = (e: ThreeEvent<PointerEvent>) => {
+		if (!isBuild) return;
 		e.stopPropagation();
 		if (e.normal === undefined) return;
 		if (isTransparent && Array.isArray(meshProps.position)) {
@@ -80,6 +86,7 @@ export const BuildingCube = observer(function BuildingCube({
 	};
 
 	const handleOnClickRight = (e: ThreeEvent<PointerEvent>) => {
+		if (!isBuild) return;
 		e.stopPropagation();
 		StoreScene.sceneCubes.removeCell(cubeId);
 	};

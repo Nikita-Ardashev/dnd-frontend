@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { CameraControls, GizmoHelper, GizmoViewport } from '@react-three/drei';
+import { GizmoHelper, GizmoViewport } from '@react-three/drei';
 import styles from './scene.module.sass';
 import { BuildedCubes } from '../buildingCube';
 import { GLTFModel } from '../gltfModel';
@@ -12,6 +12,7 @@ import { handlerCTRL } from '@/utils/handlerKeys';
 import { InteractiveGrid } from '../interactiveGrid/interactiveGrid';
 import { Toolbar } from '../toolbar';
 import { StoreSceneTools } from '@/stores/storeSceneTools/storeSceneTools.store';
+import { Camera } from './camera';
 
 const handlerKey = (e: KeyboardEvent) => {
 	handlerCTRL({
@@ -56,16 +57,7 @@ export const Scene = observer(function Scene() {
 				<BuildedCubes isViewGrid={true} />
 				{isViewGrid && <InteractiveGrid />}
 				<>
-					{!isSelectedMesh && (
-						<CameraControls
-							azimuthAngle={1}
-							polarAngle={1}
-							distance={20}
-							maxDistance={40}
-							minDistance={2}
-						/>
-					)}
-
+					<Camera enabled={!isSelectedMesh} />
 					<GizmoHelper alignment="bottom-right" margin={[100, 100]}>
 						<GizmoViewport labelColor="white" axisHeadScale={1} disabled />
 					</GizmoHelper>
