@@ -6,7 +6,7 @@ export const ModelScene = t
 	.model('Scene', {
 		isViewGrid: t.optional(t.boolean, true),
 		isEditable: t.optional(t.boolean, true),
-		isSelectedMesh: t.optional(t.boolean, false),
+		selectedMeshIds: t.array(t.union(t.number, t.string)),
 		meshes: t.array(ModelMesh),
 		sceneCubes: t.optional(ModelSceneCubes, { cubes: [] }),
 		size: t.optional(t.model({ width: t.number, height: t.number }), {
@@ -15,18 +15,25 @@ export const ModelScene = t
 		}),
 	})
 	.views((self) => ({
-		getMesh(id: string) {
-			return self.meshes.find((m) => m.id === id);
+		getMesh(meshId: string) {
+			return self.meshes.find((m) => m.id === meshId);
+		},
+		getIsSelectedMesh(meshId: number | string) {
+			return self.selectedMeshIds.some((id) => id === meshId);
 		},
 	}))
 	.actions((self) => ({
-		setIsSelectedMesh(state: boolean | undefined = undefined) {
-			self.isSelectedMesh = state === undefined ? !self.isSelectedMesh : state;
+		addSelectedMeshId(meshId: number | string) {
+			if (self.getIsSelectedMesh(meshId)) return;
+			self.selectedMeshIds.push(meshId);
 		},
-		setIsViewGrid(state: boolean | undefined = undefined) {
+		removeSelectedMeshId(meshId: number | string) {
+			self.selectedMeshIds.remove(meshId);
+		},
+		setIsViewGrid(state?: boolean) {
 			self.isViewGrid = state === undefined ? !self.isViewGrid : state;
 		},
-		setIsEditable(state: boolean | undefined = undefined) {
+		setIsEditable(state?: boolean) {
 			self.isEditable = state === undefined ? !self.isEditable : state;
 		},
 		addMesh(mesh: SnapshotIn<(typeof self.meshes)[number]>) {

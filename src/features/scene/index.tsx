@@ -36,7 +36,7 @@ export const Scene = observer(function Scene() {
 	const { isMove } = StoreSceneTools.getCurrent;
 	const meshes = StoreScene.meshes;
 	const isViewGrid = StoreScene.isViewGrid;
-	const isSelectedMesh = StoreScene.isSelectedMesh;
+	const isSelectedMesh = StoreScene.selectedMeshIds.length > 0;
 
 	useEffect(() => {
 		window.onkeyup = handlerKey;
@@ -44,7 +44,18 @@ export const Scene = observer(function Scene() {
 
 	const meshesRender = meshes.map((m) => {
 		const scale = m.scale?.getArray;
-		return <GLTFModel MSTId={m.id} src={m.fileURL} key={m.id} scale={scale} />;
+		const position = m.position?.getArray;
+		const rotate = m.rotation?.getArray;
+		return (
+			<GLTFModel
+				MSTId={m.id}
+				src={m.fileURL}
+				key={m.id}
+				scale={scale}
+				position={position}
+				rotation={rotate}
+			/>
+		);
 	});
 
 	return (
