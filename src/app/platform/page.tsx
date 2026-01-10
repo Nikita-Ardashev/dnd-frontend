@@ -8,7 +8,7 @@ import { DropdownForTiles } from '@/features/dropdownForTiles';
 export default function PlatformPage() {
 	return (
 		<div className={styles.page}>
-			<div className={styles.page__snippets}>
+			{/* <div className={styles.page__snippets}>
 				<AddMesh />
 				<DropdownForTiles />
 			</div>
@@ -16,7 +16,7 @@ export default function PlatformPage() {
 				<button>
 					<Image src={ResizeIcon} alt="resize" />
 				</button>
-			</div>
+			</div> */}
 			<Scene></Scene>
 		</div>
 	);

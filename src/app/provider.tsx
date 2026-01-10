@@ -6,6 +6,7 @@ import { StoreProfile } from '@/stores/storeProfile/profile.store';
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const createQueryClient = new QueryClient({
 	defaultOptions: {
@@ -16,6 +17,12 @@ const createQueryClient = new QueryClient({
 });
 
 export function Providers({ children }: { children: React.ReactNode }) {
+	const router = useRouter();
+
+	useEffect(() => {
+		if (!window.location.origin.includes('platform')) router.replace('platform');
+	}, [router]);
+
 	const [queryClient] = useState(createQueryClient);
 
 	useEffect(() => {

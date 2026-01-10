@@ -24,17 +24,19 @@ const positionFloor = (pos: IPosition) => {
 };
 
 export const InteractiveGrid = observer(function InteractiveGrid() {
-	const { isBuild } = StoreSceneTools.getCurrent;
+	const { isNewBuild } = StoreSceneTools.getCurrent;
 
 	const { width, height } = StoreScene.size;
 	const [cellPosition, setCellPosition] = useState<IPosition | null>(null);
 	const pointerMove = (e: ThreeEvent<PointerEvent>) => {
 		{
+			e.stopPropagation();
 			const cords = positionFloor(e.point);
 			setCellPosition(cords);
 		}
 	};
 	const pointerLeave = (e: ThreeEvent<PointerEvent>) => {
+		e.stopPropagation();
 		const cords = positionFloor(e.point);
 		if (cellPosition === null) return;
 		if (cellPosition.x !== cords.x || cellPosition.z !== cords.z) setCellPosition(null);
@@ -42,7 +44,7 @@ export const InteractiveGrid = observer(function InteractiveGrid() {
 
 	return (
 		<>
-			{isBuild && cellPosition !== null && (
+			{isNewBuild && cellPosition !== null && (
 				<BuildingCube
 					cubeId={'ghost-cube-for-view'}
 					position={[cellPosition.x, cellPosition.y, cellPosition.z]}

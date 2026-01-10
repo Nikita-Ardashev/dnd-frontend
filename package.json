@@ -45,6 +45,7 @@
 		"babel-plugin-react-compiler": "^1.0.0",
 		"eslint": "^9",
 		"eslint-config-next": "15.3.4",
+		"leva": "^0.10.1",
 		"postcss-flexbugs-fixes": "^5.0.2",
 		"postcss-preset-env": "^10.2.3",
 		"sass": "^1.97.0",

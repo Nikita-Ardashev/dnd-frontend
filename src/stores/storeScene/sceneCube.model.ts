@@ -1,8 +1,8 @@
-import { SnapshotIn, t } from 'mobx-state-tree';
+import { IAnyType, SnapshotIn, t } from 'mobx-state-tree';
 import { MSTXYZ } from '../types';
 import { generateUUID } from 'three/src/math/MathUtils.js';
 
-export type TypesTextureMap = {
+export interface ITextureMap {
 	map?: string;
 	lightMap?: string;
 	aoMap?: string;
@@ -14,13 +14,27 @@ export type TypesTextureMap = {
 	metalnessMap?: string;
 	alphaMap?: string;
 	envMap?: string;
-};
+}
+
+export const ModelTexture = t.model<Record<keyof ITextureMap, IAnyType>>('SceneTexture', {
+	map: t.maybe(t.string),
+	lightMap: t.maybe(t.string),
+	aoMap: t.maybe(t.string),
+	emissiveMap: t.maybe(t.string),
+	bumpMap: t.maybe(t.string),
+	normalMap: t.maybe(t.string),
+	displacementMap: t.maybe(t.string),
+	roughnessMap: t.maybe(t.string),
+	metalnessMap: t.maybe(t.string),
+	alphaMap: t.maybe(t.string),
+	envMap: t.maybe(t.string),
+});
 
 export const ModelSceneCube = t
 	.model('SceneCube', {
 		id: t.optional(t.identifier, generateUUID()),
 		position: t.optional(MSTXYZ, { x: 0, y: 0, z: 0 }),
-		textureUrls: t.optional(t.frozen<TypesTextureMap>(), {}),
+		textureUrls: t.optional(ModelTexture, {}),
 	})
 	.actions((self) => ({
 		move() {

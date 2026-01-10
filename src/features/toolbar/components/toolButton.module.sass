@@ -1,14 +1,37 @@
-.tool
-    width: 40px
-    height: 40px
-    padding: 4px
+.tools
+    position: relative
     display: flex
     flex-direction: row
     align-items: center
     justify-content: center
-    background: #5F4549
     border-radius: 8px
-    border: 2px solid black
-    cursor: pointer
-    &__current
-        border: 2px solid white
+    .tool
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 40px
+        height: 40px
+        padding: 4px
+        background: #5F4549
+        border-radius: 8px
+        border: 2px solid black
+        cursor: pointer
+        z-index: 1
+        &__current
+            border: 2px solid white
+
+    &__children
+        transition: .4s
+        position: absolute
+        top: 0
+        visibility: hidden
+        z-index: 0
+        &-active
+            visibility: visible !important
+            top: 100% !important
+
+    &:hover
+        .tools__children
+            transition: .4s
+            top: 100%
+            visibility: visible

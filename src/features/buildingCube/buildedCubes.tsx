@@ -5,14 +5,8 @@ import { StoreScene } from '@/stores/storeScene/scene.store';
 import { observer } from 'mobx-react-lite';
 
 type TGroupProps = Omit<ThreeElements['group'], 'children'>;
-interface ICustomProps extends TGroupProps {
-	isViewGrid?: boolean;
-}
 
-export const BuildedCubes = observer(function CustomGrid({
-	isViewGrid = true,
-	...groupProps
-}: ICustomProps) {
+export const BuildedCubes = observer(function CustomGrid({ ...groupProps }: TGroupProps) {
 	const cubes = StoreScene.sceneCubes.cubes.map((cube, i) => (
 		<BuildingCube
 			key={i}
@@ -23,7 +17,7 @@ export const BuildedCubes = observer(function CustomGrid({
 	));
 	return (
 		<group rotation={new Euler(0, 0, 0)} {...groupProps}>
-			{isViewGrid && cubes}
+			{cubes}
 		</group>
 	);
 });

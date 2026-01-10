@@ -2,50 +2,39 @@ import { Vector3 } from 'three';
 
 export type TSideClick = 'right' | 'left' | 'top' | 'bottom' | 'front' | 'back' | 'unknown';
 
-export const getSideFromNormal = (normal: Vector3): TSideClick => {
-	const tolerance = 0.001;
-	const { x, y, z } = normal;
+export interface IReturnCubePosition {
+	side: TSideClick;
+	position: Vector3;
+}
 
-	if (Math.abs(x - 1) < tolerance) return 'right';
-	if (Math.abs(x + 1) < tolerance) return 'left';
-	if (Math.abs(y - 1) < tolerance) return 'top';
-	if (Math.abs(y + 1) < tolerance) return 'bottom';
-	if (Math.abs(z - 1) < tolerance) return 'front';
-	if (Math.abs(z + 1) < tolerance) return 'back';
+export const getSideFromNormal = (normal: Vector3): TSideClick => {
+	const absX = Math.abs(normal.x);
+	const absY = Math.abs(normal.y);
+	const absZ = Math.abs(normal.z);
+	const max = Math.max(absX, absY, absZ);
+
+	if (max < 0.5) return 'unknown';
+
+	if (max === absX) return normal.x > 0 ? 'right' : 'left';
+	if (max === absY) return normal.y > 0 ? 'top' : 'bottom';
+	if (max === absZ) return normal.z > 0 ? 'front' : 'back';
 
 	return 'unknown';
 };
 
-export const getCubePosition = (normal: Vector3, parentCellPosition: Vector3) => {
+export const getCubePosition = (
+	normal: Vector3,
+	parentCellPosition: Vector3,
+): IReturnCubePosition => {
 	const side = getSideFromNormal(normal);
 
-	const position = new Vector3(
-		parentCellPosition.x,
-		parentCellPosition.y,
-		parentCellPosition.z,
-	);
-
-	switch (side) {
-		case 'right':
-			position.setX(position.x + 1);
-			return position;
-		case 'left':
-			position.setX(position.x - 1);
-			return position;
-		case 'top':
-			position.setY(position.y + 1);
-			return position;
-		case 'bottom':
-			position.setY(position.y - 1);
-			return position;
-		case 'front':
-			position.setZ(position.z + 1);
-			return position;
-		case 'back':
-			position.setZ(position.z - 1);
-			return position;
-		case 'unknown':
-		default:
-			throw new Error('Не удалось создать ячейку сцены.');
+	if (side === 'unknown') {
+		throw new Error('Не удалось определить сторону грани для создания ячейки.');
 	}
+
+	const position = parentCellPosition
+		.clone()
+		.add(new Vector3(Math.round(normal.x), Math.round(normal.y), Math.round(normal.z)));
+
+	return { position, side };
 };

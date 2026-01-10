@@ -3,29 +3,35 @@
 import { StoreScene } from '@/stores/storeScene/scene.store';
 import { StoreSceneTools } from '@/stores/storeSceneTools/storeSceneTools.store';
 import { DragControls, Gltf, GltfProps, PivotControls } from '@react-three/drei';
-import { ThreeEvent } from '@react-three/fiber';
+import { ThreeElements } from '@react-three/fiber';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { Euler, Matrix4, Quaternion, Vector3 } from 'three';
+import { Matrix4, Quaternion, Vector3 } from 'three';
 
-interface GLTFModel extends GltfProps {
+interface IProps {
 	MSTId: string;
+	gltf: GltfProps;
+	group?: ThreeElements['group'];
 }
 
-export const GLTFModel = observer(function GLTFModel(props: GLTFModel) {
-	const { isTransform, isDrag, isRotate, isScale } = StoreSceneTools.getCurrent;
+export const GLTFModel = observer(function GLTFModel(props: IProps) {
+	const { isDrag, isRotate, isScale } = StoreSceneTools.getCurrent;
 	const { addSelectedMeshId, removeSelectedMeshId } = StoreScene;
 
 	const [isDragged, setIsDragged] = useState(false);
 	const [isHovered, setIsHovered] = useState(false);
 	const [isSelected, setIsSelected] = useState(false);
 
+	const isActiveTool = isRotate || isScale || isDrag;
+
 	const selectedEnabled = () => {
+		if (!isActiveTool) return;
 		addSelectedMeshId(props.MSTId);
 		setIsSelected(true);
 	};
 
 	const draggedEnabled = () => {
+		if (!isActiveTool) return;
 		setIsSelected(true);
 		setIsDragged(true);
 	};
@@ -35,25 +41,15 @@ export const GLTFModel = observer(function GLTFModel(props: GLTFModel) {
 	};
 
 	const handlerDrag = (e: Matrix4) => {
-		console.log(e);
 		const position = new Vector3();
 		const quaternion = new Quaternion();
 		const scale = new Vector3();
 
-		// 1. Разлагаем матрицу на компоненты
-		// Это стандартный метод Three.js
 		e.decompose(position, quaternion, scale);
 
-		// 2. Преобразуем кватернион в привычные углы Эйлера (Euler)
-		// const rotation = new Euler().setFromQuaternion(quaternion);
-		// console.log({
-		// 	quaternion,
-		// });
-		// StoreScene.getMesh(props.MSTId)?.set({
-		// 	position: { x: position.x, y: position.y, z: position.z },
-		// 	rotation: { x: rotation.x, y: rotation.y, z: rotation.z },
-		// 	scale: { x: scale.x / 100, y: scale.y / 100, z: scale.z / 100 },
-		// });
+		StoreScene.getMesh(props.MSTId)?.set({
+			position: { x: position.x / 100, y: position.y / 100, z: position.z / 100 },
+		});
 	};
 
 	useEffect(() => {
@@ -71,7 +67,7 @@ export const GLTFModel = observer(function GLTFModel(props: GLTFModel) {
 
 	const model = (
 		<Gltf
-			{...props}
+			{...props.gltf}
 			onPointerDown={(e) => {
 				if (
 					e.intersections.length > 0 &&
@@ -93,28 +89,46 @@ export const GLTFModel = observer(function GLTFModel(props: GLTFModel) {
 		/>
 	);
 
-	if (isTransform || isRotate || isScale || isDrag) {
-		return (
+	return (
+		<group
+			{...props.group}
+			onPointerDown={(e) => {
+				if (
+					e.intersections.length > 0 &&
+					e.intersections[0].object.uuid !== e.object.uuid
+				) {
+					return;
+				}
+				selectedEnabled();
+			}}
+			onPointerOver={(e) => {
+				e.stopPropagation();
+				setIsHovered(true);
+			}}
+			onPointerLeave={(e) => {
+				e.stopPropagation();
+				setIsHovered(false);
+			}}
+		>
 			<DragControls
-				// onDrag={handlerDrag}
+				onDrag={handlerDrag}
 				onDragStart={draggedEnabled}
 				onDragEnd={draggedDisabled}
-				dragConfig={{ threshold: 5, enabled: isHovered }}
+				dragConfig={{ threshold: 5, enabled: isHovered && isActiveTool }}
 			>
 				<PivotControls
 					onDragStart={draggedEnabled}
 					onDragEnd={draggedDisabled}
-					enabled={isSelected}
-					disableAxes={!isTransform && !isDrag}
-					disableRotations={!isTransform && !isRotate}
-					disableScaling={!isTransform && !isScale}
+					onDrag={handlerDrag}
+					enabled={isSelected && isActiveTool}
+					disableAxes={!isDrag}
+					disableRotations={!isRotate}
+					disableScaling={!isScale}
 					disableSliders={true}
 				>
 					{model}
 				</PivotControls>
 			</DragControls>
-		);
-	}
-
-	return model;
+		</group>
+	);
 });

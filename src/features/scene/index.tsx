@@ -33,27 +33,27 @@ const handlerKey = (e: KeyboardEvent) => {
 };
 
 export const Scene = observer(function Scene() {
+	useEffect(() => {
+		window.onkeyup = handlerKey;
+	}, []);
+
 	const { isMove } = StoreSceneTools.getCurrent;
 	const meshes = StoreScene.meshes;
 	const isViewGrid = StoreScene.isViewGrid;
 	const isSelectedMesh = StoreScene.selectedMeshIds.length > 0;
 
-	useEffect(() => {
-		window.onkeyup = handlerKey;
-	}, []);
-
 	const meshesRender = meshes.map((m) => {
 		const scale = m.scale?.getArray;
 		const position = m.position?.getArray;
-		const rotate = m.rotation?.getArray;
+		const rotation = m.rotation?.getArray;
 		return (
 			<GLTFModel
-				MSTId={m.id}
-				src={m.fileURL}
 				key={m.id}
-				scale={scale}
-				position={position}
-				rotation={rotate}
+				MSTId={m.id}
+				gltf={{
+					src: m.fileURL,
+				}}
+				group={{ position, scale, rotation }}
 			/>
 		);
 	});
@@ -65,7 +65,7 @@ export const Scene = observer(function Scene() {
 			</div>
 			<Canvas style={{ width: '100%', height: '100%' }}>
 				{meshesRender}
-				<BuildedCubes isViewGrid={true} />
+				<BuildedCubes />
 				{isViewGrid && <InteractiveGrid />}
 				<>
 					<Camera enabled={!isSelectedMesh} />

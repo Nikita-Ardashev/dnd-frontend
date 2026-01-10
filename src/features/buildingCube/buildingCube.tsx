@@ -1,77 +1,65 @@
 'use client';
 
 import { StoreScene } from '@/stores/storeScene/scene.store';
-import { TypesTextureMap } from '@/stores/storeScene/sceneCube.model';
-import { getCubePosition } from '@/utils/getCubePositionBasedSide';
+import { ITextureMap } from '@/stores/storeScene/sceneCube.model';
+import { getCubePosition, IReturnCubePosition } from '@/utils/getCubePositionBasedSide';
 import { ThreeElements, ThreeEvent } from '@react-three/fiber';
 import { useState } from 'react';
-import { BoxGeometry, FrontSide, MeshBasicMaterial } from 'three';
+import { BoxGeometry } from 'three';
 import { BuildingCubeTexture } from './buildingCubeTexture';
 import { observer } from 'mobx-react-lite';
 import { StoreSceneTools } from '@/stores/storeSceneTools/storeSceneTools.store';
+import { BuildingCubeSide } from './buildingCubeSide';
+import { useCursor } from '@react-three/drei';
 
 type TMesh = ThreeElements['mesh'];
 
-interface IBuildCube extends TMesh {
+interface IProps extends TMesh {
 	cubeId: string;
 	isTransparent?: boolean;
-	textureUrls?: TypesTextureMap;
+	textureUrls?: ITextureMap;
 }
 
 const defaultGeometry = new BoxGeometry(1, 1);
-
-const defaultMaterialCube = new MeshBasicMaterial({
-	side: FrontSide,
-	color: 'gray',
-});
-
-const defaultMaterialTransparent = new MeshBasicMaterial({
-	transparent: true,
-	opacity: 0.5,
-	color: 'gray',
-	side: FrontSide,
-});
-
-const validatedTextures = (textureUrls: TypesTextureMap | undefined) => {
-	if (!textureUrls) return null;
-
-	const filtered: Partial<Record<keyof TypesTextureMap, string>> = {};
-	for (const [key, value] of Object.entries(textureUrls)) {
-		if (value) filtered[key as keyof TypesTextureMap] = value;
-	}
-	return Object.keys(filtered).length > 0 ? filtered : null;
-};
 
 export const BuildingCube = observer(function BuildingCube({
 	cubeId,
 	isTransparent,
 	textureUrls,
 	...meshProps
-}: IBuildCube) {
-	const { isBuild } = StoreSceneTools.getCurrent;
-
+}: IProps) {
+	const { isBuild, isNewBuild } = StoreSceneTools.getCurrent;
+	const isFullBuild = isBuild || isNewBuild;
 	const [isHovered, setHovered] = useState(false);
 
-	const validTextures = validatedTextures(textureUrls);
+	useCursor(isHovered);
 
-	const materialCube = defaultMaterialCube.clone();
-	materialCube.setValues({ color: isHovered ? '#89656A' : defaultMaterialCube.color });
+	const [newCubePosition, setNewCubePosition] = useState<IReturnCubePosition | null>(
+		null,
+	);
 
 	const handlerPointerOver = (e: ThreeEvent<PointerEvent>) => {
-		if (!isBuild) return;
+		if (!isFullBuild) return;
 		e.stopPropagation();
 		setHovered(true);
 	};
 	const handlerPointerOut = (e: ThreeEvent<PointerEvent>) => {
-		if (!isBuild) return;
+		if (!isFullBuild) return;
 		e.stopPropagation();
 		setHovered(false);
 	};
-
-	const handlerOnClickLeft = (e: ThreeEvent<PointerEvent>) => {
+	const handlerPointerMove = (e: ThreeEvent<PointerEvent>) => {
 		if (!isBuild) return;
 		e.stopPropagation();
 		if (e.normal === undefined) return;
+		const cubePosition = getCubePosition(e.normal, e.object.position);
+		setNewCubePosition(cubePosition);
+	};
+
+	const handlerOnClickLeft = (e: ThreeEvent<PointerEvent>) => {
+		if (!isFullBuild) return;
+		e.stopPropagation();
+
 		if (isTransparent && Array.isArray(meshProps.position)) {
 			const position = meshProps.position;
 			StoreScene.sceneCubes.addCell({
@@ -81,27 +69,44 @@ export const BuildingCube = observer(function BuildingCube({
 			});
 			return;
 		}
-		const { x, y, z } = getCubePosition(e.normal, e.object.position);
-		StoreScene.sceneCubes.addCell({ x, y, z });
+		if (newCubePosition === null) return;
+		StoreScene.sceneCubes.addCell({
+			x: newCubePosition.position.x,
+			y: newCubePosition.position.y,
+			z: newCubePosition.position.z,
+		});
 	};
 
 	const handleOnClickRight = (e: ThreeEvent<PointerEvent>) => {
-		if (!isBuild) return;
+		if (!isFullBuild) return;
 		e.stopPropagation();
 		StoreScene.sceneCubes.removeCell(cubeId);
 	};
 
 	return (
-		<mesh
-			material={isTransparent ? defaultMaterialTransparent : materialCube}
-			geometry={defaultGeometry}
-			{...meshProps}
-			onPointerOver={handlerPointerOver}
-			onPointerOut={handlerPointerOut}
-			onClick={handlerOnClickLeft}
-			onContextMenu={handleOnClickRight}
-		>
-			{validTextures !== null && <BuildingCubeTexture textureUrls={validTextures} />}
-		</mesh>
+		<group>
+			<mesh
+				geometry={defaultGeometry}
+				{...meshProps}
+				onPointerOver={handlerPointerOver}
+				onPointerOut={handlerPointerOut}
+				onClick={handlerOnClickLeft}
+				onContextMenu={handleOnClickRight}
+				onPointerMove={handlerPointerMove}
+			>
+				<BuildingCubeTexture
+					isHovered={isHovered}
+					isTransparent={isTransparent}
+					textureUrls={textureUrls}
+				/>
+			</mesh>
+			{!isTransparent &&
+				isBuild &&
+				isHovered &&
+				newCubePosition !== null &&
+				newCubePosition?.side !== 'unknown' && (
+					<BuildingCubeSide planePosition={newCubePosition} />
+				)}
+		</group>
 	);
 });

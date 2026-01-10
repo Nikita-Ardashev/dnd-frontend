@@ -2,11 +2,11 @@ import { t } from 'mobx-state-tree';
 
 export const ModelCameraControls = t
 	.model({
-		azimuthAngle: t.optional(t.number, 1),
+		azimuthAngle: t.optional(t.number, 0),
 		polarAngle: t.optional(t.number, 1),
-		distance: t.optional(t.number, 20),
-		maxDistance: t.optional(t.number, 40),
-		minDistance: t.optional(t.number, 2),
+		distance: t.optional(t.number, 10),
+		maxDistance: t.optional(t.number, 100),
+		minDistance: t.optional(t.number, 0),
 	})
 	.views((self) => ({
 		get get() {

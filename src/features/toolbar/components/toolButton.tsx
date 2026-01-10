@@ -1,27 +1,39 @@
-/* eslint-disable jsx-a11y/alt-text */
 'use client';
 
 import Image from 'next/image';
-import { ButtonHTMLAttributes, ComponentProps } from 'react';
 import styles from './toolButton.module.sass';
 import { observer } from 'mobx-react-lite';
+import { IModelTool } from '@/stores/storeSceneTools/types';
+import { StoreSceneTools } from '@/stores/storeSceneTools/storeSceneTools.store';
 
-interface ToolButton extends ButtonHTMLAttributes<HTMLButtonElement> {
-	imageProps: ComponentProps<typeof Image>;
-	isCurrent: boolean;
-}
+export const ToolButton = observer(function ToolButton(props: IModelTool) {
+	const { setCurrent, currentId } = StoreSceneTools;
+	const isCurrent = currentId === props.id;
 
-export const ToolButton = observer(function ToolButton({
-	imageProps,
-	isCurrent,
-	...props
-}: ToolButton) {
+	const tools = props.children.map((tool, i) => (
+		<ToolButton key={`${tool.name}_${tool.id}_${i}`} {...tool} />
+	));
+	const isChildrenToolActive = props.children.some((child) => child.id === currentId);
 	return (
-		<button
-			{...props}
-			className={`${styles.tool} ${isCurrent ? styles.tool__current : ''}`}
-		>
-			<Image {...imageProps} width={32} height={32} />
-		</button>
+		<div className={styles.tools}>
+			<button
+				title={props.name}
+				className={`${styles.tool} ${isCurrent ? styles.tool__current : ''}`}
+				onClick={() => {
+					setCurrent(props.id);
+				}}
+			>
+				<Image src={props.iconURL} alt={props.name} width={32} height={32} />
+			</button>
+			{props.children.length > 0 && (
+				<div
+					className={`${styles.tools__children} ${
+						isChildrenToolActive ? styles['tools__children-active'] : ''
+					}`}
+				>
+					{tools}
+				</div>
+			)}
+		</div>
 	);
 });
