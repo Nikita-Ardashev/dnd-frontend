@@ -1,0 +1,11 @@
+Model Information:
+* title:	Medieval Pack - Wood set #1
+* source:	https://sketchfab.com/3d-models/medieval-pack-wood-set-1-cd30a0df5bf142fd943b0216c2c34079
+* author:	Théo Lerbeil (https://sketchfab.com/supertheo)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Medieval Pack - Wood set #1" (https://sketchfab.com/3d-models/medieval-pack-wood-set-1-cd30a0df5bf142fd943b0216c2c34079) by Théo Lerbeil (https://sketchfab.com/supertheo) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

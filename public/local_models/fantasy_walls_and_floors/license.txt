@@ -1,0 +1,11 @@
+Model Information:
+* title:	Fantasy Walls and floors
+* source:	https://sketchfab.com/3d-models/fantasy-walls-and-floors-e999efd83b2b42e9b531633175ca97a3
+* author:	Théo Lerbeil (https://sketchfab.com/supertheo)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Fantasy Walls and floors" (https://sketchfab.com/3d-models/fantasy-walls-and-floors-e999efd83b2b42e9b531633175ca97a3) by Théo Lerbeil (https://sketchfab.com/supertheo) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
