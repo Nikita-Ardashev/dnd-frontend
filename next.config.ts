@@ -1,6 +1,7 @@
 import type { NextConfig } from 'next';
 import path from 'path';
 const nextConfig: NextConfig = {
+	turbopack: {},
 	sassOptions: {
 		prependData: `@use '@styles/variables' as v`,
 	},
