@@ -3,7 +3,7 @@ import path from 'path';
 const nextConfig: NextConfig = {
 	turbopack: {},
 	sassOptions: {
-		prependData: `@use '@styles/variables' as v`,
+		prependData: `@use '@app/styles/variables' as v`,
 	},
 	webpack: (config) => {
 		// Создаем алиас '@styles', который смотрит в папку src/styles

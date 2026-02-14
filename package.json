@@ -15,6 +15,7 @@
 		"@next/env": "^15.5.0",
 		"@react-three/drei": "^10.3.0",
 		"@react-three/fiber": "^9.1.2",
+		"@redux-devtools/extension": "^3.3.0",
 		"@tanstack/query-sync-storage-persister": "^5.81.2",
 		"@tanstack/react-query": "^5.81.2",
 		"@tanstack/react-query-persist-client": "^5.81.2",
@@ -28,6 +29,8 @@
 		"mobx": "^6.13.7",
 		"mobx-react-lite": "^4.1.0",
 		"mobx-state-tree": "^7.0.2",
+		"mst-middlewares": "^6.1.0",
+		"mst-query": "^4.4.1",
 		"next": "^16.0.10",
 		"next-auth": "^4.24.11",
 		"postcss": "^8.5.6",
@@ -35,10 +38,11 @@
 		"react-dom": "^19.0.0",
 		"react-hotkeys-hook": "^5.1.0",
 		"three": "^0.177.0",
-		"zod": "^3.25.67"
+		"zod": "^3.25.76"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3",
+		"@feature-sliced/steiger-plugin": "^0.5.7",
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
@@ -49,6 +53,7 @@
 		"postcss-flexbugs-fixes": "^5.0.2",
 		"postcss-preset-env": "^10.2.3",
 		"sass": "^1.97.0",
-		"typescript": "^5"
+		"steiger": "^0.5.11",
+		"typescript": "5.9.3"
 	}
 }
