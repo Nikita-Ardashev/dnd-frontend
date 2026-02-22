@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { types, IAnyType, IType, Instance } from 'mobx-state-tree';
+import { types, IAnyType, IType } from 'mobx-state-tree';
 
 // --- Опции конвертации ---
 export interface ZodToMstOptions {
@@ -316,5 +316,5 @@ export const UltimateZodSchema = z.object({
 	}),
 });
 
-// Автоматический вывод TypeScript типа из Zod схемы
+/** Автоматический вывод TypeScript типа из Zod схемы */
 export type UltimateType = z.infer<typeof UltimateZodSchema>;

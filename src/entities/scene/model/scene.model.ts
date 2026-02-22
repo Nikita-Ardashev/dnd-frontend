@@ -7,7 +7,7 @@ export const Scene = t
 	.model('Scene', {
 		isViewGrid: t.optional(t.boolean, true),
 		isEditable: t.optional(t.boolean, true),
-		selectedMeshIds: t.array(t.union(t.number, t.string)),
+		selectedMeshIds: t.array(t.string),
 		construct: Construct,
 		size: t.optional(t.model({ width: t.number, height: t.number }), {
 			width: 20,
@@ -17,17 +17,17 @@ export const Scene = t
 		camera: CameraControls,
 	})
 	.views((self) => ({
-		getIsSelectedMesh(meshId: number | string) {
-			return self.selectedMeshIds.some((id) => id === meshId);
+		getIsSelectedMesh(id: number | string) {
+			return self.selectedMeshIds.some((v) => v === id);
 		},
 	}))
 	.actions((self) => ({
-		addSelectedMeshId(meshId: number | string) {
-			if (self.getIsSelectedMesh(meshId)) return;
-			self.selectedMeshIds.push(meshId);
+		addSelectedByMesh(id: string) {
+			if (self.getIsSelectedMesh(id)) return;
+			self.selectedMeshIds.push(id);
 		},
-		removeSelectedMeshId(meshId: number | string) {
-			self.selectedMeshIds.remove(meshId);
+		removeSelectedMesh(id: string) {
+			self.selectedMeshIds.remove(id);
 		},
 		setIsViewGrid(state?: boolean) {
 			self.isViewGrid = state === undefined ? !self.isViewGrid : state;

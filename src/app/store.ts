@@ -1,22 +1,23 @@
-import { t, SnapshotIn } from 'mobx-state-tree';
+import { SnapshotIn, t } from 'mobx-state-tree';
 import { handlerKeys } from '@/shared/utils/handler-keys';
-import { StoreWithHistory } from '@/shared/lib/mst/with-history';
+import { withHistory } from '@/shared/lib/mst/with-history';
 import { Profile } from '@/entities/profile/model/profile.model';
-import { Mesh, Scene } from '@/entities/scene/model';
+import { Scene } from '@/entities/scene/model';
 
 export const Root = t.model('Root', {
 	scene: Scene,
 	profile: Profile,
 });
 
-const DEFAULT_MESHES: SnapshotIn<typeof Mesh>[] = [
+const DEFAULT_MESHES: SnapshotIn<typeof Scene.properties.construct.properties.sceneModels> =
 	{
-		id: '1',
-		name: 'mesh test',
-		fileURL: '/local_models/fantasy_scene_stufs_lowpoly_1/scene.gltf',
-		scale: { x: 0.01, y: 0.01, z: 0.01 },
-	},
-];
+		'1': {
+			id: '1',
+			name: 'mesh test',
+			fileURL: '/local_models/fantasy_scene_stufs_lowpoly_1/scene.gltf',
+			matrix4: [0.01, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0.01, 0, 4, 0, 0, 1],
+		},
+	};
 
 const DEFAULT_TOOL_ID = crypto.randomUUID();
 
@@ -25,23 +26,29 @@ export const RootStore = Root.create({
 	scene: {
 		camera: {},
 		construct: {
-			meshes: DEFAULT_MESHES,
-			sceneCubes: {
-				cubes: [
-					{
-						textureUrls: {
-							normalMap:
-								'/local_models/fantasy_walls_and_floors/textures/pillar_wood_normal.png',
-							map: '/local_models/fantasy_walls_and_floors/textures/pillar_wood_baseColor.jpeg',
-						},
-					},
-				],
-			},
+			sceneModels: DEFAULT_MESHES,
+			// sceneCubes: {
+			// 	cubes: [
+			// 		{
+			// 			textureUrls: {
+			// 				normalMap:
+			// 					'/local_models/fantasy_walls_and_floors/textures/pillar_wood_normal.png',
+			// 				map: '/local_models/fantasy_walls_and_floors/textures/pillar_wood_baseColor.jpeg',
+			// 			},
+			// 		},
+			// 	],
+			// },
 		},
 		tools: {
 			currentId: DEFAULT_TOOL_ID,
 			tools: [
-				{ id: DEFAULT_TOOL_ID, name: 'move', iconURL: '/move.svg', isMove: true },
+				{
+					id: DEFAULT_TOOL_ID,
+					name: 'move',
+					iconURL: '/move.svg',
+					isMove: true,
+					isAvailableUse: true,
+				},
 				{
 					id: crypto.randomUUID(),
 					name: 'build',
@@ -56,6 +63,12 @@ export const RootStore = Root.create({
 					name: 'drag',
 					iconURL: '/drag.svg',
 					isDrag: true,
+				},
+				{
+					id: crypto.randomUUID(),
+					name: 'axes',
+					iconURL: '/axes.svg',
+					isAxes: true,
 				},
 				{
 					id: crypto.randomUUID(),
@@ -75,7 +88,7 @@ export const RootStore = Root.create({
 					iconURL: '/transform.svg',
 					isRotate: true,
 					isScale: true,
-					isDrag: true,
+					isAxes: true,
 				},
 			],
 		},
@@ -83,7 +96,7 @@ export const RootStore = Root.create({
 });
 
 // Объявляем добавления стора в историю
-const StoreSceneHistory = StoreWithHistory(RootStore.scene.construct);
+const StoreSceneHistory = withHistory(RootStore.scene.construct);
 
 export const handlerChangeHistory = (e: KeyboardEvent) => {
 	handlerKeys({

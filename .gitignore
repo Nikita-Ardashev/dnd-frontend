@@ -2,6 +2,10 @@
 
 # /public/local_models
 
+skills-lock.json
+.continue
+.agents
+
 # dependencies
 /node_modules
 /.pnp

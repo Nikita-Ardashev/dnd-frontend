@@ -11,7 +11,8 @@ export type TypeLiteralTools =
 	| 'rotate'
 	| 'move'
 	| 'build'
-	| 'newBuild';
+	| 'newBuild'
+	| 'axes';
 
 export const MSTTypeLiteralTools = t.union<ISimpleType<TypeLiteralTools>[]>(
 	t.literal('transform'),
@@ -21,6 +22,7 @@ export const MSTTypeLiteralTools = t.union<ISimpleType<TypeLiteralTools>[]>(
 	t.literal('move'),
 	t.literal('build'),
 	t.literal('newBuild'),
+	t.literal('axes'),
 );
 
 const ToolProps = {
@@ -32,14 +34,16 @@ const ToolProps = {
 	isMove: t.optional(t.boolean, false),
 	isBuild: t.optional(t.boolean, false),
 	isNewBuild: t.optional(t.boolean, false),
+	isAxes: t.optional(t.boolean, false),
 	iconURL: t.optional(t.string, '/not-found.svg'),
+	isAvailableUse: t.optional(t.boolean, false),
 };
 
 export const Tool = setMSTModelRecurseChildren(ToolProps, 'Tool');
 
 export const SceneTools = t
 	.model('Tools', {
-		tools: t.refinement(t.array(Tool), (arr) => arr!.length > 0),
+		tools: t.refinement(t.array(Tool), (arr) => arr !== undefined && arr.length > 0),
 		currentId: t.string,
 	})
 	.views((self) => ({

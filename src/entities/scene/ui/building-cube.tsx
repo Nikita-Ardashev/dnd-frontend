@@ -12,43 +12,44 @@ import {
 	IReturnCubePosition,
 	getCubePosition,
 } from '@/shared/lib/three/get-cube-position-based-side';
-import { ITextureMap } from '../model';
 
 type TMesh = ThreeElements['mesh'];
 
-interface IProps extends TMesh {
+interface IProps {
 	cubeId: string;
-	isTransparent?: boolean;
-	textureUrls?: ITextureMap;
+	meshProps?: TMesh;
 }
 
 const defaultGeometry = new BoxGeometry(1, 1);
 
-export const BuildingCube = observer(function BuildingCube({
-	cubeId,
-	isTransparent,
-	textureUrls,
-	...meshProps
-}: IProps) {
+export const BuildingCube = observer(function BuildingCube({ cubeId, meshProps }: IProps) {
 	const scene = useStoreScene();
+	const cube = scene.construct.getCubeById(cubeId);
 
-	const { isBuild, isNewBuild } = scene.tools.getCurrent;
-	const isFullBuild = isBuild || isNewBuild;
+	const { isBuild } = scene.tools.getCurrent;
 	const [isHovered, setHovered] = useState(false);
 
 	useCursor(isHovered);
+
+	if (cube === undefined) {
+		throw new Error(`Не удалось получить строительный куб по id: ${cubeId}`);
+	}
+
+	const position = cube.getPlacement.position;
 
 	const [newCubePosition, setNewCubePosition] = useState<IReturnCubePosition | null>(
 		null,
 	);
 
+	const textureUrls = cube.textureUrls;
+
 	const handlerPointerOver = (e: ThreeEvent<PointerEvent>) => {
-		if (!isFullBuild) return;
+		if (!isBuild) return;
 		e.stopPropagation();
 		setHovered(true);
 	};
 	const handlerPointerOut = (e: ThreeEvent<PointerEvent>) => {
-		if (!isFullBuild) return;
+		if (!isBuild) return;
 		e.stopPropagation();
 		setHovered(false);
 	};
@@ -61,51 +62,35 @@ export const BuildingCube = observer(function BuildingCube({
 	};
 
 	const handlerOnClickLeft = (e: ThreeEvent<PointerEvent>) => {
-		if (!isFullBuild) return;
+		if (!isBuild) return;
 		e.stopPropagation();
 
-		if (isTransparent && Array.isArray(meshProps.position)) {
-			const position = meshProps.position;
-			scene.construct.sceneCubes.addCell({
-				x: position[0],
-				y: position[1],
-				z: position[2],
-			});
-			return;
-		}
 		if (newCubePosition === null) return;
-		scene.construct.sceneCubes.addCell({
-			x: newCubePosition.position.x,
-			y: newCubePosition.position.y,
-			z: newCubePosition.position.z,
-		});
+
+		scene.construct.addCell(newCubePosition.position.toArray());
 	};
 
 	const handleOnClickRight = (e: ThreeEvent<PointerEvent>) => {
-		if (!isFullBuild) return;
+		if (!isBuild) return;
 		e.stopPropagation();
-		scene.construct.sceneCubes.removeCell(cubeId);
+		scene.construct.removeCell(cubeId);
 	};
 
 	return (
 		<group>
 			<mesh
 				geometry={defaultGeometry}
-				{...meshProps}
 				onPointerOver={handlerPointerOver}
 				onPointerOut={handlerPointerOut}
 				onClick={handlerOnClickLeft}
 				onContextMenu={handleOnClickRight}
 				onPointerMove={handlerPointerMove}
+				position={position}
+				{...meshProps}
 			>
-				<BuildingCubeTexture
-					isHovered={isHovered}
-					isTransparent={isTransparent}
-					textureUrls={textureUrls}
-				/>
+				<BuildingCubeTexture isHovered={isHovered} textureUrls={textureUrls} />
 			</mesh>
-			{!isTransparent &&
-				isBuild &&
+			{isBuild &&
 				isHovered &&
 				newCubePosition !== null &&
 				newCubePosition?.side !== 'unknown' && (

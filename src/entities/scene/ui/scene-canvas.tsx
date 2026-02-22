@@ -1,29 +1,18 @@
-'use client';
-
 import { Canvas } from '@react-three/fiber';
 import { GizmoHelper, GizmoViewport } from '@react-three/drei';
-import { GLTFModel } from './gltf-model';
-import { observer } from 'mobx-react-lite';
-import { useStoreScene } from '@/shared/lib/mst/hooks';
 import { BuildedCubes } from './builded-cubes';
 import { InteractiveGrid } from './interactive-grid';
 import { Camera } from './camera';
+import { GltfModels } from './gltf-models';
 
-export const SceneCanvas = observer(function Scene() {
-	const scene = useStoreScene();
-	const meshes = scene.construct.meshes;
-	const isViewGrid = scene.isViewGrid;
-	const isSelectedMesh = scene.selectedMeshIds.length > 0;
-
-	const meshesRender = meshes.map((m) => <GLTFModel key={m.id} MSTId={m.id} />);
-
+export const SceneCanvas = () => {
 	return (
 		<Canvas style={{ width: '100%', height: '100%' }}>
-			{meshesRender}
+			<GltfModels />
 			<BuildedCubes />
-			{isViewGrid && <InteractiveGrid />}
+			<InteractiveGrid />
 			<>
-				<Camera enabled={!isSelectedMesh} />
+				<Camera />
 				<GizmoHelper alignment="bottom-right" margin={[100, 100]}>
 					<GizmoViewport labelColor="white" axisHeadScale={1} disabled />
 				</GizmoHelper>
@@ -32,4 +21,4 @@ export const SceneCanvas = observer(function Scene() {
 			</>
 		</Canvas>
 	);
-});
+};

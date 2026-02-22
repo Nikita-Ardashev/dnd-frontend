@@ -22,7 +22,7 @@ const History = t
 		},
 	}));
 
-export const StoreWithHistory = (store: IStateTreeNode) => {
+export const withHistory = (store: IStateTreeNode) => {
 	const history = History.extend((self) => ({
 		actions: {
 			undo() {
