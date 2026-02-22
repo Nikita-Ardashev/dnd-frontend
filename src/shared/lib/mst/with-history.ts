@@ -22,7 +22,9 @@ const History = t
 		},
 	}));
 
-export const withHistory = (store: IStateTreeNode) => {
+type TMaskPath = `/${string}`;
+
+export const withHistory = (store: IStateTreeNode, noSavePaths?: TMaskPath[]) => {
 	const history = History.extend((self) => ({
 		actions: {
 			undo() {
@@ -45,6 +47,7 @@ export const withHistory = (store: IStateTreeNode) => {
 	const historyStore = history.create({});
 
 	onPatch(store, (path, reversePath) => {
+		if (noSavePaths?.some((v) => path.path.includes(v))) return;
 		historyStore.addToHistory(path, reversePath);
 	});
 

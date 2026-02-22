@@ -96,7 +96,10 @@ export const RootStore = Root.create({
 });
 
 // Объявляем добавления стора в историю
-const StoreSceneHistory = withHistory(RootStore.scene.construct);
+const StoreSceneHistory = withHistory(RootStore.scene.construct, [
+	'/sizes/min',
+	'/sizes/max',
+]);
 
 export const handlerChangeHistory = (e: KeyboardEvent) => {
 	handlerKeys({
