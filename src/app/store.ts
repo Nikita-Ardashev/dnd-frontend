@@ -27,17 +27,17 @@ export const RootStore = Root.create({
 		camera: {},
 		construct: {
 			sceneModels: DEFAULT_MESHES,
-			// sceneCubes: {
-			// 	cubes: [
-			// 		{
-			// 			textureUrls: {
-			// 				normalMap:
-			// 					'/local_models/fantasy_walls_and_floors/textures/pillar_wood_normal.png',
-			// 				map: '/local_models/fantasy_walls_and_floors/textures/pillar_wood_baseColor.jpeg',
-			// 			},
-			// 		},
-			// 	],
-			// },
+			sceneCubes: {
+				'2': {
+					id: '2',
+					textureUrls: {
+						normalMap:
+							'/local_models/fantasy_walls_and_floors/textures/pillar_wood_normal.png',
+						map: '/local_models/fantasy_walls_and_floors/textures/pillar_wood_baseColor.jpeg',
+					},
+					matrix4: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+				},
+			},
 		},
 		tools: {
 			currentId: DEFAULT_TOOL_ID,

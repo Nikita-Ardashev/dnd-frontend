@@ -26,14 +26,14 @@ export const BuildingCube = observer(function BuildingCube({ cubeId, meshProps }
 	const scene = useStoreScene();
 	const cube = scene.construct.getCubeById(cubeId);
 
-	const { isBuild } = scene.tools.getCurrent;
 	const [isHovered, setHovered] = useState(false);
-
 	useCursor(isHovered);
 
 	if (cube === undefined) {
 		throw new Error(`Не удалось получить строительный куб по id: ${cubeId}`);
 	}
+
+	const { isBuild } = scene.tools.getCurrent;
 
 	const position = cube.getPlacement.position;
 
@@ -77,25 +77,27 @@ export const BuildingCube = observer(function BuildingCube({ cubeId, meshProps }
 	};
 
 	return (
-		<group>
-			<mesh
-				geometry={defaultGeometry}
-				onPointerOver={handlerPointerOver}
-				onPointerOut={handlerPointerOut}
-				onClick={handlerOnClickLeft}
-				onContextMenu={handleOnClickRight}
-				onPointerMove={handlerPointerMove}
-				position={position}
-				{...meshProps}
-			>
-				<BuildingCubeTexture isHovered={isHovered} textureUrls={textureUrls} />
-			</mesh>
-			{isBuild &&
-				isHovered &&
-				newCubePosition !== null &&
-				newCubePosition?.side !== 'unknown' && (
-					<BuildingCubeSide planePosition={newCubePosition} />
-				)}
-		</group>
+		<>
+			<group>
+				<mesh
+					geometry={defaultGeometry}
+					onPointerOver={handlerPointerOver}
+					onPointerOut={handlerPointerOut}
+					onClick={handlerOnClickLeft}
+					onContextMenu={handleOnClickRight}
+					onPointerMove={handlerPointerMove}
+					position={position}
+					{...meshProps}
+				>
+					<BuildingCubeTexture isHovered={isHovered} textureUrls={textureUrls} />
+				</mesh>
+				{isBuild &&
+					isHovered &&
+					newCubePosition !== null &&
+					newCubePosition?.side !== 'unknown' && (
+						<BuildingCubeSide planePosition={newCubePosition} />
+					)}
+			</group>
+		</>
 	);
 });

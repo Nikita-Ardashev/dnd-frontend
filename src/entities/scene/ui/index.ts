@@ -6,5 +6,6 @@ export * from './building-cube';
 export * from './camera';
 export * from './controls';
 export * from './gltf-model';
+export * from './gltf-models';
 export * from './interactive-grid';
 export * from './scene-canvas';

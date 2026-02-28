@@ -4,27 +4,19 @@ import { Grid } from '@react-three/drei';
 import { ThreeEvent } from '@react-three/fiber';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
-import { MeshBasicMaterial, PlaneGeometry, Vector3 } from 'three';
+import { MeshBasicMaterial, PlaneGeometry } from 'three';
 import { useStoreScene } from '@/shared/lib/mst/hooks';
 import { BuildingCubeTransparent } from './builded-cube-transparent';
 
-interface IPosition {
-	x: number;
-	y: number;
-	z: number;
-}
+type TPosition = [x: number, y: number, z: number];
 
-const positionFloor = (pos: IPosition) => {
-	const cords = new Vector3();
-	cords.setX(Math.round(pos.x));
-	cords.setY(0);
-	cords.setZ(Math.round(pos.z));
-	return cords;
+const positionFloor = (pos: TPosition): TPosition => {
+	return [Math.round(pos[0]), 0, Math.round(pos[2])];
 };
 
 export const InteractiveGrid = observer(function InteractiveGrid() {
 	const scene = useStoreScene();
-	const [cellPosition, setCellPosition] = useState<IPosition | null>(null);
+	const [cellPosition, setCellPosition] = useState<TPosition | null>(null);
 
 	if (!scene.isViewGrid) return null;
 
@@ -35,32 +27,29 @@ export const InteractiveGrid = observer(function InteractiveGrid() {
 	const pointerMove = (e: ThreeEvent<PointerEvent>) => {
 		if (!isNewBuild) return;
 		e.stopPropagation();
-		const cords = positionFloor(e.point);
+		const cords = positionFloor(e.point.toArray());
 		setCellPosition(cords);
 	};
 	const pointerLeave = (e: ThreeEvent<PointerEvent>) => {
 		if (!isNewBuild) return;
 		e.stopPropagation();
-		const cords = positionFloor(e.point);
+		const cords = positionFloor(e.point.toArray());
 		if (cellPosition === null) return;
 
-		if (cellPosition.x !== cords.x || cellPosition.z !== cords.z) setCellPosition(null);
+		if (cellPosition[0] !== cords[0] || cellPosition[2] !== cords[2])
+			setCellPosition(null);
 	};
 
 	return (
 		<>
-			{isNewBuild && cellPosition !== null && (
-				<BuildingCubeTransparent
-					cellPosition={
-						new Vector3(cellPosition.x, cellPosition.y, cellPosition.z)
-					}
-					meshProps={{
-						onPointerLeave: () => {
-							setCellPosition(null);
-						},
-					}}
-				/>
-			)}
+			<BuildingCubeTransparent
+				cellPosition={cellPosition}
+				meshProps={{
+					onPointerLeave: () => {
+						setCellPosition(null);
+					},
+				}}
+			/>
 			<group position={[-0.5, -0.5, -0.5]}>
 				<mesh
 					onPointerMove={pointerMove}

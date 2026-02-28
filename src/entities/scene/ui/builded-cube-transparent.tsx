@@ -11,7 +11,7 @@ import { useStoreScene } from '@/shared/lib/mst/hooks';
 type TMesh = ThreeElements['mesh'];
 
 interface IProps {
-	cellPosition: Vector3;
+	cellPosition: number[] | null;
 	meshProps?: TMesh;
 }
 
@@ -28,6 +28,8 @@ export const BuildingCubeTransparent = observer(function BuildingCubeTransparent
 
 	useCursor(isHovered);
 
+	if (!isNewBuild || cellPosition === null) return;
+
 	const handlerPointerOver = (e: ThreeEvent<PointerEvent>) => {
 		if (!isNewBuild) return;
 		e.stopPropagation();
@@ -42,13 +44,13 @@ export const BuildingCubeTransparent = observer(function BuildingCubeTransparent
 	const handlerOnClickLeft = (e: ThreeEvent<PointerEvent>) => {
 		if (!isNewBuild) return;
 		e.stopPropagation();
-		scene.construct.addCell(cellPosition.toArray());
+		scene.construct.addCell(cellPosition);
 	};
 
 	return (
 		<mesh
 			geometry={defaultGeometry}
-			position={cellPosition}
+			position={new Vector3(...cellPosition)}
 			onPointerOver={handlerPointerOver}
 			onPointerOut={handlerPointerOut}
 			onClick={handlerOnClickLeft}

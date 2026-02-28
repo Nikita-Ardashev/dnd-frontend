@@ -2,6 +2,7 @@
 import { useTexture } from '@react-three/drei';
 import { FrontSide, MeshStandardMaterialParameters } from 'three';
 import { ITextureMap } from '../model';
+import { validateTextures } from '@/shared/lib/three/validate-textures';
 
 interface IProps {
 	isHovered?: boolean;
@@ -9,23 +10,12 @@ interface IProps {
 	textureUrls?: ITextureMap;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const validateItems = <T extends Record<string, any>>(textureUrls?: T) => {
-	const urls: Record<string, string> = {};
-	for (const key in textureUrls) {
-		const url = textureUrls[key as keyof ITextureMap];
-		if (url === undefined || url === null) continue;
-		urls[key] = url;
-	}
-	return urls;
-};
-
 export const BuildingCubeTexture = function BuildingCubeTexture({
 	textureUrls,
 	isHovered = false,
 	isTransparent = false,
 }: IProps) {
-	const filteredTextureUrls = validateItems(textureUrls);
+	const filteredTextureUrls = validateTextures(textureUrls);
 	const hasTextures = Object.keys(filteredTextureUrls).length > 0;
 
 	const loadedTextures = useTexture(filteredTextureUrls);
