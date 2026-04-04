@@ -17,6 +17,18 @@ const DEFAULT_MESHES: SnapshotIn<typeof Scene.properties.construct.properties.sc
 			fileURL: '/local_models/fantasy_scene_stufs_lowpoly_1/scene.gltf',
 			matrix4: [0.01, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0.01, 0, 4, 0, 0, 1],
 		},
+		// '2': {
+		// 	id: '2',
+		// 	name: 'wall_low_poly',
+		// 	fileURL: '/api/models/wall_low_poly/scene.gltf',
+		// 	matrix4: [0.01, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0.01, 0, 4, 0, 0, 1],
+		// },
+		// '3': {
+		// 	id: '3',
+		// 	name: 'mesh test1',
+		// 	fileURL: '/local_models/1/A7RFX93BONGSZ6FU5TOZ80QB8.gltf',
+		// 	matrix4: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1],
+		// },
 	};
 
 const DEFAULT_TOOL_ID = crypto.randomUUID();

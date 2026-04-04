@@ -23,7 +23,8 @@
 			"@styles/*": ["./src/styles/*"],
 			"@stores/*": ["./src/app/stores/*"],
 			"@public/*": ["./public/*"],
-			"@app/*": ["./src/app/*"]
+			"@app/*": ["./src/app/*"],
+			"@lib/*": ["./src/shared/lib/*"]
 		}
 	},
 	"include": [
@@ -32,7 +33,8 @@
 		"**/*.tsx",
 		".next/types/**/*.ts",
 		".next/dev/types/**/*.ts",
-		"src/app/providers/providers.tsx"
+		"src/app/providers/providers.tsx",
+		"scripts/add-ui.js"
 	],
 	"exclude": ["node_modules"]
 }

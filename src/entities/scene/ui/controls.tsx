@@ -19,9 +19,15 @@ interface IProps {
 }
 
 export const Controls = observer(function Controls({ children, id }: IProps) {
-	const { addSelectedByMesh, removeSelectedMesh, construct, tools, getIsSelectedMesh } =
-		useStoreScene();
-	const model = construct.getModel(id);
+	const {
+		addSelectedByMesh,
+		removeSelectedMesh,
+		construct,
+		tools,
+		getIsSelectedMesh,
+		setActiveModelId,
+	} = useStoreScene();
+	const model = construct.getModelById(id);
 
 	if (model === undefined) {
 		throw new Error(`Не удалось получить модель по id: ${id}`);
@@ -40,17 +46,19 @@ export const Controls = observer(function Controls({ children, id }: IProps) {
 	}, [model.getMatrix4]);
 
 	const selectedDisabled = () => {
+		setActiveModelId();
 		removeSelectedMesh(id);
 	};
 
 	const selectedEnabled = () => {
 		if (!isFullTool) return;
+		setActiveModelId(id);
 		addSelectedByMesh(id);
 	};
 
 	const draggedEnabled = () => {
 		if (!isFullTool) return;
-		addSelectedByMesh(id);
+		setActiveModelId(id);
 	};
 
 	const draggedDisabled = () => {
@@ -75,7 +83,7 @@ export const Controls = observer(function Controls({ children, id }: IProps) {
 		dragConfig: { threshold: 5 },
 		onDragEnd: () => {
 			draggedDisabled();
-			selectedDisabled();
+			// selectedDisabled();
 		},
 	};
 

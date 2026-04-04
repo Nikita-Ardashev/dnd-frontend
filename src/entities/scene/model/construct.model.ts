@@ -10,7 +10,7 @@ export const Construct = t
 		sceneCubes: t.map(SceneCube),
 	})
 	.views((self) => ({
-		getModel(id: string) {
+		getModelById(id: string) {
 			return self.sceneModels.get(id);
 		},
 		getCubeById(id: string) {

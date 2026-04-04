@@ -14,8 +14,7 @@ interface IProps {
 export const GLTFModel = observer(function GLTFModel({ MSTId }: IProps) {
 	const { construct, isEditable } = useStoreScene();
 
-	const model = construct.getModel(MSTId);
-
+	const model = construct.getModelById(MSTId);
 	if (model === undefined) {
 		throw new Error(`Не удалось получить модель по id: ${MSTId}`);
 	}

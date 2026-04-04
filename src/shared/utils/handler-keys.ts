@@ -4,11 +4,13 @@ interface IProps {
 	handler: () => void;
 	isWithShift?: boolean;
 	isWithCtrl?: boolean;
+	isWithAlt?: boolean;
 }
 
 export const handlerKeys = (props: IProps) => {
-	const isShiftPress = props.isWithShift ? props.e.shiftKey : !props.e.shiftKey;
+	const isWithShift = props.isWithShift ? props.e.shiftKey : !props.e.shiftKey;
 	const isWithCtrl = props.isWithCtrl ? props.e.ctrlKey : !props.e.ctrlKey;
+	const isWithAlt = props.isWithCtrl ? props.e.ctrlKey : !props.e.ctrlKey;
 
 	const key = props.e.key.toLowerCase();
 	const code = props.e.code.toLowerCase();
@@ -21,8 +23,7 @@ export const handlerKeys = (props: IProps) => {
 		isKeyInArray ||
 		(!Array.isArray(props.key) && key === props.key.toLowerCase()) ||
 		(!Array.isArray(props.key) && code === props.key.toLowerCase());
-
-	if (isCurrentKey && isWithCtrl && isShiftPress) {
+	if (isCurrentKey && isWithCtrl && isWithShift && isWithAlt) {
 		props.handler();
 	}
 };

@@ -8,7 +8,11 @@ export const Provider = ({ children }: { children: ReactNode }) => {
 	useMSTDebug();
 
 	useEffect(() => {
-		window.onkeyup = handlerChangeHistory;
+		window.addEventListener('keyup', handlerChangeHistory);
+
+		return () => {
+			window.removeEventListener('keyup', handlerChangeHistory);
+		};
 	}, []);
 
 	return <>{children}</>;

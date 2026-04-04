@@ -1,10 +1,22 @@
 import { useStoreScene } from '@/shared/lib/mst/hooks';
 import { CameraControls } from '@react-three/drei';
 import { observer } from 'mobx-react-lite';
+import { ComponentProps } from 'react';
 
 export const Camera = observer(function Camera() {
-	const { camera, selectedMeshIds } = useStoreScene();
-	const isSelectedMesh = selectedMeshIds.length > 0;
+	const { camera } = useStoreScene();
 
-	return <CameraControls {...camera} enabled={!isSelectedMesh} />;
+	return (
+		<CameraControls
+			{...camera}
+			onRest={(e) => {
+				if (!e) return;
+				const event = e as typeof e & {
+					target: ComponentProps<typeof CameraControls>;
+				};
+				const target = event.target;
+				camera.setRealTimeDistance(target.distance ?? 10);
+			}}
+		/>
+	);
 });

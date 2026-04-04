@@ -7,6 +7,7 @@ export const Scene = t
 	.model('Scene', {
 		isViewGrid: t.optional(t.boolean, true),
 		isEditable: t.optional(t.boolean, true),
+		activeModelId: t.maybe(t.string),
 		selectedMeshIds: t.array(t.string),
 		construct: Construct,
 		size: t.optional(t.model({ width: t.number, height: t.number }), {
@@ -17,8 +18,16 @@ export const Scene = t
 		camera: CameraControls,
 	})
 	.views((self) => ({
-		getIsSelectedMesh(id: number | string) {
+		getIsSelectedMesh(id: string) {
 			return self.selectedMeshIds.some((v) => v === id);
+		},
+		getSelectedMeshes() {
+			return self.selectedMeshIds.map(
+				(id) => self.construct.getCubeById(id) ?? self.construct.getModelById(id),
+			);
+		},
+		get getActiveModelId() {
+			return self.activeModelId;
 		},
 	}))
 	.actions((self) => ({
@@ -34,5 +43,8 @@ export const Scene = t
 		},
 		setIsEditable(state?: boolean) {
 			self.isEditable = state === undefined ? !self.isEditable : state;
+		},
+		setActiveModelId(id?: string) {
+			self.activeModelId = id;
 		},
 	}));

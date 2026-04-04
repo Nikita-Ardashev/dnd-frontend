@@ -1,3 +1,9 @@
+import { Button } from '@/shared/ui/button';
+
 export default function Home() {
-	return <div>1</div>;
+	return (
+		<div>
+			<Button variant={'primary'}>test</Button>
+		</div>
+	);
 }

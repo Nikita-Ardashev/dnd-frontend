@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import '@app/styles/global.sass';
+import '@app/styles/globals.css';
 import { Header } from '@/widgets/header';
 import { Providers } from '@/app/providers/providers';
 
@@ -14,12 +14,14 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="ru" style={{ scrollBehavior: 'smooth' }}>
+		<html lang="ru" style={{ scrollBehavior: 'smooth' }} data-theme="dark">
 			<body>
-				<Providers>
-					<Header />
-					<main>{children}</main>
-				</Providers>
+				<div className="root" style={{ display: 'contents' }}>
+					<Providers>
+						<Header />
+						<main>{children}</main>
+					</Providers>
+				</div>
 			</body>
 		</html>
 	);
