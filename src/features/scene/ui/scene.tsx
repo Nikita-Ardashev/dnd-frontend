@@ -2,7 +2,7 @@
 
 import styles from './scene.module.sass';
 import { observer } from 'mobx-react-lite';
-import { Toolbar } from '../../toolbar';
+import { ToolbarScene } from '../../toolbar';
 import { useStore } from '@/shared/lib/mst/hooks';
 import { SceneCanvas } from '@/entities/scene/ui';
 
@@ -13,7 +13,7 @@ export const Scene = observer(function Scene() {
 	return (
 		<div className={`${styles.scene} ${isMove ? styles.scene__is_move : ''}`}>
 			<div className={styles.scene__tools}>
-				<Toolbar />
+				<ToolbarScene />
 			</div>
 			<SceneCanvas />
 		</div>

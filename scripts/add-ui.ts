@@ -8,7 +8,7 @@ const component = process.env.npm_config_component;
 
 if (!component) {
 	console.error('❌ Ошибка: Не указан компонент.');
-	console.error('👉 Использование: npm run ui:add --component=button');
+	console.error('👉 Использование: npm run ui:add --component=[component]');
 	process.exit(1);
 }
 

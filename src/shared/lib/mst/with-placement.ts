@@ -93,6 +93,6 @@ const Matrix = t
 	}));
 
 export const withMatrix4 = <T extends IAnyModelType>(model: T) => {
-	const newModel = t.compose(model, Matrix) as T & typeof Matrix;
+	const newModel = t.compose(Matrix.name, model, Matrix) as T & typeof Matrix;
 	return newModel;
 };

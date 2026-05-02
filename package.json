@@ -10,6 +10,8 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
+		"prettier:check": "npx prettier --check \"./*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+		"prettier:write": "npx prettier --write \"./*.{js,jsx,ts,tsx,json,css,scss,md}\"",
 		"ui:add": "node scripts/add-ui.ts"
 	},
 	"dependencies": {

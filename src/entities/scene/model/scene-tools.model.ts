@@ -1,7 +1,3 @@
-import {
-	recurseSearch,
-	setMSTModelRecurseChildren,
-} from '@/shared/lib/mst/recurse-children';
 import { ISimpleType, t } from 'mobx-state-tree';
 
 export type TypeLiteralTools =
@@ -25,8 +21,9 @@ export const MSTTypeLiteralTools = t.union<ISimpleType<TypeLiteralTools>[]>(
 	t.literal('axes'),
 );
 
-const ToolProps = {
+export const Tool = t.model('Tool', {
 	id: t.identifier,
+	group: t.maybeNull(t.string),
 	name: t.optional(MSTTypeLiteralTools, 'move'),
 	isScale: t.optional(t.boolean, false),
 	isDrag: t.optional(t.boolean, false),
@@ -37,13 +34,14 @@ const ToolProps = {
 	isAxes: t.optional(t.boolean, false),
 	iconURL: t.optional(t.string, '/not-found.svg'),
 	isAvailableUse: t.optional(t.boolean, false),
-};
-
-export const Tool = setMSTModelRecurseChildren(ToolProps, 'Tool');
+});
 
 export const SceneTools = t
 	.model('Tools', {
-		tools: t.refinement(t.array(Tool), (arr) => arr !== undefined && arr.length > 0),
+		tools: t.refinement(
+			t.array(t.union(Tool)),
+			(arr) => arr !== undefined && arr.length > 0,
+		),
 		currentId: t.string,
 	})
 	.views((self) => ({
@@ -51,10 +49,10 @@ export const SceneTools = t
 			return self.tools;
 		},
 		getToolsById(id: string) {
-			return recurseSearch(self.tools, id);
+			return self.tools.find((t) => t.id === id);
 		},
 		get getCurrent() {
-			return recurseSearch(self.tools, self.currentId) || self.tools[0];
+			return self.tools.find((t) => t.id === self.currentId) || self.tools[0];
 		},
 	}))
 	.actions((self) => ({

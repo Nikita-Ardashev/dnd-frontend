@@ -1,7 +1,26 @@
-import { InputHTMLAttributes } from 'react';
-import styles from './input.module.sass';
-type IInput = InputHTMLAttributes<HTMLInputElement>;
+'use client';
 
-export const Input = (props: IInput) => {
-	return <input {...props} className={`${styles.input} ${props.className ?? ''}`} />;
-};
+import { Input } from '@base-ui/react/input';
+import { cn } from '@lib/styles/utils';
+import styles from './input.module.css';
+
+interface InputProps extends Input.Props {
+	variant?: 'default' | 'error';
+}
+
+function InputRoot({ className, variant = 'default', ...props }: InputProps) {
+	return (
+		<Input
+			className={(state: Input.State) =>
+				cn(
+					styles.base,
+					styles[variant],
+					typeof className === 'function' ? className(state) : className,
+				)
+			}
+			{...props}
+		/>
+	);
+}
+
+export { InputRoot as Input };

@@ -1,0 +1,56 @@
+.root {
+  display: inline-flex;
+  border-radius: var(--radius);
+  background-color: var(--mix-card-33-bg);
+  padding: 0.125rem;
+  gap: 1px;
+
+  &[data-orientation="horizontal"] {
+    flex-direction: row;
+  }
+
+  &[data-orientation="vertical"] {
+    flex-direction: column;
+  }
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(var(--radius) - 0.125rem);
+  font-size: 0.875rem;
+  font-weight: 500;
+  height: 2.25rem;
+  width: 2.25rem;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--accent);
+    color: var(--foreground);
+  }
+
+  &[data-focused] {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--ring) / 0.2;
+  }
+
+  &[data-pressed] {
+    background-color: var(--accent);
+    color: var(--foreground);
+
+    &:hover {
+      background-color: var(--accent);
+      color: var(--foreground);
+    }
+  }
+
+  &[data-disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
