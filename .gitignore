@@ -5,6 +5,7 @@
 skills-lock.json
 .continue
 .agents
+.claude/*
 
 
 # dependencies
