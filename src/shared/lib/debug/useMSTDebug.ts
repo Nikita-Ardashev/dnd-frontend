@@ -21,5 +21,5 @@ export const useMSTDebug = (store: any) => {
 				}
 			}
 		}
-	}, []);
+	}, [store]);
 };

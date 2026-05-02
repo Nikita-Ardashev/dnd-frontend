@@ -1,1 +1,1 @@
-export * from './ui/platform';
+export * from './ui';

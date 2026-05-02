@@ -1,3 +1,1 @@
-import Layers from './Layers';
-
-export { Layers };
+export * from './Layers';

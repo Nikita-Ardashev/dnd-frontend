@@ -8,10 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { BuildingCubeSide } from './building-cube-side';
 import { useCursor } from '@react-three/drei';
 import { useStoreScene } from '@/shared/lib/mst';
-import {
-	IReturnCubePosition,
-	getCubePosition,
-} from '@/shared/lib/three';
+import { IReturnCubePosition, getCubePosition } from '@/shared/lib/three';
 
 type TMesh = ThreeElements['mesh'];
 
@@ -41,7 +38,7 @@ export const BuildingCube = observer(function BuildingCube({ cubeId, meshProps }
 		null,
 	);
 
-	const textureUrls = cube.textureUrls;
+	const textures = cube.textures ?? {};
 
 	const handlerPointerOver = (e: ThreeEvent<PointerEvent>) => {
 		if (!isBuild) return;
@@ -89,7 +86,7 @@ export const BuildingCube = observer(function BuildingCube({ cubeId, meshProps }
 					position={position}
 					{...meshProps}
 				>
-					<BuildingCubeTexture isHovered={isHovered} textureUrls={textureUrls} />
+					<BuildingCubeTexture isHovered={isHovered} textures={textures} />
 				</mesh>
 				{isBuild &&
 					isHovered &&

@@ -1,3 +1,1 @@
-import Properties from './Properties.tsx'
-
-export { Properties }
+export * from './Properties';

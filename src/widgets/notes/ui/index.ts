@@ -1,3 +1,1 @@
-import Notes from './Notes.tsx'
-
-export { Notes }
+export * from './Notes';

@@ -23,16 +23,47 @@ const FSD_LAYERS = [
 // Каждый слой может импортировать только из слоёв ниже себя.
 // entities → entities разрешено на уровне boundaries (для @x/-паттерна),
 // дополнительно ограничивается через no-restricted-imports ниже.
+// v6-синтаксис: object-based селекторы { type: ... }
 const FSD_IMPORT_RULES = [
-	{ from: 'app', allow: ['pages', 'widgets', 'features', 'entities', 'shared'] },
-	{ from: 'pages', allow: ['widgets', 'features', 'entities', 'shared'] },
-	{ from: 'widgets', allow: ['features', 'entities', 'shared'] },
-	{ from: 'features', allow: ['entities', 'shared'] },
-	{ from: 'entities', allow: ['entities', 'shared'] },
-	{ from: 'shared', allow: [] },
+	{
+		from: { type: 'app' },
+		allow: { to: { type: ['pages', 'widgets', 'features', 'entities', 'shared'] } },
+	},
+	{
+		from: { type: 'pages' },
+		allow: { to: { type: ['widgets', 'features', 'entities', 'shared'] } },
+	},
+	{
+		from: { type: 'widgets' },
+		allow: { to: { type: ['features', 'entities', 'shared'] } },
+	},
+	{
+		from: { type: 'features' },
+		allow: { to: { type: ['entities', 'shared'] } },
+	},
+	{
+		from: { type: 'entities' },
+		allow: { to: { type: ['entities', 'shared'] } },
+	},
+	{
+		from: { type: 'shared' },
+		allow: { to: { type: 'shared' } },
+	},
 ];
 
 const eslintConfig = [
+	// Глобальный ignore: не линтить артефакты сборки и сторонний код
+	{
+		ignores: [
+			'.next/**',
+			'out/**',
+			'public/**',
+			'node_modules/**',
+			'scripts/**',
+			'.claude/**',
+		],
+	},
+
 	...compat.extends('next/core-web-vitals', 'next/typescript'),
 
 	// FSD: изоляция слоёв
@@ -42,17 +73,16 @@ const eslintConfig = [
 			'boundaries/elements': FSD_LAYERS,
 		},
 		rules: {
-			// Запрет импортов вверх по иерархии слоёв
-			'boundaries/element-types': [
+			// Запрет импортов вверх по иерархии слоёв (v6: dependencies вместо element-types).
+			// Запрет импорта во внутренние сегменты чужого слайса (no-private)
+			// обеспечивается steiger'ом через fsd/no-public-api-sidestep.
+			'boundaries/dependencies': [
 				'error',
 				{
 					default: 'disallow',
 					rules: FSD_IMPORT_RULES,
 				},
 			],
-
-			// Запрет импортов во внутренние сегменты чужого слайса
-			'boundaries/no-private': 'error',
 		},
 	},
 

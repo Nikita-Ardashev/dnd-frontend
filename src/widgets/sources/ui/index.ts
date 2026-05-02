@@ -1,3 +1,1 @@
-import Sources from './Sources.tsx'
-
-export { Sources }
+export * from './Sources';

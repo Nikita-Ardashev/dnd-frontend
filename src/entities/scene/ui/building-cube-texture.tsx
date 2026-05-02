@@ -7,15 +7,15 @@ import { ITextureMap } from '@/shared/lib/mst';
 interface IProps {
 	isHovered?: boolean;
 	isTransparent?: boolean;
-	textureUrls?: ITextureMap;
+	textures?: ITextureMap;
 }
 
 export const BuildingCubeTexture = function BuildingCubeTexture({
-	textureUrls,
+	textures,
 	isHovered = false,
 	isTransparent = false,
 }: IProps) {
-	const filteredTextureUrls = validateTextures(textureUrls);
+	const filteredTextureUrls = validateTextures(textures);
 	const hasTextures = Object.keys(filteredTextureUrls).length > 0;
 
 	const loadedTextures = useTexture(filteredTextureUrls);

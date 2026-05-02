@@ -1,3 +1,1 @@
-import Chat from './Chat.tsx'
-
-export { Chat }
+export * from './Chat';
