@@ -1,10 +1,11 @@
 import styles from './platform.module.sass';
-import { Scene } from '@/features/scene/index';
+import { Scene } from '@/features/scene';
+import { ToolbarScene } from '@/features/toolbar';
 
 export function Platform() {
 	return (
 		<div className={styles.page}>
-			<Scene></Scene>
+			<Scene toolbar={<ToolbarScene />} />
 		</div>
 	);
 }

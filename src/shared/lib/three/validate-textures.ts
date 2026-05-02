@@ -1,4 +1,4 @@
-import { ITextureMap } from '@/entities/scene/model';
+import { ITextureMap } from '@/shared/lib/mst';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const validateTextures = <T extends Record<string, any>>(textureUrls?: T) => {

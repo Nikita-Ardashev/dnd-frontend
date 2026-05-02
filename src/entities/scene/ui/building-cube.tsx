@@ -7,11 +7,11 @@ import { BuildingCubeTexture } from './building-cube-texture';
 import { observer } from 'mobx-react-lite';
 import { BuildingCubeSide } from './building-cube-side';
 import { useCursor } from '@react-three/drei';
-import { useStoreScene } from '@/shared/lib/mst/hooks';
+import { useStoreScene } from '@/shared/lib/mst';
 import {
 	IReturnCubePosition,
 	getCubePosition,
-} from '@/shared/lib/three/get-cube-position-based-side';
+} from '@/shared/lib/three';
 
 type TMesh = ThreeElements['mesh'];
 

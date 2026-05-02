@@ -1,7 +1,7 @@
 import {
 	IReturnCubePosition,
 	TSideClick,
-} from '@/shared/lib/three/get-cube-position-based-side';
+} from '@/shared/lib/three';
 import { ThreeElements } from '@react-three/fiber';
 import { DoubleSide, MeshStandardMaterial, PlaneGeometry } from 'three';
 

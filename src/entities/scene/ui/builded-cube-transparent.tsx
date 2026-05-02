@@ -6,7 +6,7 @@ import { BoxGeometry, Vector3 } from 'three';
 import { BuildingCubeTexture } from './building-cube-texture';
 import { observer } from 'mobx-react-lite';
 import { useCursor } from '@react-three/drei';
-import { useStoreScene } from '@/shared/lib/mst/hooks';
+import { useStoreScene } from '@/shared/lib/mst';
 
 type TMesh = ThreeElements['mesh'];
 

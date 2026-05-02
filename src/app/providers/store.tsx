@@ -1,10 +1,9 @@
 'use client';
 
-import { createContext, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { RootStore } from '../store';
-
-export const ContextStore = createContext(RootStore);
+import { StoreContext } from '@/shared/lib/mst';
 
 export const StoreProvider = ({ children }: { children: ReactNode }) => {
-	return <ContextStore.Provider value={RootStore}>{children}</ContextStore.Provider>;
+	return <StoreContext.Provider value={RootStore}>{children}</StoreContext.Provider>;
 };

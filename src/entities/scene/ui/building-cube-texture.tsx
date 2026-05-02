@@ -1,8 +1,8 @@
 'use client';
 import { useTexture } from '@react-three/drei';
 import { FrontSide, MeshStandardMaterialParameters } from 'three';
-import { ITextureMap } from '../model';
-import { validateTextures } from '@/shared/lib/three/validate-textures';
+import { validateTextures } from '@/shared/lib/three';
+import { ITextureMap } from '@/shared/lib/mst';
 
 interface IProps {
 	isHovered?: boolean;

@@ -1,4 +1,4 @@
-import { IAnyModelType, SnapshotIn, t } from 'mobx-state-tree';
+import { IModelType, ModelProperties, SnapshotIn, t } from 'mobx-state-tree';
 import { Matrix4, Matrix4Tuple, Quaternion, Vector3 } from 'three';
 
 export type TSnapshotMatrix4 = SnapshotIn<typeof MSTMatrix4>;
@@ -92,7 +92,8 @@ const Matrix = t
 		},
 	}));
 
-export const withMatrix4 = <T extends IAnyModelType>(model: T) => {
-	const newModel = t.compose(Matrix.name, model, Matrix) as T & typeof Matrix;
-	return newModel;
+export const withMatrix4 = <P extends ModelProperties, O, C, S>(
+	model: IModelType<P, O, C, S>,
+) => {
+	return t.compose(Matrix.name, model, Matrix);
 };

@@ -1,4 +1,4 @@
-import { useStoreScene } from '@/shared/lib/mst/hooks';
+import { useStoreScene } from '@/shared/lib/mst';
 import { DragControls, PivotControls, PivotControlsProps } from '@react-three/drei';
 import { DragControlsProps } from '@react-three/drei/web/DragControls';
 import { ThreeEvent } from '@react-three/fiber';

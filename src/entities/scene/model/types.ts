@@ -1,7 +1,7 @@
 import { SnapshotIn } from 'mobx-state-tree';
-import { SceneModel } from './scene-models.model';
-import { SceneCube } from './scene-cube.model';
+import { MModelInternalMesh } from './construct/scene-models.model';
+import { MCubeMesh } from './construct/scene-cube.model';
 
-export type TSnapshotSceneModel = SnapshotIn<typeof SceneModel>;
+export type TSnapshotSceneModel = SnapshotIn<typeof MModelInternalMesh>;
 
-export type TSnapshotSceneCube = SnapshotIn<typeof SceneCube>;
+export type TSnapshotSceneCube = SnapshotIn<typeof MCubeMesh>;

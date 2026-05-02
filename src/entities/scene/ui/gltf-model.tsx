@@ -1,6 +1,6 @@
 'use client';
 
-import { useStoreScene } from '@/shared/lib/mst/hooks';
+import { useStoreScene } from '@/shared/lib/mst';
 import { observer } from 'mobx-react-lite';
 import { Controls } from './controls';
 import { useGLTF } from '@react-three/drei';
@@ -19,7 +19,7 @@ export const GLTFModel = observer(function GLTFModel({ MSTId }: IProps) {
 		throw new Error(`Не удалось получить модель по id: ${MSTId}`);
 	}
 
-	const { scene } = useGLTF(model.fileURL);
+	const { scene } = useGLTF(model.file.getSource);
 
 	useLayoutEffect(() => {
 		const positionPivot = new Box3().setFromObject(scene);

@@ -1,8 +1,8 @@
-import { ContextStore } from '@/app/providers/store';
 import { useContext } from 'react';
+import { IStore, StoreContext } from './store-context';
 
-export const useStore = () => {
-	const store = useContext(ContextStore);
+export const useStore = (): IStore => {
+	const store = useContext(StoreContext);
 	if (!store) {
 		throw new Error('useStore must be used within a StoreProvider');
 	}

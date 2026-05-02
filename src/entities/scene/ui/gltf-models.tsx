@@ -1,4 +1,4 @@
-import { useStoreScene } from '@/shared/lib/mst/hooks';
+import { useStoreScene } from '@/shared/lib/mst';
 import { observer } from 'mobx-react-lite';
 import { GLTFModel } from './gltf-model';
 

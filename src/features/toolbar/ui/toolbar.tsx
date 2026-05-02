@@ -1,7 +1,7 @@
 'use client';
 
 import { observer } from 'mobx-react-lite';
-import { useStoreScene } from '@/shared/lib/mst/hooks';
+import { useStoreScene } from '@/shared/lib/mst';
 import { Toolbar } from '@/shared/ui/toolbar';
 import Image from 'next/image';
 import { ToggleGroup, ToggleGroupItem } from '@/shared/ui/toggle-group';

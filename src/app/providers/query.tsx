@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { ReactNode, useEffect, useState } from 'react';
-import { useStoreProfile } from '@/shared/lib/mst/hooks';
+import { useStoreProfile } from '@/shared/lib/mst';
 
 const createQueryClient = new QueryClient({
 	defaultOptions: {

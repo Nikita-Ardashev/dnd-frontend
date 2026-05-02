@@ -1,2 +1,1 @@
-export * from './header';
-export * from './index';
+export * from './ui';

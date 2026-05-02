@@ -1,5 +1,5 @@
 'use client';
-import { apiUploadModels } from '@/shared/api/api';
+import { apiUploadModels } from '@/shared/api';
 import { Input } from '@/shared/ui/input';
 import { observer } from 'mobx-react-lite';
 import { FormEvent } from 'react';

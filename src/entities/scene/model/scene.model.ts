@@ -1,7 +1,7 @@
 import { t } from 'mobx-state-tree';
-import { Construct } from './construct.model';
-import { SceneTools } from './scene-tools.model';
-import { CameraControls } from './camera-controls.model';
+import { Construct } from './construct/construct.model';
+import { SceneTools } from './editor/scene-tools.model';
+import { CameraControls } from './editor/camera-controls.model';
 
 export const Scene = t
 	.model('Scene', {

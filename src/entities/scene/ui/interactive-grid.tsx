@@ -5,7 +5,7 @@ import { ThreeEvent } from '@react-three/fiber';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { MeshBasicMaterial, PlaneGeometry } from 'three';
-import { useStoreScene } from '@/shared/lib/mst/hooks';
+import { useStoreScene } from '@/shared/lib/mst';
 import { BuildingCubeTransparent } from './builded-cube-transparent';
 
 type TPosition = [x: number, y: number, z: number];
