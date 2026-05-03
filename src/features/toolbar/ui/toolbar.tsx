@@ -24,8 +24,7 @@ export const ToolbarScene = observer(function ToolbarScene() {
 					<TooltipTrigger
 						render={
 							<ToggleGroupItem
-								onClick={(e) => {
-									console.log(e);
+								onClick={() => {
 									tools.setCurrent(t.id);
 								}}
 							>

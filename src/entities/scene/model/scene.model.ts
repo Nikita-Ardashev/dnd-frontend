@@ -46,5 +46,6 @@ export const Scene = t
 		},
 		setActiveModelId(id?: string) {
 			self.activeModelId = id;
+			self.camera.setEnabled(id !== undefined ? false : true);
 		},
 	}));

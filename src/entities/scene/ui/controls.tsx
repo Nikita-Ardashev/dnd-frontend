@@ -65,6 +65,7 @@ export const Controls = observer(function Controls({ children, id }: IProps) {
 		if (matrix === undefined) return;
 		const m = new Matrix4().fromArray(matrix);
 		model.setMatrix4(m);
+		setActiveModelId();
 	};
 
 	const handlerDrag = (localMatrix: Matrix4) => {
