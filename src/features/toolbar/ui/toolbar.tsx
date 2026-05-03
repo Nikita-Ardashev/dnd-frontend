@@ -18,7 +18,7 @@ export const ToolbarScene = observer(function ToolbarScene() {
 	const { tools, isEditable } = useStoreScene();
 	const toolsRender = tools.getTools.map(
 		(t, i) =>
-			t.isAvailableUse &&
+			// t.isAvailableUse &&
 			isEditable && (
 				<Tooltip key={`${t.name}_${t.id}_${i}`}>
 					<TooltipTrigger

@@ -38,7 +38,7 @@ export const BuildingCube = observer(function BuildingCube({ cubeId, meshProps }
 		null,
 	);
 
-	const textures = cube.textures ?? {};
+	const textures = cube.textures?.getTextureMap;
 
 	const handlerPointerOver = (e: ThreeEvent<PointerEvent>) => {
 		if (!isBuild) return;

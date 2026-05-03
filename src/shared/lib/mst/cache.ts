@@ -1,4 +1,4 @@
-import { t } from 'mobx-state-tree';
+import { SnapshotOut, t } from 'mobx-state-tree';
 
 export const MUrlOrCache = t
 	.model('UrlOrCache', {
@@ -18,3 +18,5 @@ export const MUrlOrCache = t
 			self.url = url;
 		},
 	}));
+
+export type IUrlOrCache = SnapshotOut<typeof MUrlOrCache>;

@@ -78,13 +78,14 @@ export const RootStore = Root.create({
 					name: 'build',
 					iconURL: '/build-cube.svg',
 					isBuild: true,
-				},
-				{
-					id: crypto.randomUUID(),
-					group: 'cubes',
-					name: 'newBuild',
 					isNewBuild: true,
 				},
+				// {
+				// 	id: crypto.randomUUID(),
+				// 	group: 'cubes',
+				// 	name: 'newBuild',
+				// 	isNewBuild: true,
+				// },
 				{
 					id: crypto.randomUUID(),
 					name: 'drag',
