@@ -1,1 +1,1 @@
-export * from './useMSTDebug';
+export * from './use-mst-debug';

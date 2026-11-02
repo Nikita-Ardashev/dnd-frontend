@@ -33,12 +33,10 @@ const componentName = toPascalCase(sliceName);
 const sliceDir = path.join(process.cwd(), 'src', layer, sliceName);
 
 const files = {
-	'api/index.ts': '',
-	'model/index.ts': '',
-	[`ui/${sliceName}.tsx`]: `interface IProps {};
-
-export const ${componentName} = (props: IProps) => {
-  return <div>${sliceName}</div>;
+	// Остальные сегменты (model, api, lib, config) создаются по мере необходимости:
+	// пустые сегменты FSD не нужны.
+	[`ui/${sliceName}.tsx`]: `export const ${componentName} = () => {
+	return <div>${sliceName}</div>;
 };
 `,
 	'ui/index.ts': `export * from './${sliceName}';

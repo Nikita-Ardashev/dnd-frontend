@@ -16,7 +16,7 @@ graph LR
 | Компонент | Основа | Экспорт | Где используется |
 |---|---|---|---|
 | `button` | Base UI Button + CVA | `Button`, `buttonVariants`, `Spinner`, `ArrowPointer` | `HiddenSidebar`, `Notes` |
-| `input` | Base UI Input | `Input` | `Sources` (поиск), `AddMesh` |
+| `input` | Base UI Input | `Input` | `Sources` (поиск), `UploadModel` |
 | `checkbox` | Base UI Checkbox | `Checkbox`, `CheckboxIndicator` | `Layers` |
 | `tabs` | Base UI Tabs | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`, `TabsIndicator` | `Sources` |
 | `toolbar` | Base UI Toolbar | `Toolbar`, … | `ToolbarScene` |
@@ -37,7 +37,7 @@ graph LR
 ```tsx
 // shared/ui/tabs/tabs.tsx
 import { Tabs } from '@base-ui/react/tabs'
-import { cn } from '@lib/styles/utils'
+import { cn } from '@/shared/lib/styles'
 import styles from './tabs.module.css'
 
 function TabsRoot({ className, ...props }: Tabs.Root.Props) {
@@ -122,16 +122,16 @@ npx shadcn@latest add @roiui/<component> -p src/shared/ui/<component>
 
 После установки:
 
-1. Заменить импорт `cn` на `import { cn } from '@lib/styles/utils'`.
+1. Заменить импорт `cn` на `import { cn } from '@/shared/lib/styles'`.
 2. Создать `index.ts` с `export * from './<component>'`.
 3. Импортировать компонент только через баррель: `@/shared/ui/<component>`.
 
 > [!WARNING]
-> В `add-ui.md` указан путь `@lib/shadcn/utils` — такого модуля нет, актуальный путь `@lib/styles/utils`. Скрипт `npm run ui:add` ссылается на несуществующий `scripts/add-ui.ts`.
+> В `add-ui.md` указан путь `@lib/shadcn/utils` — такого модуля нет, актуальный путь `@/shared/lib/styles` (алиас `@lib` удалён). Скрипт `npm run ui:add` ссылается на несуществующий `scripts/add-ui.ts`.
 
 ## Правила для `shared/ui`
 
 - ❌ Не импортировать ничего из `entities`/`features`/`widgets` и не обращаться к MST-стору.
-- ❌ Не использовать `export default` — он ломает `export *` в барреле (см. `HiddenSidebar`).
+- ❌ Не использовать `export default` — он ломает `export *` в барреле (поэтому `HiddenSidebar` переведён на именованный экспорт).
 - ✅ Любое состояние — либо внутреннее UI-состояние (открыт/закрыт), либо через пропсы.
 - ✅ Новые варианты внешнего вида — через CVA-варианты, а не через новые компоненты.

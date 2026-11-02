@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import '@app/styles/globals.css';
+import '@/app/styles/globals.css';
 import { Header } from '@/widgets/header';
-import { Providers } from '@/app/providers/providers';
+import { Providers } from '@/app/providers';
 
 export const metadata: Metadata = {
 	title: 'DnD',

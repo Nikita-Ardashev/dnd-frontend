@@ -19,14 +19,11 @@
 | Алиас | Путь | Назначение |
 |---|---|---|
 | `@/*` | `./src/*` | Абсолютные импорты из src |
-| `@styles/*` | `./src/styles/*` | ⚠️ Директории нет (стили в `src/app/styles`) |
-| `@stores/*` | `./src/app/stores/*` | ⚠️ Директории нет (стор в `src/app/store.ts`) |
 | `@public/*` | `./public/*` | Публичные ассеты |
-| `@app/*` | `./src/app/*` | App-слой |
-| `@lib/*` | `./src/shared/lib/*` | Библиотеки |
+| `@app/*` | `./src/app/*` | Нужен SASS: `prependData` в `next.config.ts` подключает `@app/styles/variables` |
 
 > [!NOTE]
-> `next.config.ts` дополнительно задаёт webpack-алиас `@styles → src/styles`; dev-режим работает на Turbopack, где этот алиас не применяется.
+> В TS-коде используется только `@/*`. Алиасы `@styles`, `@stores` и `@lib` удалены вместе с webpack-алиасом `@styles` в `next.config.ts`.
 
 ## ESLint — контроль FSD-границ
 

@@ -1,20 +1,16 @@
 import Image from 'next/image';
-import { HTMLAttributes, MouseEvent } from 'react';
+import { HTMLAttributes } from 'react';
 import styles from './tile.module.sass';
+import { cn } from '@/shared/lib/styles';
 
-interface ITile extends HTMLAttributes<HTMLAnchorElement> {
+interface ITile extends HTMLAttributes<HTMLDivElement> {
 	img: string;
-	link: string;
 }
 
-const handlerDrag = (e: MouseEvent) => {
-	console.log(e);
-};
-
-export const Tile = ({ img, link, ...wrapperProps }: ITile) => {
+export const Tile = ({ img, ...wrapperProps }: ITile) => {
 	return (
-		<a href={link} className={styles.tile} onDragStart={handlerDrag} {...wrapperProps}>
-			<Image src={img} alt={wrapperProps.title ?? ''} width={90} height={90} />
-		</a>
+		<div {...wrapperProps} className={cn(styles.root, wrapperProps.className)}>
+			<Image src={img} alt={wrapperProps.title ?? ''} width={72} height={72} />
+		</div>
 	);
 };

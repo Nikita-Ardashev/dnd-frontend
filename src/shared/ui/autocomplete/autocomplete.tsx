@@ -3,7 +3,7 @@
 import { Autocomplete } from '@base-ui/react/autocomplete';
 import { Search, X } from 'lucide-react';
 import type React from 'react';
-import { cn } from '@lib/styles/utils';
+import { cn } from '@/shared/lib/styles';
 import styles from './autocomplete.module.css';
 import { Input } from '../input';
 

@@ -13,10 +13,10 @@
 graph TD
     APP["app — инициализация, провайдеры, стор"]
     PAGES["pages — страничные компоненты"]
-    WIDGETS["widgets — составные виджеты (Header)"]
+    WIDGETS["widgets — составные блоки (SceneViewport, Sources, Layers)"]
     FEATURES["features — пользовательские действия"]
     ENTITIES["entities — бизнес-сущности (Scene, Mesh, Profile)"]
-    SHARED["shared — переиспользуемый код (UI, lib, api, utils)"]
+    SHARED["shared — переиспользуемый код (UI, lib, api)"]
 
     APP --> PAGES
     PAGES --> WIDGETS
@@ -38,151 +38,82 @@ graph TD
 
 ```
 src/
-├── app/                      # Слой инициализации
-│   ├── store.ts              # Корневой MST-стор + module augmentation
-│   ├── styles/               # Глобальные стили + переменные
-│   │   ├── globals.css       # Tailwind импорт + CSS Custom Properties
-│   │   └── _variables.sass   # DnD-тематические SASS-переменные
-│   └── providers/            # Composition Root (провайдеры)
+├── app/                      # Слой инициализации (без слайсов)
+│   ├── store/
+│   │   ├── root-store.ts     # Root, RootStore, начальные данные, module augmentation IStore
+│   │   ├── history.ts        # withHistory для construct + обработчик Ctrl+Z / Ctrl+Shift+Z
+│   │   └── index.ts
+│   ├── styles/
+│   │   ├── globals.css       # Tailwind + CSS Custom Properties
+│   │   └── _variables.sass   # SASS-переменные
+│   └── providers/            # Composition Root
 │       ├── providers.tsx     # Обёртка всех провайдеров
-│       ├── provider.tsx      # MST debug + keyboard history
+│       ├── provider.tsx      # MST DevTools + клавиатурная история
 │       ├── store.tsx         # StoreProvider (MST Context)
-│       └── query.tsx         # QueryProvider + SessionProvider
+│       ├── query.tsx         # QueryProvider + SessionProvider
+│       └── index.ts
 │
-├── pages/                    # Слой страниц
-│   └── platform/             # Основная страница-редактор
-│       ├── index.ts
-│       └── ui/
-│           ├── platform.tsx          # Компоновка виджетов
-│           └── platform.module.sass  # Layout (flex row)
+├── pages/
+│   └── platform/             # Страница-редактор: Sources | SceneViewport | Layers + Notes
 │
-├── widgets/                  # Слой виджетов
-│   ├── header/               # Шапка приложения
-│   │   ├── index.ts
+├── widgets/
+│   ├── scene-viewport/       # 3D-канвас: собирает сущности и фичи сцены
 │   │   └── ui/
-│   ├── scene-viewport/       # Обёртка 3D-канваса + тулбар
-│   │   ├── index.ts
-│   │   ├── api/  config/  model/
-│   │   └── ui/
-│   │       ├── scene.tsx             # observer — слот для toolbar
-│   │       └── scene.module.sass
-│   ├── sources/              # Панель ресурсов (текстуры, модели, NPC)
-│   │   ├── index.ts
-│   │   ├── api/  config/  model/
-│   │   └── ui/
-│   │       ├── sources.tsx           # Tabs + фильтрация + HiddenSidebar
-│   │       └── sources.module.sass
-│   ├── layers/               # Дерево слоёв сцены
-│   │   ├── index.ts
-│   │   ├── api/  config/  model/
-│   │   └── ui/
-│   │       ├── layers.tsx            # Рекурсивный рендер + Checkbox
-│   │       └── layers.module.sass
+│   │       ├── scene-viewport.tsx    # Обёртка + слот toolbar
+│   │       ├── scene-canvas.tsx      # R3F Canvas, свет, гизмо
+│   │       └── scene-models.tsx      # GLTFModel ± TransformControls
+│   ├── sources/              # Панель ресурсов (ui/ + model/mock-sources.ts)
+│   ├── layers/               # Дерево слоёв (ui/ + model/mock-layers.ts)
 │   ├── notes/                # Заметки (Drawer)
-│   │   ├── index.ts
-│   │   ├── api/  config/  model/
-│   │   └── ui/
-│   │       ├── notes.tsx             # Drawer-компонент
-│   │       └── notes.module.sass
-│   ├── chat/                 # Чат (заготовка)
-│   │   ├── index.ts
-│   │   ├── api/  config/  model/
-│   │   └── ui/
-│   ├── properties/           # Панель свойств (заготовка)
-│   │   ├── index.ts
-│   │   ├── api/  config/  model/
-│   │   └── ui/
-│   └── charapter-list/       # Список персонажей (пустая директория)
+│   ├── header/               # Шапка (подключена в корневом app/layout.tsx)
+│   ├── chat/                 # Заготовка
+│   └── properties/           # Заготовка
 │
-├── features/                 # Слой фич
-│   ├── toolbar/              # Панель инструментов 3D-сцены
-│   │   ├── index.ts
+├── features/
+│   ├── build-cubes/          # Строительство кубов
 │   │   └── ui/
-│   │       └── toolbar.tsx           # Динамический рендер из MST SceneTools
-│   ├── add-mesh/             # Загрузка GLTF-моделей
-│   │   ├── index.ts
-│   │   └── ui/
-│   │       └── add-mesh.tsx          # FileInput + Axios upload
-│   └── sidebar/              # Боковая панель (заготовка)
-│       ├── index.ts
-│       ├── api/  model/
-│       └── ui/
+│   │       ├── build-grid.tsx          # Сетка + размещение первого куба (публичный)
+│   │       ├── buildable-cubes.tsx     # Список кубов (публичный)
+│   │       ├── buildable-cube.tsx      # Достраивание / удаление по клику
+│   │       ├── cube-placeholder.tsx    # «Призрак» нового куба
+│   │       └── cube-side-highlight.tsx # Подсветка грани
+│   ├── transform-mesh/       # TransformControls: DragControls / PivotControls
+│   ├── select-tool/          # ToolbarScene — выбор инструмента
+│   └── upload-model/         # UploadModel — загрузка GLTF (не подключена)
 │
-├── entities/                 # Слой бизнес-сущностей
-│   ├── profile/              # Профиль пользователя
-│   │   ├── index.ts
+├── entities/
+│   ├── scene/
+│   │   ├── config/default-tools.ts  # createDefaultTools()
 │   │   ├── model/
-│   │   │   └── profile.model.ts     # MST-модель + setProfile(session)
-│   │   └── ui/               # UI профиля (пусто)
-│   ├── scene/                # 3D-сцена
-│   │   ├── index.ts
-│   │   ├── model/
-│   │   │   ├── scene.model.ts       # Scene (isViewGrid, isEditable, selectedMeshIds)
-│   │   │   ├── construct/
-│   │   │   │   └── construct.model.ts  # Construct (models Map, cubes Map)
-│   │   │   ├── editor/
-│   │   │   │   ├── scene-tools.model.ts  # SceneTools + Tool (id, group, iconURL...)
-│   │   │   │   └── camera-controls.model.ts
+│   │   │   ├── scene.model.ts       # Scene
+│   │   │   ├── construct/           # Construct (models, cubes)
+│   │   │   ├── editor/              # SceneTools + Tool, CameraControls
+│   │   │   ├── hooks.ts             # useStoreScene
 │   │   │   └── types.ts
-│   │   └── ui/               # 3D-компоненты (Canvas, Grid, Cubes, Models)
-│   │       ├── scene-canvas.tsx
-│   │       ├── interactive-grid.tsx
-│   │       ├── building-cube.tsx
-│   │       ├── building-cube-side.tsx
-│   │       ├── building-cube-texture.tsx
-│   │       ├── builded-cubes.tsx
-│   │       ├── builded-cube-transparent.tsx
-│   │       ├── gltf-model.tsx
-│   │       ├── gltf-models.tsx
-│   │       ├── camera.tsx
-│   │       └── controls.tsx
-│   └── mesh/                 # Меш-модели (куб, GLTF)
-│       ├── index.ts
-│       ├── @x/               # Кросс-entity реэкспорты
-│       │   └── scene.ts
-│       ├── api/
-│       └── model/
-│           ├── mesh.ts              # MMesh (id)
-│           ├── model-mesh.ts        # MModelMesh, MModelInternalMesh, MModelExternalMesh
-│           └── cube-mesh.ts         # MCubeMesh (+ withMatrix4)
+│   │   └── ui/camera.tsx            # Camera (drei CameraControls)
+│   ├── mesh/
+│   │   ├── @x/scene.ts              # Реэкспорт моделей для entities/scene
+│   │   ├── model/                   # MMesh, MModelMesh*, MCubeMesh, MTexture
+│   │   └── ui/
+│   │       ├── gltf-model.tsx       # GLTFModel — загрузка GLTF и габариты
+│   │       └── cube-material.tsx    # CubeMaterial — PBR-текстуры / цвет
+│   └── profile/
+│       └── model/                   # Profile, useStoreProfile
 │
-└── shared/                   # Общий переиспользуемый код
-    ├── api/                  # HTTP-клиенты
-    │   ├── api.ts            # apiUploadModels (Axios POST)
+└── shared/                   # Без знания о предметной области
+    ├── api/
+    │   ├── upload-model.ts   # apiUploadModels (Axios POST)
     │   └── get-model.ts      # fetchGetModel (fetch GET)
-    ├── lib/                  # Утилитарные библиотеки
-    │   ├── mst/              # MST-хелперы и хуки
-    │   │   ├── hooks.ts          # useStore, useStoreScene, useStoreProfile
-    │   │   ├── store-context.ts  # StoreContext + IStore (module augmentation)
-    │   │   ├── with-history.ts   # Undo/Redo через JSON Patches
-    │   │   ├── with-placement.ts # withMatrix4 миксин (4×4 трансформации)
-    │   │   ├── texture.model.ts  # MTexture — набор PBR-карт
-    │   │   ├── cache.ts          # MUrlOrCache (url + cacheUrl)
-    │   │   ├── recurse-children.ts
-    │   │   └── zot-to-mst.ts     # zodToMst() — конвертер Zod → MST
-    │   ├── three/            # Three.js утилиты
-    │   │   ├── get-cube-position-based-side.ts
-    │   │   ├── get-placement-from-matrix4.ts
-    │   │   ├── matrix4-compose.ts
-    │   │   ├── matrix4-decompose.ts
-    │   │   ├── validate-textures.ts
-    │   │   └── hooks.ts          # useGltfScaleFromMatrix4
-    │   ├── styles/           # cn() утилита
-    │   └── debug/            # MST DevTools (connectReduxDevtools)
-    ├── ui/                   # UI-компоненты (Base UI + CVA)
-    │   ├── button/           ├── avatar/
-    │   ├── input/            ├── checkbox/
-    │   ├── select/           ├── tabs/
-    │   ├── toggle/           ├── toggle-group/
-    │   ├── toolbar/          ├── tooltip/
-    │   ├── drawer/           ├── dropdown-menu/
-    │   ├── scroll-area/      ├── collapsible/
-    │   ├── autocomplete/     ├── tile/
-    │   └── hidden-sidebar/   # HiddenSidebar — сворачиваемая боковая панель
-    └── utils/                # Общие утилиты
-        ├── handler-keys.ts   # Обработчик горячих клавиш
-        └── mapping.ts        # ArrayWithObjectToMap, MapToArray, MSTMapToArray
+    ├── lib/
+    │   ├── mst/              # useStore, IStore, withHistory, withMatrix4, MUrlOrCache, zodToMst
+    │   ├── three/            # getCubePosition, matrix4Compose/Decompose, validateTextures
+    │   ├── keyboard/         # handlerKeys
+    │   ├── styles/           # cn()
+    │   └── debug/            # useMSTDebug
+    └── ui/                   # UI-кит (Base UI + CVA), HiddenSidebar, Tile
 ```
+
+Правила, по которым код разложен именно так, — в [14. Правила FSD](./14-fsd-rules.md).
 
 ## Публичный API (барелы)
 
@@ -190,18 +121,19 @@ src/
 
 ```typescript
 // entities/scene/index.ts
-export * from './model'
-export * from './ui'
+export * from './config';
+export * from './model';
+export * from './ui';
 ```
 
 > [!WARNING]
 > Импорт «вглубь» слайса запрещён. Только через `index.ts`:
 > ```typescript
 > // ✅ Правильно
-> import { SceneCanvas } from '@/entities/scene'
-> 
+> import { SceneViewport } from '@/widgets/scene-viewport'
+>
 > // ❌ Запрещено
-> import { SceneCanvas } from '@/entities/scene/ui/scene-canvas'
+> import { SceneViewport } from '@/widgets/scene-viewport/ui/scene-viewport'
 > ```
 
 ## Кросс-entity паттерн `@x/`
@@ -222,7 +154,7 @@ entities/mesh/@x/scene.ts   # Реэкспорт для использовани
 // shared/lib/mst/store-context.ts
 export interface IStore {}  // Пустой интерфейс
 
-// app/store.ts
+// app/store/root-store.ts
 declare module '@/shared/lib/mst/store-context' {
   interface IStore extends Instance<typeof Root> {}
 }

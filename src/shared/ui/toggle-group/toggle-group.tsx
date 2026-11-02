@@ -2,7 +2,7 @@
 
 import { Toggle } from '@base-ui/react/toggle';
 import { ToggleGroup } from '@base-ui/react/toggle-group';
-import { cn } from '@lib/styles/utils';
+import { cn } from '@/shared/lib/styles';
 import styles from './toggle-group.module.css';
 
 function ToggleGroupRoot({ className, ...props }: ToggleGroup.Props) {

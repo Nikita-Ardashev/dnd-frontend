@@ -33,7 +33,7 @@ sequenceDiagram
     participant TB as ToolbarScene (features)
     participant T as SceneTools (MST)
     participant S as Scene (widgets)
-    participant C as BuildingCube / Controls / Grid
+    participant C as BuildableCube / TransformControls / Grid
 
     U->>TB: Клик по иконке инструмента
     TB->>T: tools.setCurrent(tool.id)
@@ -48,10 +48,10 @@ sequenceDiagram
 | Компонент | Читает флаги | Поведение |
 |---|---|---|
 | `Scene` (виджет) | `isMove` | Меняет курсор над канвасом |
-| `InteractiveGrid` | `isNewBuild` | Показывает плоскость для размещения первого куба |
-| `BuildingCubeTransparent` | `isNewBuild` | Рисует «призрак» и ставит куб по клику |
-| `BuildingCube` | `isBuild` | Достраивает/удаляет кубы по клику на грань |
-| `Controls` | `isDrag`, `isRotate`, `isScale`, `isAxes` | Выбирает `DragControls` или `PivotControls` для модели |
+| `BuildGrid` | `isNewBuild` | Показывает плоскость для размещения первого куба |
+| `CubePlaceholder` | `isNewBuild` | Рисует «призрак» и ставит куб по клику |
+| `BuildableCube` | `isBuild` | Достраивает/удаляет кубы по клику на грань |
+| `TransformControls` | `isDrag`, `isRotate`, `isScale`, `isAxes` | Выбирает `DragControls` или `PivotControls` для модели |
 
 > [!TIP]
 > Чтобы добавить инструмент, достаточно расширить `TypeLiteralTools`, добавить флаг в `Tool` и запись в начальный снапшот `RootStore`. Тулбар отрисует его автоматически из `tools.getTools`.
@@ -61,11 +61,11 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor U as Пользователь
-    participant BC as BuildingCube (entities/scene/ui)
+    participant BC as BuildableCube (features/build-cubes)
     participant L as shared/lib/three
     participant CN as Construct (MST)
     participant H as withHistory
-    participant BCS as BuildedCubes
+    participant BCS as BuildableCubes
 
     U->>BC: Наведение на грань (инструмент build)
     BC->>L: getCubePosition(e.normal, object.position)
@@ -75,7 +75,7 @@ sequenceDiagram
     CN->>CN: generateUUID() + matrix4Compose(position, 0, 1)
     CN->>CN: cubes.set(id, cube)
     CN-->>H: patch: add /cubes/{id}
-    CN-->>BCS: cubes изменился → рендер нового BuildingCube
+    CN-->>BCS: cubes изменился → рендер нового BuildableCube
 
     U->>BC: ПКМ по кубу
     BC->>CN: construct.removeCell(id)
@@ -83,14 +83,14 @@ sequenceDiagram
 ```
 
 - Позиция хранится не тремя числами, а **матрицей 4×4** (`matrix4`) — единый формат для кубов и моделей (миксин `withMatrix4`).
-- `cubes` — `t.map` по ID: добавление/удаление не перерисовывает существующие кубы, `BuildedCubes` лишь добавляет/убирает дочерний компонент.
+- `cubes` — `t.map` по ID: добавление/удаление не перерисовывает существующие кубы, `BuildableCubes` лишь добавляет/убирает дочерний компонент.
 
 ## Сценарий 3. Выделение и трансформация модели
 
 ```mermaid
 sequenceDiagram
     actor U as Пользователь
-    participant CT as Controls
+    participant CT as TransformControls
     participant SC as Scene (MST)
     participant CAM as CameraControls (MST)
     participant M as MModelInternalMesh
@@ -157,10 +157,10 @@ sequenceDiagram
     GM->>GM: new Box3().setFromObject(scene)
     GM->>M: setSizes({ min, max })
     Note over M: Путь /sizes/* исключён из истории
-    GM->>GM: isEditable ? <Controls> : <primitive>
+    Note over GM: SceneModels (widget) оборачивает GLTFModel в TransformControls при isEditable
 ```
 
-Источник файла — `MUrlOrCache` (`url` + `cacheUrl`); геттер `getSource` возвращает `cacheUrl`, если он есть, иначе `url`. URL указывает на локальный `public/local_models/...` или на API-прокси Яндекс Диска. Если сцена не редактируемая (`isEditable = false`), модель рендерится без `Controls`.
+Источник файла — `MUrlOrCache` (`url` + `cacheUrl`); геттер `getSource` возвращает `cacheUrl`, если он есть, иначе `url`. URL указывает на локальный `public/local_models/...` или на API-прокси Яндекс Диска. Если сцена не редактируемая (`isEditable = false`), виджет `SceneModels` рендерит `GLTFModel` без `TransformControls`.
 
 ## Где что живёт
 
@@ -169,7 +169,7 @@ sequenceDiagram
 | Кубы, модели, их трансформации | MST `scene.construct` | Персистентные данные сцены, нужна история |
 | Текущий инструмент, выделение, сетка | MST `scene` | Читаются многими компонентами в разных слоях |
 | Параметры камеры, `realTimeZoom` | MST `scene.camera` | Блокируется из стора на время жестов; не нужна в истории |
-| Матрица во время drag | `useState` в `Controls` | Высокочастотные обновления, не должны попадать в стор |
+| Матрица во время drag | `useState` в `TransformControls` | Высокочастотные обновления, не должны попадать в стор |
 | Открыта ли боковая панель | `useState` в `HiddenSidebar` | Чисто UI-состояние |
 | Каталог ресурсов (будущее) | React Query + `localStorage` | Серверные данные, кэш 24 ч |
 | Сессия пользователя (план) | MST `profile` → `SessionProvider` | Сейчас профиль пуст: авторизация не реализована, `setProfile` не вызывается |

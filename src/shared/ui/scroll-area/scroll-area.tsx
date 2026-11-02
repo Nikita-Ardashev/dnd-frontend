@@ -1,7 +1,7 @@
 'use client';
 
 import { ScrollArea } from '@base-ui/react/scroll-area';
-import { cn } from '@lib/styles/utils';
+import { cn } from '@/shared/lib/styles';
 import styles from './scroll-area.module.css';
 
 function ScrollAreaRoot({ className, ...props }: ScrollArea.Root.Props) {

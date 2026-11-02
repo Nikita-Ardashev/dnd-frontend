@@ -122,7 +122,7 @@ const buttonVariants = cva(styles.base, {
 ## 6. `cn()` — утилита мержа классов
 
 ```typescript
-// shared/lib/styles/utils.ts
+// shared/lib/styles/cn.ts
 import { clsx, type ClassValue } from 'clsx'
 
 export function cn(...inputs: ClassValue[]) {

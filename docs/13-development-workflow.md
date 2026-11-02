@@ -17,19 +17,17 @@
 ## Генератор слайсов `create-slice`
 
 ```bash
-node scripts/create-slice.mjs features select-tool
+node scripts/create-slice.mjs features rotate-camera
 ```
 
 Скрипт валидирует аргументы и создаёт минимальный каркас слайса:
 
 ```
-src/features/select-tool/
+src/features/rotate-camera/
 ├── index.ts              # export * from './ui'
-├── api/index.ts          # пусто
-├── model/index.ts        # пусто
 └── ui/
-    ├── index.ts          # export * from './select-tool'
-    └── select-tool.tsx   # export const SelectTool = (props: IProps) => <div>select-tool</div>
+    ├── index.ts          # export * from './rotate-camera'
+    └── rotate-camera.tsx # export const RotateCamera = () => <div>rotate-camera</div>
 ```
 
 Правила:
@@ -38,9 +36,10 @@ src/features/select-tool/
 - `name` — строго kebab-case (`/^[a-z0-9]+(-[a-z0-9]+)*$/`); имя компонента — PascalCase от него.
 - Существующие файлы **не перезаписываются** (флаг `wx`) — скрипт можно безопасно запускать повторно, чтобы дозаполнить недостающие файлы.
 - Компонент создаётся с **именованным экспортом** — так баррель `export *` работает без исключений.
+- Сегменты `model`, `api`, `lib`, `config` скрипт не создаёт: пустые сегменты запрещены ([14. Правила FSD](./14-fsd-rules.md#3-сегменты)), их добавляют, когда появляется код.
 
 > [!TIP]
-> Для `shared` скрипт создаёт сегменты `api/`, `model/`, `ui/`, хотя в `shared` слайсов нет — там сегменты лежат напрямую (`shared/ui/button`). Для shared-компонентов используйте процедуру из [UI-кита](./11-ui-kit.md).
+> Для `shared` скрипт создаёт слайс с сегментом `ui/`, хотя в `shared` слайсов нет — там сегменты лежат напрямую (`shared/ui/button`). Для shared-компонентов используйте процедуру из [UI-кита](./11-ui-kit.md).
 
 ## Чек-лист: новая фича
 
@@ -48,12 +47,12 @@ src/features/select-tool/
    - Действие пользователя над сущностью (выбрать инструмент, загрузить модель) → `features`.
    - Самостоятельный блок интерфейса из нескольких фич/сущностей → `widgets`.
    - Новая предметная модель (персонаж, заметка, слой) → `entities`.
-2. **Сгенерировать каркас** через `create-slice`.
-3. **Модель данных.** Если данные нужны нескольким слайсам или должны попасть в историю — MST-модель в `entities/*/model`, подключённая в `Root` (`src/app/store.ts`). Иначе — локальное состояние.
-4. **Доступ к стору** — только через `useStore` / `useStoreScene` / `useStoreProfile`; компонент оборачивается в `observer()`.
+2. **Сгенерировать каркас** через `create-slice`. Правила раскладки — в [14. Правила FSD](./14-fsd-rules.md).
+3. **Модель данных.** Если данные нужны нескольким слайсам или должны попасть в историю — MST-модель в `entities/*/model`, подключённая в `Root` (`src/app/store/root-store.ts`). Иначе — локальное состояние.
+4. **Доступ к стору** — через хук сущности (`useStoreScene` из `@/entities/scene`, `useStoreProfile` из `@/entities/profile`) или общий `useStore` из `@/shared/lib/mst`; компонент оборачивается в `observer()`.
 5. **Публичный API.** Всё, что нужно снаружи, экспортировать из `index.ts`. Импорт снаружи — только `@/<layer>/<slice>`.
 6. **Связь между entities** — только через `entities/<name>/@x/<consumer>.ts`.
-7. **Подключение на страницу** — в `pages/*/ui`, при необходимости через слот-пропсы виджета (как `toolbar` у `Scene`).
+7. **Подключение на страницу** — в `pages/*/ui`, при необходимости через слот-пропсы виджета (как `toolbar` у `SceneViewport`).
 8. **Проверки** перед коммитом:
 
 ```bash
@@ -84,17 +83,17 @@ export const MNote = t
 - Общие поля выносить в базовую модель и расширять через `t.compose` (`MMesh → MModelMesh → MModelInternalMesh`).
 - Переиспользуемое поведение — миксинами в `shared/lib/mst` (`withMatrix4`), применяемыми поверх `compose`.
 - Если структура уже описана Zod-схемой (например, ответ API), модель можно получить через `zodToMst(schema, 'Name')`.
-- Нужен undo/redo — добавить путь сущности в `withHistory(...)` в `src/app/store.ts`.
+- Нужен undo/redo — добавить путь сущности в `withHistory(...)` в `src/app/store/root-store.ts`.
 
 ## Соглашения об именовании
 
 | Что | Формат | Пример |
 |---|---|---|
 | Директории слайсов и сегментов | kebab-case | `scene-viewport`, `hidden-sidebar` |
-| Файлы компонентов | kebab-case | `building-cube.tsx` |
+| Файлы компонентов | kebab-case | `buildable-cube.tsx` |
 | Файлы моделей | `*.model.ts` или kebab-case | `scene.model.ts`, `cube-mesh.ts` |
 | Компоненты | PascalCase, именованный экспорт | `export const ToolbarScene` |
-| Пропсы | `I*Props` / `IProps` | `ILayersProps` |
+| Пропсы | `I*Props` / `IProps` | `IProps` в `scene-viewport.tsx` |
 | Типы | `T*` | `TTabs`, `TModelExternalMesh` |
 | SASS-классы | kebab-case + BEM-модификаторы | `.button-wrapper--close`, `scene__is_move` |
 

@@ -1,4 +1,4 @@
-import { useStoreScene } from '@/shared/lib/mst';
+import { useStoreScene } from '../model/hooks';
 import { CameraControls } from '@react-three/drei';
 import { observer } from 'mobx-react-lite';
 import { ComponentProps } from 'react';

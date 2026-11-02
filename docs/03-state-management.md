@@ -128,7 +128,7 @@ useStoreScene()    // → store.scene
 useStoreProfile()  // → store.profile
 ```
 
-Все определены в `shared/lib/mst/hooks.ts` и используют `React.useContext(StoreContext)`.
+`useStore` лежит в `shared/lib/mst/hooks.ts` и читает `React.useContext(StoreContext)`. Хуки частей стора принадлежат сущностям: `useStoreScene` — `entities/scene/model/hooks.ts`, `useStoreProfile` — `entities/profile/model/hooks.ts`.
 
 ## Миксины (Composable Models)
 
@@ -137,7 +137,7 @@ useStoreProfile()  // → store.profile
 Добавляет undo/redo через JSON-патчи MST:
 
 ```typescript
-// src/app/store.ts — история подключена к construct (кубы и модели)
+// src/app/store/history.ts — история подключена к construct (кубы и модели)
 const StoreSceneHistory = withHistory(RootStore.scene.construct, [
   '/sizes/min', // Исключить из истории
   '/sizes/max',
@@ -177,7 +177,7 @@ MUrlOrCache = {
 Все компоненты, читающие MST-состояние, обёрнуты в `observer()` из `mobx-react-lite`:
 
 ```typescript
-export const BuildingCube = observer(({ id }: Props) => {
+export const BuildableCube = observer(({ id }: Props) => {
   const cube = useStoreScene().construct.cubes.get(id)
   // Перерендерится ТОЛЬКО при изменении данных этого конкретного куба
 })
@@ -191,7 +191,7 @@ export const BuildingCube = observer(({ id }: Props) => {
 В development-режиме MST подключается к **Redux DevTools Extension** через `mst-middlewares`:
 
 ```typescript
-// shared/lib/debug/useMSTDebug.ts — только при NODE_ENV === 'development'
+// shared/lib/debug/use-mst-debug.ts — только при NODE_ENV === 'development'
 const extension = window.__REDUX_DEVTOOLS_EXTENSION__
 const remoteDevMock = {
   connectViaExtension: (conf) => extension.connect(conf),

@@ -1,1 +1,1 @@
-export * from './SceneViewport';
+export * from './scene-viewport';

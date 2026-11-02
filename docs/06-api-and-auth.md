@@ -53,7 +53,7 @@ sequenceDiagram
 ### Axios — загрузка моделей
 
 ```typescript
-// shared/api/api.ts
+// shared/api/upload-model.ts
 POST /api/models?folder={name}  // FormData с .gltf + текстурами
 ```
 
