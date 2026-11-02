@@ -47,7 +47,7 @@ export const MModelInternalMesh = withMatrix4(
 );
 
 export const MModelExternalMesh = t.compose(
-	'ModelInternalMesh',
+	'ModelExternalMesh',
 	MModelMesh,
 	t.model({
 		preview: t.string,

@@ -14,7 +14,7 @@ import {
 import styles from './notes.module.sass';
 import { Button } from '@/shared/ui/button';
 
-export default function Notes() {
+export function Notes() {
 	return (
 		<Drawer>
 			<DrawerTrigger

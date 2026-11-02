@@ -2,7 +2,7 @@
 
 import { Select } from '@base-ui/react/select';
 import { Check, ChevronDown } from 'lucide-react';
-import { cn } from '@lib/styles/utils';
+import { cn } from '@/shared/lib/styles';
 import styles from './select.module.css';
 
 function SelectRoot<Value, Multiple extends boolean | undefined = undefined>(

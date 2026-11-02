@@ -8,13 +8,3 @@ export const useStore = (): IStore => {
 	}
 	return store;
 };
-
-export const useStoreScene = () => {
-	const { scene } = useStore();
-	return scene;
-};
-
-export const useStoreProfile = () => {
-	const { profile } = useStore();
-	return profile;
-};

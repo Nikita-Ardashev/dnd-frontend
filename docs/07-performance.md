@@ -62,7 +62,7 @@ next dev --turbopack
 
 ```typescript
 // Перерендерится ТОЛЬКО при изменении cube.matrix4 или cube.textures
-const BuildingCube = observer(({ id }) => {
+const BuildableCube = observer(({ id }) => {
   const cube = store.construct.cubes.get(id)
   return <mesh matrix={cube.matrix4}>
     <Texture maps={cube.textures} />
@@ -80,7 +80,7 @@ const boxGeometry = new BoxGeometry(1, 1)
 const planeGeometry = new PlaneGeometry(0.9, 0.9)
 
 // Переиспользуется всеми экземплярами
-const BuildingCube = observer(() => (
+const BuildableCube = observer(() => (
   <mesh geometry={boxGeometry}>...</mesh>
 ))
 ```
@@ -88,7 +88,7 @@ const BuildingCube = observer(() => (
 > [!TIP]
 > Без этой оптимизации каждый из N кубов создавал бы свою копию `BoxGeometry` — O(N) аллокаций GPU-буферов вместо O(1).
 >
-> Нарушение: `InteractiveGrid` создаёт `PlaneGeometry` и `MeshBasicMaterial` в JSX на каждом рендере — их стоит вынести в `useMemo` по `scene.size`.
+> Нарушение: `BuildGrid` создаёт `PlaneGeometry` и `MeshBasicMaterial` в JSX на каждом рендере — их стоит вынести в `useMemo` по `scene.size`.
 
 ## 6. Кэширование данных
 

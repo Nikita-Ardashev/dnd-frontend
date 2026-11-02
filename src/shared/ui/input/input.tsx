@@ -1,7 +1,7 @@
 'use client';
 
 import { Input } from '@base-ui/react/input';
-import { cn } from '@lib/styles/utils';
+import { cn } from '@/shared/lib/styles';
 import styles from './input.module.css';
 
 interface InputProps extends Input.Props {

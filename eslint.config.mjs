@@ -26,8 +26,11 @@ const FSD_LAYERS = [
 // v6-синтаксис: object-based селекторы { type: ... }
 const FSD_IMPORT_RULES = [
 	{
+		// app и shared не делятся на слайсы, поэтому внутрислойные импорты разрешены
 		from: { type: 'app' },
-		allow: { to: { type: ['pages', 'widgets', 'features', 'entities', 'shared'] } },
+		allow: {
+			to: { type: ['app', 'pages', 'widgets', 'features', 'entities', 'shared'] },
+		},
 	},
 	{
 		from: { type: 'pages' },

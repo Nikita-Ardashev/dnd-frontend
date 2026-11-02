@@ -3,219 +3,14 @@ import styles from './sources.module.sass';
 import { Tile } from '@/shared/ui/tile';
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
-import { TModelExternalMesh } from '@/entities/mesh';
+import { MOCK_SOURCES, TSourceTab } from '../model/mock-sources';
 import { Input } from '@/shared/ui/input';
-import HiddenSidebar from '@/shared/ui/hidden-sidebar/hidden-sidebar';
-
-type TTabs = 'all' | 'textures' | 'models' | 'NPC';
-
-const content: TModelExternalMesh[] & { type: TTabs }[] = [
-	{
-		preview: '/test-tile.png',
-		id: '',
-		type: 'NPC',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/local_models/1/A7RFX93BONGSZ6FU5TOZ80QB8.jpg',
-		id: '',
-		type: 'models',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview:
-			'/local_models/fantasy_scene_stufs_lowpoly_1/textures/Material.002_baseColor.jpeg',
-		id: '',
-		type: 'textures',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/test-tile.png',
-		id: '',
-		type: 'NPC',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/local_models/1/A7RFX93BONGSZ6FU5TOZ80QB8.jpg',
-		id: '',
-		type: 'models',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview:
-			'/local_models/fantasy_scene_stufs_lowpoly_1/textures/Material.002_baseColor.jpeg',
-		id: '',
-		type: 'textures',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/test-tile.png',
-		id: '',
-		type: 'NPC',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/local_models/1/A7RFX93BONGSZ6FU5TOZ80QB8.jpg',
-		id: '',
-		type: 'models',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview:
-			'/local_models/fantasy_scene_stufs_lowpoly_1/textures/Material.002_baseColor.jpeg',
-		id: '',
-		type: 'textures',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/test-tile.png',
-		id: '',
-		type: 'NPC',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/local_models/1/A7RFX93BONGSZ6FU5TOZ80QB8.jpg',
-		id: '',
-		type: 'models',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview:
-			'/local_models/fantasy_scene_stufs_lowpoly_1/textures/Material.002_baseColor.jpeg',
-		id: '',
-		type: 'textures',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/test-tile.png',
-		id: '',
-		type: 'NPC',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/local_models/1/A7RFX93BONGSZ6FU5TOZ80QB8.jpg',
-		id: '',
-		type: 'models',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview:
-			'/local_models/fantasy_scene_stufs_lowpoly_1/textures/Material.002_baseColor.jpeg',
-		id: '',
-		type: 'textures',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/test-tile.png',
-		id: '',
-		type: 'NPC',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/local_models/1/A7RFX93BONGSZ6FU5TOZ80QB8.jpg',
-		id: '',
-		type: 'models',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview:
-			'/local_models/fantasy_scene_stufs_lowpoly_1/textures/Material.002_baseColor.jpeg',
-		id: '',
-		type: 'textures',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/test-tile.png',
-		id: '',
-		type: 'NPC',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/local_models/1/A7RFX93BONGSZ6FU5TOZ80QB8.jpg',
-		id: '',
-		type: 'models',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview:
-			'/local_models/fantasy_scene_stufs_lowpoly_1/textures/Material.002_baseColor.jpeg',
-		id: '',
-		type: 'textures',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/test-tile.png',
-		id: '',
-		type: 'NPC',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview: '/local_models/1/A7RFX93BONGSZ6FU5TOZ80QB8.jpg',
-		id: '',
-		type: 'models',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-	{
-		preview:
-			'/local_models/fantasy_scene_stufs_lowpoly_1/textures/Material.002_baseColor.jpeg',
-		id: '',
-		type: 'textures',
-		creator: '',
-		createdDate: 0,
-		name: '',
-	},
-];
+import { HiddenSidebar } from '@/shared/ui/hidden-sidebar';
 
 export function Sources() {
-	const [activeTab, setActiveTab] = useState<TTabs>('all');
+	const [activeTab, setActiveTab] = useState<TSourceTab>('all');
 
-	const filteredContent = content.filter((item) => {
+	const filteredContent = MOCK_SOURCES.filter((item) => {
 		if (activeTab === 'all') return true;
 		return item.type === activeTab;
 	});
@@ -239,26 +34,26 @@ export function Sources() {
 				<Input placeholder="Search..." />
 			</div>
 			<Tabs
-				defaultValue={'all' as TTabs}
-				onValueChange={(value) => setActiveTab(value as TTabs)}
+				defaultValue={'all' as TSourceTab}
+				onValueChange={(value) => setActiveTab(value as TSourceTab)}
 				className={styles.tabs}
 			>
 				<TabsList>
-					<TabsTrigger value={'all' as TTabs}>Все</TabsTrigger>
-					<TabsTrigger value={'textures' as TTabs}>Текстуры</TabsTrigger>
-					<TabsTrigger value={'models' as TTabs}>Модели</TabsTrigger>
-					<TabsTrigger value={'NPC' as TTabs}>НПС</TabsTrigger>
+					<TabsTrigger value={'all' as TSourceTab}>Все</TabsTrigger>
+					<TabsTrigger value={'textures' as TSourceTab}>Текстуры</TabsTrigger>
+					<TabsTrigger value={'models' as TSourceTab}>Модели</TabsTrigger>
+					<TabsTrigger value={'NPC' as TSourceTab}>НПС</TabsTrigger>
 				</TabsList>
-				<TabsContent className={styles.tab} value={'all' as TTabs}>
+				<TabsContent className={styles.tab} value={'all' as TSourceTab}>
 					{contentRender}
 				</TabsContent>
-				<TabsContent className={styles.tab} value={'models' as TTabs}>
+				<TabsContent className={styles.tab} value={'models' as TSourceTab}>
 					{contentRender}
 				</TabsContent>
-				<TabsContent className={styles.tab} value={'textures' as TTabs}>
+				<TabsContent className={styles.tab} value={'textures' as TSourceTab}>
 					{contentRender}
 				</TabsContent>
-				<TabsContent className={styles.tab} value={'NPC' as TTabs}>
+				<TabsContent className={styles.tab} value={'NPC' as TSourceTab}>
 					{contentRender}
 				</TabsContent>
 			</Tabs>

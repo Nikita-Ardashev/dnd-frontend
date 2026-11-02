@@ -1,5 +1,5 @@
 'use client';
-import { cn } from '@/shared/lib/styles/utils';
+import { cn } from '@/shared/lib/styles';
 import { CSSProperties, ReactNode, useState } from 'react';
 import styles from './hidden-sidebar.module.sass';
 import { SquareArrowRightEnterIcon } from 'lucide-react';
@@ -58,7 +58,7 @@ const calculatedPositionButton = (positionButton: TPositionButton) => {
 	return styleButton;
 };
 
-const HiddenSidebar = ({ isViewDefault = true, ...props }: IProps) => {
+export const HiddenSidebar = ({ isViewDefault = true, ...props }: IProps) => {
 	const [isView, setIsView] = useState<boolean>(isViewDefault);
 	const { styleRoot, styleButton } = calculateOrientation(
 		props.orientation,
@@ -111,5 +111,3 @@ const HiddenSidebar = ({ isViewDefault = true, ...props }: IProps) => {
 		</div>
 	);
 };
-
-export default HiddenSidebar;

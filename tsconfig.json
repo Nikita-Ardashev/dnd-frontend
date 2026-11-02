@@ -20,11 +20,8 @@
 		],
 		"paths": {
 			"@/*": ["./src/*"],
-			"@styles/*": ["./src/styles/*"],
-			"@stores/*": ["./src/app/stores/*"],
 			"@public/*": ["./public/*"],
-			"@app/*": ["./src/app/*"],
-			"@lib/*": ["./src/shared/lib/*"]
+			"@app/*": ["./src/app/*"]
 		}
 	},
 	"include": [

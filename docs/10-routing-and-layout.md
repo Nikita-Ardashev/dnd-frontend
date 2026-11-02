@@ -88,7 +88,7 @@ sequenceDiagram
 - При любой ошибке возвращается `500` с JSON `{ error }`.
 
 > [!WARNING]
-> Обработчика `POST` в роуте нет, хотя `shared/api/api.ts` (`apiUploadModels`) и фича `add-mesh` отправляют `POST /api/models?folder=...`. Загрузка моделей сейчас не работает end-to-end.
+> Обработчика `POST` в роуте нет, хотя `shared/api/upload-model.ts` (`apiUploadModels`) и фича `upload-model` отправляют `POST /api/models?folder=...`. Загрузка моделей сейчас не работает end-to-end.
 
 ## Страница Platform
 
@@ -100,7 +100,7 @@ export function Platform() {
   return (
     <div className={styles.page}>
       <Sources />                              {/* левая панель */}
-      <Scene toolbar={<ToolbarScene />} />     {/* центр: 3D-канвас */}
+      <SceneViewport toolbar={<ToolbarScene />} /> {/* центр: 3D-канвас */}
       <Layers />                               {/* правая панель */}
       <Notes />                                {/* выезжающий Drawer */}
     </div>
@@ -114,7 +114,7 @@ export function Platform() {
 ┌──────────────────────────────────────────────────────────────────┐
 │ Header                                                           │
 ├────────────┬──────────────────────────────────────┬──────────────┤
-│ Sources    │ Scene                                │ Layers       │
+│ Sources    │ SceneViewport                        │ Layers       │
 │ (324px)    │ ┌──────────────────────────────────┐ │ (256px)      │
 │ ┌────────┐ │ │ ToolbarScene                     │ │ ☑ Layer 1    │
 │ │Search  │ │ └──────────────────────────────────┘ │   ☑ Sub 1    │
@@ -132,15 +132,14 @@ export function Platform() {
 - Боковые панели — `HiddenSidebar` (см. [UI-кит](./11-ui-kit.md)): сворачиваются отрицательным `margin` на свою ширину, и сцена автоматически растягивается за счёт flex.
 - `Notes` — Base UI `Drawer`, рендерится через портал поверх страницы и не занимает место во flex-ряду.
 
-### Паттерн «слот» в виджете Scene
+### Паттерн «слот» в виджете SceneViewport
 
-Виджет `Scene` не импортирует тулбар напрямую — он принимает его через проп `toolbar?: ReactNode`:
+Виджет `SceneViewport` не импортирует тулбар напрямую — он принимает его через проп `toolbar?: ReactNode`:
 
 ```tsx
-// widgets/scene-viewport/ui/scene.tsx
-export const Scene = observer(function Scene({ toolbar }: SceneProps) {
-  const { scene } = useStore()
-  const { isMove } = scene.tools.getCurrent
+// widgets/scene-viewport/ui/scene-viewport.tsx
+export const SceneViewport = observer(function SceneViewport({ toolbar }: IProps) {
+  const { isMove } = useStoreScene().tools.getCurrent
   return (
     <div className={`${styles.scene} ${isMove ? styles.scene__is_move : ''}`}>
       {toolbar && <div className={styles.scene__tools}>{toolbar}</div>}
@@ -157,18 +156,14 @@ export const Scene = observer(function Scene({ toolbar }: SceneProps) {
 | Виджет / фича | Слой | Состояние | Источник данных |
 |---|---|---|---|
 | `Header` | widgets | Пустой `<header>` | — |
-| `Scene` | widgets | ✅ Работает | MST `scene` |
+| `SceneViewport` | widgets | ✅ Работает | MST `scene` |
 | `ToolbarScene` | features | ✅ Работает | MST `scene.tools` |
-| `Sources` | widgets | 🟡 UI готов | Захардкоженный массив `content` |
-| `Layers` | widgets | 🟡 UI готов | Захардкоженный `DEFAULT_LAYERS` |
+| `Sources` | widgets | 🟡 UI готов | Мок `MOCK_SOURCES` (`model/mock-sources.ts`) |
+| `Layers` | widgets | 🟡 UI готов | Мок `MOCK_LAYERS` (`model/mock-layers.ts`) |
 | `Notes` | widgets | 🟡 Каркас Drawer | Текст-заглушка |
-| `AddMesh` | features | 🟡 Не подключена к странице | Axios `POST` (роута нет) |
+| `UploadModel` | features | 🟡 Не подключена к странице | Axios `POST` (роута нет) |
 | `Chat`, `Properties` | widgets | ⬜ Заглушки | — |
-| `Sidebar` | features | ⬜ Заглушка из `create-slice` | — |
-| `charapter-list` | widgets | ⬜ Пустая директория | — |
 
 ## Известные отклонения от правил
 
-- `platform.tsx` импортирует `Notes` вглубь слайса: `@/widgets/notes/ui/notes` — в обход публичного API. Причина: `Notes` экспортируется как `default`, а `export *` в барреле default-экспорты не реэкспортирует. Решение — перейти на именованный `export function Notes` (как у `Layers` и `Sources`).
-- `HiddenSidebar` аналогично импортируется по полному пути `@/shared/ui/hidden-sidebar/hidden-sidebar` из-за `export default`.
-- `Sources` и `Layers` хранят данные в локальных константах и `useState`. При подключении реальных данных они должны переехать в MST (`entities`) или React Query (`api`-сегмент слайса).
+- `Sources` и `Layers` берут данные из моков в своём `model`-сегменте. При подключении реальных данных они должны переехать в MST (`entities`) или React Query (`api`-сегмент слайса).
