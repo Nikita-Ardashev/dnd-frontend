@@ -5,9 +5,14 @@ import { InteractiveGrid } from './interactive-grid';
 import { Camera } from './camera';
 import { GltfModels } from './gltf-models';
 
-export const SceneCanvas = () => {
+interface IProps {
+	width?: string;
+	height?: string;
+}
+
+export const SceneCanvas = ({ width, height }: IProps) => {
 	return (
-		<Canvas style={{ width: '100%', height: '100%' }}>
+		<Canvas style={{ width: width ?? '100%', height: height ?? '100%' }}>
 			<GltfModels />
 			<BuildedCubes />
 			<InteractiveGrid />

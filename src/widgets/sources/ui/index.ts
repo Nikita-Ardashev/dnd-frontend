@@ -1,1 +1,1 @@
-export * from './Sources';
+export * from './sources';
