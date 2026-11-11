@@ -64,7 +64,7 @@ graph TD
 
 Воксельный куб сцены:
 - Все обработчики активны только при флаге `isBuild` текущего инструмента
-- **Наведение на грань** → `getCubePosition(e.normal, position)` (`shared/lib/three`) вычисляет позицию соседнего куба
+- **Наведение на грань** → `getCubePosition(e.normal, position)` (`features/build-cubes/lib`) вычисляет позицию соседнего куба
 - **Левый клик** → `construct.addCell(position)`
 - **Правый клик** (`onContextMenu`) → `construct.removeCell(id)`
 - **Hover** → подсветка грани (`CubeSideHighlight`)
@@ -138,4 +138,4 @@ POST /api/models?folder={name}  → загрузка (Axios, тело — Uint8A
 GET  /api/models/{path}         → файл модели/текстуры (прокси к Яндекс Диску)
 ```
 
-Реализован только `GET` в `app/api/models/[...path]/route.ts` — подробнее в [Роутинге и компоновке](./10-routing-and-layout.md). Клиентские функции `apiUploadModels` и `fetchGetModel` (`shared/api`) объявлены; `fetchGetModel` пока нигде не вызывается, модели в сцене грузятся напрямую через `useGLTF`.
+Реализован только `GET` в `app/api/models/[...path]/route.ts` (логика — `src/app/api/get-file-yandex-disk.ts`) — подробнее в [Роутинге и компоновке](./10-routing-and-layout.md). Клиентские функции `apiUploadModels` и `fetchGetModel` (`shared/api`) объявлены; `fetchGetModel` пока нигде не вызывается, модели в сцене грузятся напрямую через `useGLTF`.

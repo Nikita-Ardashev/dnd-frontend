@@ -1,5 +1,1 @@
-import { Platform } from '@/pages/platform';
-
-export default function PlatformPage() {
-	return <Platform />;
-}
+export { Platform as default } from '@/pages/platform';

@@ -1,4 +1,4 @@
-import { IReturnCubePosition, TSideClick } from '@/shared/lib/three';
+import { IReturnCubePosition, TSideClick } from '../lib';
 import { ThreeElements } from '@react-three/fiber';
 import { DoubleSide, MeshStandardMaterial, PlaneGeometry } from 'three';
 

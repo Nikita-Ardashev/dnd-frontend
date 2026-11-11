@@ -8,7 +8,7 @@ import { CubeSideHighlight } from './cube-side-highlight';
 import { useCursor } from '@react-three/drei';
 import { useStoreScene } from '@/entities/scene';
 import { CubeMaterial } from '@/entities/mesh';
-import { IReturnCubePosition, getCubePosition } from '@/shared/lib/three';
+import { IReturnCubePosition, getCubePosition } from '../lib';
 
 type TMesh = ThreeElements['mesh'];
 
@@ -27,6 +27,9 @@ export const BuildableCube = observer(function BuildableCube({
 	const cube = scene.construct.getCubeById(cubeId);
 
 	const [isHovered, setHovered] = useState(false);
+	const [newCubePosition, setNewCubePosition] = useState<IReturnCubePosition | null>(
+		null,
+	);
 	useCursor(isHovered);
 
 	if (cube === undefined) {
@@ -36,10 +39,6 @@ export const BuildableCube = observer(function BuildableCube({
 	const { isBuild } = scene.tools.getCurrent;
 
 	const position = cube.getPlacement.position;
-
-	const [newCubePosition, setNewCubePosition] = useState<IReturnCubePosition | null>(
-		null,
-	);
 
 	const textures = cube.textures?.getTextureMap;
 

@@ -191,7 +191,7 @@ export const BuildableCube = observer(({ id }: Props) => {
 В development-режиме MST подключается к **Redux DevTools Extension** через `mst-middlewares`:
 
 ```typescript
-// shared/lib/debug/use-mst-debug.ts — только при NODE_ENV === 'development'
+// shared/lib/mst/use-mst-debug.ts — только при NODE_ENV === 'development'
 const extension = window.__REDUX_DEVTOOLS_EXTENSION__
 const remoteDevMock = {
   connectViaExtension: (conf) => extension.connect(conf),

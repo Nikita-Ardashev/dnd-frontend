@@ -7,9 +7,9 @@
 | Директория | Что это | Что лежит |
 |---|---|---|
 | `app/` (корень) | **Next.js App Router** — файловый роутинг | `layout.tsx`, `page.tsx`, роуты страниц и API |
-| `src/app/` | **FSD-слой `app`** — инициализация приложения | Корневой MST-стор, провайдеры, глобальные стили |
+| `src/app/` | **FSD-слой `app`** — инициализация приложения | Корневой MST-стор, провайдеры, глобальные стили, каркас `RootLayout`, серверные обработчики API |
 
-Роутер Next.js остаётся «тонким»: файлы в `app/` только импортируют страницы из FSD-слоя `pages` и ничего не знают о бизнес-логике.
+Роутер Next.js остаётся «тонким»: каждый файл в `app/` — однострочный реэкспорт из `src/` (страницы из `src/pages`, каркас и обработчики API из `src/app`). Логики в корневом `app/` нет.
 
 ```mermaid
 graph LR
@@ -21,16 +21,22 @@ graph LR
     end
 
     subgraph "FSD (src/)"
+        RL["app/layouts — RootLayout"]
         PROV["app/providers — Providers"]
         STY["app/styles/globals.css"]
         HDR["widgets/header — Header"]
+        HOME["pages/home — Home"]
         PLAT["pages/platform — Platform"]
+        YD["app/api — getFileYandexDisk"]
     end
 
-    L --> PROV
-    L --> STY
-    L --> HDR
+    L --> RL
+    RL --> PROV
+    RL --> STY
+    RL --> HDR
+    P1 --> HOME
     P2 --> PLAT
+    API --> YD
 ```
 
 > [!NOTE]
@@ -40,13 +46,23 @@ graph LR
 
 | Путь | Файл | Назначение |
 |---|---|---|
-| `/` | `app/page.tsx` | Заглушка (пустой фрагмент), под будущий лендинг/список сцен |
-| `/platform` | `app/platform/page.tsx` | Редактор сцены — рендерит `<Platform />` |
-| `GET /api/models/[...path]` | `app/api/models/[...path]/route.ts` | Прокси файлов с Яндекс Диска |
+| `/` | `app/page.tsx` → `pages/home` | Заглушка `Home` под будущий лендинг/список сцен |
+| `/platform` | `app/platform/page.tsx` → `pages/platform` | Редактор сцены — `Platform` |
+| `GET /api/models/[...path]` | `app/api/models/[...path]/route.ts` → `src/app/api` | Прокси файлов с Яндекс Диска (`getFileYandexDisk`) |
+
+Next.js требует `default`-экспорт у `page.tsx` и `layout.tsx`, а в `src/` разрешены только именованные экспорты. Поэтому корневые файлы переименовывают экспорт при реэкспорте:
+
+```tsx
+// app/page.tsx
+export { Home as default } from '@/pages/home';
+
+// app/api/models/[...path]/route.ts
+export { getFileYandexDisk as GET } from '@/app/api';
+```
 
 ### RootLayout
 
-`app/layout.tsx` — общий каркас для всех страниц:
+`src/app/layouts/root-layout.tsx` — общий каркас для всех страниц (вместе с `metadata`; `app/layout.tsx` только реэкспортирует их):
 
 ```tsx
 <html lang="ru" data-theme="dark">
@@ -72,7 +88,7 @@ Catch-all обработчик проксирует файлы моделей и
 ```mermaid
 sequenceDiagram
     participant C as Браузер
-    participant R as route.ts (Next.js)
+    participant R as getFileYandexDisk (src/app/api)
     participant Y as Yandex Disk API
 
     C->>R: GET /api/models/wall/scene.gltf

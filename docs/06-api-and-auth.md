@@ -67,7 +67,7 @@ GET /api/models/{name}.png    // Текстура
 
 ### API Routes (Next.js)
 
-Серверный обработчик `app/api/models/[...path]/route.ts` (только `GET`) проксирует файлы с Яндекс Диска, подставляя `YANDEX_TOKEN` на сервере. Обработчика `POST` для загрузки пока нет — подробнее в [Роутинге и компоновке](./10-routing-and-layout.md#api-роут-apimodelspath).
+Серверный обработчик `getFileYandexDisk` (`src/app/api`, подключён в `app/api/models/[...path]/route.ts`, только `GET`) проксирует файлы с Яндекс Диска, подставляя `YANDEX_TOKEN` на сервере. Обработчика `POST` для загрузки пока нет — подробнее в [Роутинге и компоновке](./10-routing-and-layout.md#api-роут-apimodelspath).
 
 ## Аутентификация — NextAuth.js v4
 
