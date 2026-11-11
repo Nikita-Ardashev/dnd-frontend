@@ -39,6 +39,12 @@ graph TD
 ```
 src/
 ├── app/                      # Слой инициализации (без слайсов)
+│   ├── api/
+│   │   ├── get-file-yandex-disk.ts  # Прокси файлов с Яндекс Диска (GET /api/models/[...path])
+│   │   └── index.ts
+│   ├── layouts/
+│   │   ├── root-layout.tsx   # RootLayout + metadata: html/body, Providers, Header
+│   │   └── index.ts
 │   ├── store/
 │   │   ├── root-store.ts     # Root, RootStore, начальные данные, module augmentation IStore
 │   │   ├── history.ts        # withHistory для construct + обработчик Ctrl+Z / Ctrl+Shift+Z
@@ -54,6 +60,7 @@ src/
 │       └── index.ts
 │
 ├── pages/
+│   ├── home/                 # Главная — заглушка
 │   └── platform/             # Страница-редактор: Sources | SceneViewport | Layers + Notes
 │
 ├── widgets/
@@ -65,12 +72,13 @@ src/
 │   ├── sources/              # Панель ресурсов (ui/ + model/mock-sources.ts)
 │   ├── layers/               # Дерево слоёв (ui/ + model/mock-layers.ts)
 │   ├── notes/                # Заметки (Drawer)
-│   ├── header/               # Шапка (подключена в корневом app/layout.tsx)
+│   ├── header/               # Шапка (подключена в src/app/layouts/root-layout.tsx)
 │   ├── chat/                 # Заготовка
 │   └── properties/           # Заготовка
 │
 ├── features/
 │   ├── build-cubes/          # Строительство кубов
+│   │   ├── lib/get-cube-position.ts    # getCubePosition — позиция соседнего куба по нормали грани
 │   │   └── ui/
 │   │       ├── build-grid.tsx          # Сетка + размещение первого куба (публичный)
 │   │       ├── buildable-cubes.tsx     # Список кубов (публичный)
@@ -105,11 +113,10 @@ src/
     │   ├── upload-model.ts   # apiUploadModels (Axios POST)
     │   └── get-model.ts      # fetchGetModel (fetch GET)
     ├── lib/
-    │   ├── mst/              # useStore, IStore, withHistory, withMatrix4, MUrlOrCache, zodToMst
-    │   ├── three/            # getCubePosition, matrix4Compose/Decompose, validateTextures
+    │   ├── mst/              # useStore, IStore, withHistory, withMatrix4, MUrlOrCache, zodToMst, useMSTDebug
+    │   ├── three/            # matrix4Compose/Decompose, validateTextures, useGltfScaleFromMatrix4
     │   ├── keyboard/         # handlerKeys
-    │   ├── styles/           # cn()
-    │   └── debug/            # useMSTDebug
+    │   └── styles/           # cn()
     └── ui/                   # UI-кит (Base UI + CVA), HiddenSidebar, Tile
 ```
 

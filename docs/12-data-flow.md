@@ -62,7 +62,7 @@ sequenceDiagram
 sequenceDiagram
     actor U as Пользователь
     participant BC as BuildableCube (features/build-cubes)
-    participant L as shared/lib/three
+    participant L as build-cubes/lib
     participant CN as Construct (MST)
     participant H as withHistory
     participant BCS as BuildableCubes
