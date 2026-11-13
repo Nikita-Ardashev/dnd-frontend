@@ -1,5 +1,7 @@
 import { Tabs } from '@base-ui/react/tabs';
+
 import { cn } from '@/shared/lib/styles';
+
 import styles from './tabs.module.css';
 
 function TabsRoot({ className, ...props }: Tabs.Root.Props) {

@@ -4,10 +4,10 @@
 
 В репозитории есть **две разные директории `app`**, и их легко перепутать:
 
-| Директория | Что это | Что лежит |
-|---|---|---|
-| `app/` (корень) | **Next.js App Router** — файловый роутинг | `layout.tsx`, `page.tsx`, роуты страниц и API |
-| `src/app/` | **FSD-слой `app`** — инициализация приложения | Корневой MST-стор, провайдеры, глобальные стили, каркас `RootLayout`, серверные обработчики API |
+| Директория      | Что это                                       | Что лежит                                                                                       |
+| --------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `app/` (корень) | **Next.js App Router** — файловый роутинг     | `layout.tsx`, `page.tsx`, роуты страниц и API                                                   |
+| `src/app/`      | **FSD-слой `app`** — инициализация приложения | Корневой MST-стор, провайдеры, глобальные стили, каркас `RootLayout`, серверные обработчики API |
 
 Роутер Next.js остаётся «тонким»: каждый файл в `app/` — однострочный реэкспорт из `src/` (страницы из `src/pages`, каркас и обработчики API из `src/app`). Логики в корневом `app/` нет.
 
@@ -44,10 +44,10 @@ graph LR
 
 ## Роуты
 
-| Путь | Файл | Назначение |
-|---|---|---|
-| `/` | `app/page.tsx` → `pages/home` | Заглушка `Home` под будущий лендинг/список сцен |
-| `/platform` | `app/platform/page.tsx` → `pages/platform` | Редактор сцены — `Platform` |
+| Путь                        | Файл                                                | Назначение                                         |
+| --------------------------- | --------------------------------------------------- | -------------------------------------------------- |
+| `/`                         | `app/page.tsx` → `pages/home`                       | Заглушка `Home` под будущий лендинг/список сцен    |
+| `/platform`                 | `app/platform/page.tsx` → `pages/platform`          | Редактор сцены — `Platform`                        |
 | `GET /api/models/[...path]` | `app/api/models/[...path]/route.ts` → `src/app/api` | Прокси файлов с Яндекс Диска (`getFileYandexDisk`) |
 
 Next.js требует `default`-экспорт у `page.tsx` и `layout.tsx`, а в `src/` разрешены только именованные экспорты. Поэтому корневые файлы переименовывают экспорт при реэкспорте:
@@ -66,14 +66,16 @@ export { getFileYandexDisk as GET } from '@/app/api';
 
 ```tsx
 <html lang="ru" data-theme="dark">
-  <body>
-    <div className="root" style={{ display: 'contents' }}>
-      <Providers>        {/* MST + React Query + NextAuth */}
-        <Header />       {/* widgets/header */}
-        <main>{children}</main>
-      </Providers>
-    </div>
-  </body>
+	<body>
+		<div className="root" style={{ display: 'contents' }}>
+			<Providers>
+				{' '}
+				{/* MST + React Query + NextAuth */}
+				<Header /> {/* widgets/header */}
+				<main>{children}</main>
+			</Providers>
+		</div>
+	</body>
 </html>
 ```
 
@@ -113,14 +115,14 @@ sequenceDiagram
 ```tsx
 // src/pages/platform/ui/platform.tsx
 export function Platform() {
-  return (
-    <div className={styles.page}>
-      <Sources />                              {/* левая панель */}
-      <SceneViewport toolbar={<ToolbarScene />} /> {/* центр: 3D-канвас */}
-      <Layers />                               {/* правая панель */}
-      <Notes />                                {/* выезжающий Drawer */}
-    </div>
-  )
+	return (
+		<div className={styles.page}>
+			<Sources /> {/* левая панель */}
+			<SceneViewport toolbar={<ToolbarScene />} /> {/* центр: 3D-канвас */}
+			<Layers /> {/* правая панель */}
+			<Notes /> {/* выезжающий Drawer */}
+		</div>
+	);
 }
 ```
 
@@ -155,30 +157,30 @@ export function Platform() {
 ```tsx
 // widgets/scene-viewport/ui/scene-viewport.tsx
 export const SceneViewport = observer(function SceneViewport({ toolbar }: IProps) {
-  const { isMove } = useStoreScene().tools.getCurrent
-  return (
-    <div className={`${styles.scene} ${isMove ? styles.scene__is_move : ''}`}>
-      {toolbar && <div className={styles.scene__tools}>{toolbar}</div>}
-      <SceneCanvas />
-    </div>
-  )
-})
+	const { isMove } = useStoreScene().tools.getCurrent;
+	return (
+		<div className={`${styles.scene} ${isMove ? styles.scene__is_move : ''}`}>
+			{toolbar && <div className={styles.scene__tools}>{toolbar}</div>}
+			<SceneCanvas />
+		</div>
+	);
+});
 ```
 
 **Зачем:** виджет и фича оказываются независимыми, а связывает их страница — верхний слой. Это стандартный FSD-приём для композиции: `widgets` не тянут конкретные `features`, если те могут быть заменены (например, другой тулбар для режима просмотра).
 
 ## Статус виджетов
 
-| Виджет / фича | Слой | Состояние | Источник данных |
-|---|---|---|---|
-| `Header` | widgets | Пустой `<header>` | — |
-| `SceneViewport` | widgets | ✅ Работает | MST `scene` |
-| `ToolbarScene` | features | ✅ Работает | MST `scene.tools` |
-| `Sources` | widgets | 🟡 UI готов | Мок `MOCK_SOURCES` (`model/mock-sources.ts`) |
-| `Layers` | widgets | 🟡 UI готов | Мок `MOCK_LAYERS` (`model/mock-layers.ts`) |
-| `Notes` | widgets | 🟡 Каркас Drawer | Текст-заглушка |
-| `UploadModel` | features | 🟡 Не подключена к странице | Axios `POST` (роута нет) |
-| `Chat`, `Properties` | widgets | ⬜ Заглушки | — |
+| Виджет / фича        | Слой     | Состояние                   | Источник данных                              |
+| -------------------- | -------- | --------------------------- | -------------------------------------------- |
+| `Header`             | widgets  | Пустой `<header>`           | —                                            |
+| `SceneViewport`      | widgets  | ✅ Работает                 | MST `scene`                                  |
+| `ToolbarScene`       | features | ✅ Работает                 | MST `scene.tools`                            |
+| `Sources`            | widgets  | 🟡 UI готов                 | Мок `MOCK_SOURCES` (`model/mock-sources.ts`) |
+| `Layers`             | widgets  | 🟡 UI готов                 | Мок `MOCK_LAYERS` (`model/mock-layers.ts`)   |
+| `Notes`              | widgets  | 🟡 Каркас Drawer            | Текст-заглушка                               |
+| `UploadModel`        | features | 🟡 Не подключена к странице | Axios `POST` (роута нет)                     |
+| `Chat`, `Properties` | widgets  | ⬜ Заглушки                 | —                                            |
 
 ## Известные отклонения от правил
 

@@ -1,9 +1,12 @@
 'use client';
-import { cn } from '@/shared/lib/styles';
-import { CSSProperties, ReactNode, useState } from 'react';
-import styles from './hidden-sidebar.module.sass';
 import { SquareArrowRightEnterIcon } from 'lucide-react';
+import { CSSProperties, ReactNode, useState } from 'react';
+
+import { cn } from '@/shared/lib/styles';
+
 import { Button } from '../button';
+
+import styles from './hidden-sidebar.module.sass';
 
 type TOrientation = 'left' | 'right';
 type TPositionButton = 'start' | 'end' | 'center';

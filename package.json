@@ -10,8 +10,8 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "eslint .",
-		"prettier:check": "npx prettier --check \"./*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-		"prettier:write": "npx prettier --write \"./*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+		"format:check": "bun fmt -c \"./**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+		"format": "bun fmt \"./**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
 		"ui:add": "node scripts/add-ui.ts",
 		"fsd": "steiger ./src"
 	},

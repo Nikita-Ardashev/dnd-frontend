@@ -2,7 +2,9 @@
 
 import { Drawer as DrawerPrimitive } from '@base-ui/react/drawer';
 import type React from 'react';
+
 import { cn } from '@/shared/lib/styles';
+
 import styles from './drawer.module.css';
 
 function DrawerRoot({ ...props }: DrawerPrimitive.Root.Props) {

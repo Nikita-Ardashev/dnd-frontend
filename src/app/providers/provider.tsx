@@ -1,8 +1,10 @@
 'use client';
 
 import { ReactNode, useEffect } from 'react';
-import { handlerChangeHistory, RootStore } from '../store';
+
 import { useMSTDebug } from '@/shared/lib/mst';
+
+import { handlerChangeHistory, RootStore } from '../store';
 
 export const Provider = ({ children }: { children: ReactNode }) => {
 	useMSTDebug(RootStore);

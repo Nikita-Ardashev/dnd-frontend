@@ -4,6 +4,7 @@ import { Button as ButtonPrimitive } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/shared/lib/styles';
+
 import styles from './button.module.css';
 
 const buttonVariants = cva(styles.base, {

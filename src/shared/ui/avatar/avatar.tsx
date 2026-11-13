@@ -1,7 +1,9 @@
 'use client';
 
 import { Avatar } from '@base-ui/react/avatar';
+
 import { cn } from '@/shared/lib/styles';
+
 import styles from './avatar.module.css';
 
 function AvatarRoot({ className, ...props }: Avatar.Root.Props) {

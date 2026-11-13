@@ -29,7 +29,7 @@ graph TD
 
 ```typescript
 // next.config.ts
-reactCompiler: true  // в Next.js 16 — опция верхнего уровня
+reactCompiler: true; // в Next.js 16 — опция верхнего уровня
 ```
 
 **Что делает:** Автоматически добавляет `useMemo`, `useCallback` и мемоизацию в компоненты без ручного написания. Устраняет целый класс проблем с лишними ре-рендерами.
@@ -44,17 +44,18 @@ next dev --turbopack
 ```
 
 Замена Webpack на Rust-based сборщик для dev-режима. Ускоряет:
+
 - Холодный старт
 - Hot Module Replacement (HMR)
 - Инкрементальную пересборку
 
 ## 3. Оптимизация CSS
 
-| Инструмент | Назначение |
-|---|---|
-| **Critters** (`critters@^0.0.25`) | Инлайнит критический CSS в `<head>` для быстрого First Paint |
-| **`experimental.optimizeCss`** | Минификация и дедупликация CSS в production |
-| **PostCSS pipeline** | `@tailwindcss/postcss` → `flexbugs-fixes` → `postcss-preset-env` (с autoprefixer) |
+| Инструмент                        | Назначение                                                                        |
+| --------------------------------- | --------------------------------------------------------------------------------- |
+| **Critters** (`critters@^0.0.25`) | Инлайнит критический CSS в `<head>` для быстрого First Paint                      |
+| **`experimental.optimizeCss`**    | Минификация и дедупликация CSS в production                                       |
+| **PostCSS pipeline**              | `@tailwindcss/postcss` → `flexbugs-fixes` → `postcss-preset-env` (с autoprefixer) |
 
 ## 4. MobX Fine-Grained Reactivity
 
@@ -105,9 +106,9 @@ const BuildableCube = observer(() => (
 
 ```typescript
 MUrlOrCache = {
-  url: 'https://...',         // Основной источник
-  cacheUrl: 'data:image/...'  // Приоритетный, если задан
-}
+	url: 'https://...', // Основной источник
+	cacheUrl: 'data:image/...', // Приоритетный, если задан
+};
 // getSource → cacheUrl ?? url
 ```
 
@@ -126,15 +127,15 @@ SVG разрешены, но с CSP-политикой, предотвращаю
 
 ## Что можно добавить
 
-| Оптимизация | Статус |
-|---|---|
-| ✅ React Compiler | Включён |
-| ✅ Turbopack | Включён |
-| ✅ Critical CSS | Включён |
-| ✅ MobX granular updates | Используется |
-| ✅ Static geometry | Используется |
-| ✅ Query persistence | Настроено |
-| ⬜ Three.js instancing | Не используется (потенциал для кубов) |
-| ⬜ Web Workers | Не используются (потенциал для расчётов) |
-| ⬜ Dynamic imports | Не замечены (`React.lazy` / `next/dynamic`) |
-| ⬜ Image optimization | `next/image` не замечен для текстур |
+| Оптимизация              | Статус                                      |
+| ------------------------ | ------------------------------------------- |
+| ✅ React Compiler        | Включён                                     |
+| ✅ Turbopack             | Включён                                     |
+| ✅ Critical CSS          | Включён                                     |
+| ✅ MobX granular updates | Используется                                |
+| ✅ Static geometry       | Используется                                |
+| ✅ Query persistence     | Настроено                                   |
+| ⬜ Three.js instancing   | Не используется (потенциал для кубов)       |
+| ⬜ Web Workers           | Не используются (потенциал для расчётов)    |
+| ⬜ Dynamic imports       | Не замечены (`React.lazy` / `next/dynamic`) |
+| ⬜ Image optimization    | `next/image` не замечен для текстур         |

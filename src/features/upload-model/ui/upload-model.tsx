@@ -1,8 +1,9 @@
 'use client';
-import { apiUploadModels } from '@/shared/api';
-import { Input } from '@/shared/ui/input';
 import { observer } from 'mobx-react-lite';
 import { FormEvent } from 'react';
+
+import { apiUploadModels } from '@/shared/api';
+import { Input } from '@/shared/ui/input';
 
 export const UploadModel = observer(function UploadModel() {
 	const handlerUpload = (e: FormEvent<HTMLInputElement>) => {

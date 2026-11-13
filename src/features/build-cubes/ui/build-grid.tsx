@@ -5,7 +5,9 @@ import { ThreeEvent } from '@react-three/fiber';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { MeshBasicMaterial, PlaneGeometry } from 'three';
+
 import { useStoreScene } from '@/entities/scene';
+
 import { CubePlaceholder } from './cube-placeholder';
 
 type TPosition = [x: number, y: number, z: number];

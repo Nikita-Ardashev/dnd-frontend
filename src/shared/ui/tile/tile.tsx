@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import { HTMLAttributes } from 'react';
-import styles from './tile.module.sass';
+
 import { cn } from '@/shared/lib/styles';
+
+import styles from './tile.module.sass';
 
 interface ITile extends HTMLAttributes<HTMLDivElement> {
 	img: string;

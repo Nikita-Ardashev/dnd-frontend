@@ -1,4 +1,5 @@
 import { SnapshotIn } from 'mobx-state-tree';
+
 import { SceneTools } from '../model/editor/scene-tools.model';
 
 type TToolsSnapshot = SnapshotIn<typeof SceneTools>;

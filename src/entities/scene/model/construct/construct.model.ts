@@ -1,7 +1,8 @@
 import { SnapshotIn, t } from 'mobx-state-tree';
 import { generateUUID } from 'three/src/math/MathUtils.js';
-import { matrix4Compose } from '@/shared/lib/three';
+
 import { MCubeMesh, MModelInternalMesh } from '@/entities/mesh/@x/scene';
+import { matrix4Compose } from '@/shared/lib/three';
 
 export const Construct = t
 	.model('Construct', {
@@ -33,6 +34,7 @@ export const Construct = t
 			type TCube = SnapshotIn<typeof MCubeMesh>;
 			const cube: TCube = {
 				id: generateUUID(),
+				isHovered: true,
 			};
 			const rotation = [0, 0, 0];
 			const scale = [1, 1, 1];

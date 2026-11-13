@@ -1,7 +1,9 @@
 'use client';
 import { useTexture } from '@react-three/drei';
 import { FrontSide, MeshStandardMaterialParameters } from 'three';
+
 import { validateTextures } from '@/shared/lib/three';
+
 import { ITextureMap } from '../model/texture';
 
 interface IProps {

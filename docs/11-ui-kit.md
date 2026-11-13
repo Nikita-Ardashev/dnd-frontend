@@ -13,22 +13,22 @@ graph LR
 
 ## Каталог компонентов
 
-| Компонент | Основа | Экспорт | Где используется |
-|---|---|---|---|
-| `button` | Base UI Button + CVA | `Button`, `buttonVariants`, `Spinner`, `ArrowPointer` | `HiddenSidebar`, `Notes` |
-| `input` | Base UI Input | `Input` | `Sources` (поиск), `UploadModel` |
-| `checkbox` | Base UI Checkbox | `Checkbox`, `CheckboxIndicator` | `Layers` |
-| `tabs` | Base UI Tabs | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`, `TabsIndicator` | `Sources` |
-| `toolbar` | Base UI Toolbar | `Toolbar`, … | `ToolbarScene` |
-| `toggle-group` | Base UI ToggleGroup | `ToggleGroup`, `ToggleGroupItem` | `ToolbarScene` |
-| `toggle` | Base UI Toggle | `Toggle` | — |
-| `tooltip` | Base UI Tooltip | `Tooltip`, `TooltipTrigger`, `TooltipPortal`, `TooltipPositioner`, `TooltipPopup`, `TooltipArrow` | `ToolbarScene` |
-| `drawer` | Base UI Drawer | `Drawer`, `DrawerTrigger`, `DrawerPortal`, `DrawerPopup`, … | `Notes` |
-| `collapsible` | Base UI Collapsible | `Collapsible`, `CollapsibleTrigger`, `CollapsiblePanel` | — (под дерево слоёв) |
-| `avatar` | Base UI Avatar | `Avatar`, `AvatarImage`, `AvatarFallback` | — (под профиль) |
-| `select`, `dropdown-menu`, `autocomplete`, `scroll-area` | Base UI | — | — |
-| `hidden-sidebar` | **собственный** | `default HiddenSidebar` | `Sources`, `Layers` |
-| `tile` | **собственный** (`next/image`) | `Tile` | `Sources` |
+| Компонент                                                | Основа                         | Экспорт                                                                                           | Где используется                 |
+| -------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `button`                                                 | Base UI Button + CVA           | `Button`, `buttonVariants`, `Spinner`, `ArrowPointer`                                             | `HiddenSidebar`, `Notes`         |
+| `input`                                                  | Base UI Input                  | `Input`                                                                                           | `Sources` (поиск), `UploadModel` |
+| `checkbox`                                               | Base UI Checkbox               | `Checkbox`, `CheckboxIndicator`                                                                   | `Layers`                         |
+| `tabs`                                                   | Base UI Tabs                   | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`, `TabsIndicator`                                 | `Sources`                        |
+| `toolbar`                                                | Base UI Toolbar                | `Toolbar`, …                                                                                      | `ToolbarScene`                   |
+| `toggle-group`                                           | Base UI ToggleGroup            | `ToggleGroup`, `ToggleGroupItem`                                                                  | `ToolbarScene`                   |
+| `toggle`                                                 | Base UI Toggle                 | `Toggle`                                                                                          | —                                |
+| `tooltip`                                                | Base UI Tooltip                | `Tooltip`, `TooltipTrigger`, `TooltipPortal`, `TooltipPositioner`, `TooltipPopup`, `TooltipArrow` | `ToolbarScene`                   |
+| `drawer`                                                 | Base UI Drawer                 | `Drawer`, `DrawerTrigger`, `DrawerPortal`, `DrawerPopup`, …                                       | `Notes`                          |
+| `collapsible`                                            | Base UI Collapsible            | `Collapsible`, `CollapsibleTrigger`, `CollapsiblePanel`                                           | — (под дерево слоёв)             |
+| `avatar`                                                 | Base UI Avatar                 | `Avatar`, `AvatarImage`, `AvatarFallback`                                                         | — (под профиль)                  |
+| `select`, `dropdown-menu`, `autocomplete`, `scroll-area` | Base UI                        | —                                                                                                 | —                                |
+| `hidden-sidebar`                                         | **собственный**                | `default HiddenSidebar`                                                                           | `Sources`, `Layers`              |
+| `tile`                                                   | **собственный** (`next/image`) | `Tile`                                                                                            | `Sources`                        |
 
 ## Паттерн обёртки над Base UI
 
@@ -36,15 +36,23 @@ graph LR
 
 ```tsx
 // shared/ui/tabs/tabs.tsx
-import { Tabs } from '@base-ui/react/tabs'
-import { cn } from '@/shared/lib/styles'
-import styles from './tabs.module.css'
+import { Tabs } from '@base-ui/react/tabs';
+
+import { cn } from '@/shared/lib/styles';
+
+import styles from './tabs.module.css';
 
 function TabsRoot({ className, ...props }: Tabs.Root.Props) {
-  return <Tabs.Root className={cn(className, styles.root)} {...props} data-slot="tabs-root" />
+	return (
+		<Tabs.Root
+			className={cn(className, styles.root)}
+			{...props}
+			data-slot="tabs-root"
+		/>
+	);
 }
 // ...
-export { TabsRoot as Tabs, TabsContent, TabsList, TabsTrigger }
+export { TabsRoot as Tabs, TabsContent, TabsList, TabsTrigger };
 ```
 
 Ключевые соглашения:
@@ -80,13 +88,13 @@ Base UI позволяет подменить DOM-элемент части че
 
 ```tsx
 <HiddenSidebar
-  title="Ресурсы"
-  orientation="left"        // 'left' | 'right' — к какому краю прижата
-  positionButton="start"    // 'start' | 'center' | 'end' — где кнопка по вертикали
-  maxWidth="324px"          // ширина панели и величина сдвига при сворачивании
-  onChange={() => {}}       // опционально, вызывается при переключении
+	title="Ресурсы"
+	orientation="left" // 'left' | 'right' — к какому краю прижата
+	positionButton="start" // 'start' | 'center' | 'end' — где кнопка по вертикали
+	maxWidth="324px" // ширина панели и величина сдвига при сворачивании
+	onChange={() => {}} // опционально, вызывается при переключении
 >
-  {children}
+	{children}
 </HiddenSidebar>
 ```
 
@@ -105,10 +113,10 @@ Base UI позволяет подменить DOM-элемент части че
 
 ## Стили кита
 
-| Тип файла | Где | Почему |
-|---|---|---|
-| `*.module.css` | компоненты из roiui | Так их поставляет реестр; не требуют SASS-переменных |
-| `*.module.sass` | `hidden-sidebar`, `tile` | Собственные компоненты, пишутся в стиле проекта |
+| Тип файла       | Где                      | Почему                                               |
+| --------------- | ------------------------ | ---------------------------------------------------- |
+| `*.module.css`  | компоненты из roiui      | Так их поставляет реестр; не требуют SASS-переменных |
+| `*.module.sass` | `hidden-sidebar`, `tile` | Собственные компоненты, пишутся в стиле проекта      |
 
 Цвета берутся из CSS Custom Properties темы (`var(--card)`, `var(--foreground)` и т.д.), поэтому компоненты автоматически следуют `data-theme`. Исключение — `Tile` с захардкоженным фоном `#FDAC8A`.
 

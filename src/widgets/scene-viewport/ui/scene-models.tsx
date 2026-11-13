@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite';
+
 import { GLTFModel } from '@/entities/mesh';
 import { useStoreScene } from '@/entities/scene';
 import { TransformControls } from '@/features/transform-mesh';

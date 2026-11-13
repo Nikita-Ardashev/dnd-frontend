@@ -1,10 +1,11 @@
 'use client';
 
-import { observer } from 'mobx-react-lite';
 import { useGLTF } from '@react-three/drei';
-import { Box3 } from 'three';
+import { observer } from 'mobx-react-lite';
 import { Instance } from 'mobx-state-tree';
 import { useLayoutEffect } from 'react';
+import { Box3 } from 'three';
+
 import { MModelInternalMesh } from '../model/model-mesh';
 
 interface IProps {

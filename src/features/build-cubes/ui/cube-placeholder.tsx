@@ -1,12 +1,13 @@
 'use client';
 
+import { useCursor } from '@react-three/drei';
 import { ThreeElements, ThreeEvent } from '@react-three/fiber';
+import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { BoxGeometry, Vector3 } from 'three';
-import { observer } from 'mobx-react-lite';
-import { useCursor } from '@react-three/drei';
-import { useStoreScene } from '@/entities/scene';
+
 import { CubeMaterial } from '@/entities/mesh';
+import { useStoreScene } from '@/entities/scene';
 
 type TMesh = ThreeElements['mesh'];
 
@@ -45,6 +46,7 @@ export const CubePlaceholder = observer(function CubePlaceholder({
 		if (!isNewBuild) return;
 		e.stopPropagation();
 		scene.construct.addCell(cellPosition);
+		setHovered(false);
 	};
 
 	return (

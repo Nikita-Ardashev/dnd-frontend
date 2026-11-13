@@ -1,7 +1,9 @@
-import { Canvas } from '@react-three/fiber';
 import { GizmoHelper, GizmoViewport } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+
 import { Camera } from '@/entities/scene';
 import { BuildableCubes, BuildGrid } from '@/features/build-cubes';
+
 import { SceneModels } from './scene-models';
 
 interface IProps {

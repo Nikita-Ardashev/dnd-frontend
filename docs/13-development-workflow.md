@@ -2,14 +2,14 @@
 
 ## Скрипты
 
-| Команда | Что делает |
-|---|---|
-| `npm run dev` | Dev-сервер на Turbopack |
-| `npm run build` / `npm start` | Production-сборка и запуск |
-| `npm run lint` | ESLint по всему проекту (включая FSD-границы) |
-| `npm run fsd` | Steiger — структурная проверка FSD |
-| `npm run prettier:check` / `prettier:write` | Проверка/форматирование Prettier |
-| `node scripts/create-slice.mjs <layer> <name>` | Генерация нового FSD-слайса |
+| Команда                                        | Что делает                                    |
+| ---------------------------------------------- | --------------------------------------------- |
+| `npm run dev`                                  | Dev-сервер на Turbopack                       |
+| `npm run build` / `npm start`                  | Production-сборка и запуск                    |
+| `npm run lint`                                 | ESLint по всему проекту (включая FSD-границы) |
+| `npm run fsd`                                  | Steiger — структурная проверка FSD            |
+| `npm run prettier:check` / `prettier:write`    | Проверка/форматирование Prettier              |
+| `node scripts/create-slice.mjs <layer> <name>` | Генерация нового FSD-слайса                   |
 
 > [!NOTE]
 > `prettier:*` сейчас проверяют только файлы в корне (`./*.{...}`), без `src/`. Для всего проекта нужен глоб `"./**/*.{...}"`.
@@ -44,9 +44,9 @@ src/features/rotate-camera/
 ## Чек-лист: новая фича
 
 1. **Определить слой.**
-   - Действие пользователя над сущностью (выбрать инструмент, загрузить модель) → `features`.
-   - Самостоятельный блок интерфейса из нескольких фич/сущностей → `widgets`.
-   - Новая предметная модель (персонаж, заметка, слой) → `entities`.
+    - Действие пользователя над сущностью (выбрать инструмент, загрузить модель) → `features`.
+    - Самостоятельный блок интерфейса из нескольких фич/сущностей → `widgets`.
+    - Новая предметная модель (персонаж, заметка, слой) → `entities`.
 2. **Сгенерировать каркас** через `create-slice`. Правила раскладки — в [14. Правила FSD](./14-fsd-rules.md).
 3. **Модель данных.** Если данные нужны нескольким слайсам или должны попасть в историю — MST-модель в `entities/*/model`, подключённая в `Root` (`src/app/store/root-store.ts`). Иначе — локальное состояние.
 4. **Доступ к стору** — через хук сущности (`useStoreScene` из `@/entities/scene`, `useStoreProfile` из `@/entities/profile`) или общий `useStore` из `@/shared/lib/mst`; компонент оборачивается в `observer()`.
@@ -67,16 +67,18 @@ npm run fsd
 
 ```typescript
 // entities/note/model/note.model.ts
-import { t } from 'mobx-state-tree'
+import { t } from 'mobx-state-tree';
 
 export const MNote = t
-  .model('Note', {
-    id: t.identifier,
-    text: t.optional(t.string, ''),
-  })
-  .actions((self) => ({
-    setText(text: string) { self.text = text },
-  }))
+	.model('Note', {
+		id: t.identifier,
+		text: t.optional(t.string, ''),
+	})
+	.actions((self) => ({
+		setText(text: string) {
+			self.text = text;
+		},
+	}));
 ```
 
 - Префикс `M` для MST-моделей (`MMesh`, `MCubeMesh`, `MTexture`), типы снапшотов — `T*` через `SnapshotOut<typeof M*>`.
@@ -87,15 +89,15 @@ export const MNote = t
 
 ## Соглашения об именовании
 
-| Что | Формат | Пример |
-|---|---|---|
-| Директории слайсов и сегментов | kebab-case | `scene-viewport`, `hidden-sidebar` |
-| Файлы компонентов | kebab-case | `buildable-cube.tsx` |
-| Файлы моделей | `*.model.ts` или kebab-case | `scene.model.ts`, `cube-mesh.ts` |
-| Компоненты | PascalCase, именованный экспорт | `export const ToolbarScene` |
-| Пропсы | `I*Props` / `IProps` | `IProps` в `scene-viewport.tsx` |
-| Типы | `T*` | `TTabs`, `TModelExternalMesh` |
-| SASS-классы | kebab-case + BEM-модификаторы | `.button-wrapper--close`, `scene__is_move` |
+| Что                            | Формат                          | Пример                                     |
+| ------------------------------ | ------------------------------- | ------------------------------------------ |
+| Директории слайсов и сегментов | kebab-case                      | `scene-viewport`, `hidden-sidebar`         |
+| Файлы компонентов              | kebab-case                      | `buildable-cube.tsx`                       |
+| Файлы моделей                  | `*.model.ts` или kebab-case     | `scene.model.ts`, `cube-mesh.ts`           |
+| Компоненты                     | PascalCase, именованный экспорт | `export const ToolbarScene`                |
+| Пропсы                         | `I*Props` / `IProps`            | `IProps` в `scene-viewport.tsx`            |
+| Типы                           | `T*`                            | `TTabs`, `TModelExternalMesh`              |
+| SASS-классы                    | kebab-case + BEM-модификаторы   | `.button-wrapper--close`, `scene__is_move` |
 
 > [!WARNING]
 > На Windows файловая система нечувствительна к регистру. Переименование `Layers.tsx → layers.tsx` git может не заметить — используйте `git mv -f Layers.tsx layers.tsx`, иначе на Linux/CI импорт `./layers` сломается.

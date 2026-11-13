@@ -1,10 +1,13 @@
 'use client';
 
-import styles from './scene-viewport.module.sass';
 import { observer } from 'mobx-react-lite';
-import { useStoreScene } from '@/entities/scene';
 import { ReactNode } from 'react';
+
+import { useStoreScene } from '@/entities/scene';
+
 import { SceneCanvas } from './scene-canvas';
+
+import styles from './scene-viewport.module.sass';
 
 interface IProps {
 	toolbar?: ReactNode;

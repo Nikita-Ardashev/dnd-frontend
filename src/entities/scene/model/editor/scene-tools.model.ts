@@ -1,14 +1,7 @@
 import { ISimpleType, t } from 'mobx-state-tree';
 
 export type TypeLiteralTools =
-	| 'transform'
-	| 'scale'
-	| 'drag'
-	| 'rotate'
-	| 'move'
-	| 'build'
-	| 'newBuild'
-	| 'axes';
+	'transform' | 'scale' | 'drag' | 'rotate' | 'move' | 'build' | 'newBuild' | 'axes';
 
 export const MSTTypeLiteralTools = t.union<ISimpleType<TypeLiteralTools>[]>(
 	t.literal('transform'),

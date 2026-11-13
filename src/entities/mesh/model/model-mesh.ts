@@ -1,7 +1,9 @@
 import { cast, SnapshotOut, t } from 'mobx-state-tree';
-import { MMesh } from './mesh';
 import { Vector3Tuple } from 'three';
+
 import { MUrlOrCache, withMatrix4 } from '@/shared/lib/mst';
+
+import { MMesh } from './mesh';
 
 export const MModelMesh = t.compose(
 	'ModelMesh',

@@ -1,10 +1,11 @@
 'use client';
 
 import { observer } from 'mobx-react-lite';
-import { useStoreScene } from '@/entities/scene';
-import { Toolbar } from '@/shared/ui/toolbar';
 import Image from 'next/image';
+
+import { useStoreScene } from '@/entities/scene';
 import { ToggleGroup, ToggleGroupItem } from '@/shared/ui/toggle-group';
+import { Toolbar } from '@/shared/ui/toolbar';
 import {
 	Tooltip,
 	TooltipArrow,

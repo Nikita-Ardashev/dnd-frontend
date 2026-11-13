@@ -2,13 +2,13 @@
 
 ## Стек
 
-| Библиотека | Назначение |
-|---|---|
-| **Three.js** | Низкоуровневый 3D-движок (WebGL) |
-| **React Three Fiber (R3F)** | Декларативная React-обёртка над Three.js |
-| **@react-three/drei** | Готовые хелперы: `useTexture`, `GizmoHelper`, `DragControls`, `PivotControls` |
-| **AnimeJS** | Установлен, в коде пока не используется |
-| **Leva** | Debug-панели для 3D (devDependency), в коде пока не используется |
+| Библиотека                  | Назначение                                                                    |
+| --------------------------- | ----------------------------------------------------------------------------- |
+| **Three.js**                | Низкоуровневый 3D-движок (WebGL)                                              |
+| **React Three Fiber (R3F)** | Декларативная React-обёртка над Three.js                                      |
+| **@react-three/drei**       | Готовые хелперы: `useTexture`, `GizmoHelper`, `DragControls`, `PivotControls` |
+| **AnimeJS**                 | Установлен, в коде пока не используется                                       |
+| **Leva**                    | Debug-панели для 3D (devDependency), в коде пока не используется              |
 
 ## Архитектура сцены
 
@@ -38,18 +38,19 @@ graph TD
 
 ## Компоненты
 
-| Компонент | Слайс |
-|---|---|
-| `SceneViewport`, `SceneCanvas`, `SceneModels` | `widgets/scene-viewport` |
-| `BuildGrid`, `BuildableCubes`, `BuildableCube`, `CubePlaceholder`, `CubeSideHighlight` | `features/build-cubes` |
-| `TransformControls` | `features/transform-mesh` |
-| `ToolbarScene` | `features/select-tool` |
-| `GLTFModel`, `CubeMaterial` | `entities/mesh` |
-| `Camera` | `entities/scene` |
+| Компонент                                                                              | Слайс                     |
+| -------------------------------------------------------------------------------------- | ------------------------- |
+| `SceneViewport`, `SceneCanvas`, `SceneModels`                                          | `widgets/scene-viewport`  |
+| `BuildGrid`, `BuildableCubes`, `BuildableCube`, `CubePlaceholder`, `CubeSideHighlight` | `features/build-cubes`    |
+| `TransformControls`                                                                    | `features/transform-mesh` |
+| `ToolbarScene`                                                                         | `features/select-tool`    |
+| `GLTFModel`, `CubeMaterial`                                                            | `entities/mesh`           |
+| `Camera`                                                                               | `entities/scene`          |
 
 ### SceneCanvas
 
 Корневой `<Canvas>` из R3F. Настраивает:
+
 - Ambient + Directional освещение
 - `GizmoHelper` (навигационный куб в углу)
 - Вложенные 3D-компоненты
@@ -63,6 +64,7 @@ graph TD
 ### BuildableCube
 
 Воксельный куб сцены:
+
 - Все обработчики активны только при флаге `isBuild` текущего инструмента
 - **Наведение на грань** → `getCubePosition(e.normal, position)` (`features/build-cubes/lib`) вычисляет позицию соседнего куба
 - **Левый клик** → `construct.addCell(position)`
@@ -84,6 +86,7 @@ graph TD
 ### TransformControls
 
 Обёртка над инструментами манипуляции модели:
+
 - `isDrag` → `DragControls` — свободное перемещение (порог 5px)
 - иначе → `PivotControls`: оси/вращение/масштаб включаются флагами `isAxes`/`isRotate`/`isScale`; гизмо активно только у выделенной модели
 - Клик по модели → выделение (`addSelectedByMesh`), клик мимо (`onPointerMissed`) → снятие выделения
@@ -99,15 +102,15 @@ graph TD
 
 Управляется через модель `SceneTools` в MST: массив `Tool` + `currentId`. Каждый `Tool` — набор булевых флагов (`isMove`, `isBuild`, `isNewBuild`, `isDrag`, `isAxes`, `isRotate`, `isScale`), компоненты читают флаги из `tools.getCurrent`. Начальный набор создаёт `createDefaultTools()` из `entities/scene/config/default-tools.ts`:
 
-| Инструмент | Описание |
-|---|---|
-| `move` | Перемещение камеры (`isMove`) |
-| `build` | Строительство кубов: достройка к граням и установка на сетку (`isBuild` + `isNewBuild`) |
-| `drag` | Перетаскивание моделей |
-| `axes` | Перемещение по осям |
-| `rotate` | Поворот модели |
-| `scale` | Масштабирование модели |
-| `transform` | Комбинированная трансформация (`isAxes` + `isRotate` + `isScale`) |
+| Инструмент  | Описание                                                                                |
+| ----------- | --------------------------------------------------------------------------------------- |
+| `move`      | Перемещение камеры (`isMove`)                                                           |
+| `build`     | Строительство кубов: достройка к граням и установка на сетку (`isBuild` + `isNewBuild`) |
+| `drag`      | Перетаскивание моделей                                                                  |
+| `axes`      | Перемещение по осям                                                                     |
+| `rotate`    | Поворот модели                                                                          |
+| `scale`     | Масштабирование модели                                                                  |
+| `transform` | Комбинированная трансформация (`isAxes` + `isRotate` + `isScale`)                       |
 
 Литерал `newBuild` есть в `TypeLiteralTools`, но отдельного инструмента для него нет.
 
@@ -115,10 +118,12 @@ graph TD
 
 > [!TIP]
 > Геометрии и материалы Three.js создаются **один раз** вне React-компонентов для экономии памяти:
+>
 > ```typescript
-> const geometry = new BoxGeometry(1, 1)       // Создаётся 1 раз
-> const planeGeo = new PlaneGeometry(0.9, 0.9) // Переиспользуется всеми кубами
+> const geometry = new BoxGeometry(1, 1); // Создаётся 1 раз
+> const planeGeo = new PlaneGeometry(0.9, 0.9); // Переиспользуется всеми кубами
 > ```
+>
 > При сотнях кубов это критично — иначе каждый куб создавал бы свою копию геометрии.
 >
 > Исключение — `BuildGrid`: `PlaneGeometry` и `MeshBasicMaterial` создаются прямо в JSX на каждом рендере.

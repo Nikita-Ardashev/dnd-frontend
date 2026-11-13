@@ -1,11 +1,14 @@
 'use client';
-import styles from './sources.module.sass';
-import { Tile } from '@/shared/ui/tile';
 import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
-import { MOCK_SOURCES, TSourceTab } from '../model/mock-sources';
-import { Input } from '@/shared/ui/input';
+
 import { HiddenSidebar } from '@/shared/ui/hidden-sidebar';
+import { Input } from '@/shared/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
+import { Tile } from '@/shared/ui/tile';
+
+import { MOCK_SOURCES, TSourceTab } from '../model/mock-sources';
+
+import styles from './sources.module.sass';
 
 export function Sources() {
 	const [activeTab, setActiveTab] = useState<TSourceTab>('all');

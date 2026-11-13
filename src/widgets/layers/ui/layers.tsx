@@ -1,8 +1,11 @@
-import { Checkbox, CheckboxIndicator } from '@/shared/ui/checkbox';
-import styles from './layers.module.sass';
 import { Check } from 'lucide-react';
+
+import { Checkbox, CheckboxIndicator } from '@/shared/ui/checkbox';
 import { HiddenSidebar } from '@/shared/ui/hidden-sidebar';
+
 import { ILayer, MOCK_LAYERS } from '../model/mock-layers';
+
+import styles from './layers.module.sass';
 
 const renderLayers = (layers: ILayer[], level: number = 0) => {
 	return layers.map((layer) => (

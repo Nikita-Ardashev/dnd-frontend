@@ -7,19 +7,19 @@
 ```typescript
 // Persistence: localStorage с 24-часовым TTL
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      gcTime: 1000 * 60 * 60 * 24,  // 24 часа
-    }
-  }
-})
+	defaultOptions: {
+		queries: {
+			gcTime: 1000 * 60 * 60 * 24, // 24 часа
+		},
+	},
+});
 
 // Персистенция подключается в useEffect (только на клиенте):
 persistQueryClient({
-  queryClient,
-  persister: createSyncStoragePersister({ storage: window.localStorage }),
-  maxAge: 1000 * 60 * 60 * 24,
-})
+	queryClient,
+	persister: createSyncStoragePersister({ storage: window.localStorage }),
+	maxAge: 1000 * 60 * 60 * 24,
+});
 ```
 
 > [!NOTE]
@@ -61,8 +61,8 @@ POST /api/models?folder={name}  // FormData с .gltf + текстурами
 
 ```typescript
 // shared/api/get-model.ts
-GET /api/models/{name}.gltf   // GLTF-модель
-GET /api/models/{name}.png    // Текстура
+GET / api / models / { name }.gltf; // GLTF-модель
+GET / api / models / { name }.png; // Текстура
 ```
 
 ### API Routes (Next.js)
@@ -94,25 +94,29 @@ sequenceDiagram
 
 ### Конфигурация
 
-| Параметр | Значение |
-|---|---|
-| Провайдер | Yandex OAuth (план) |
-| JWT | `jose@^6.0.11` — установлен, в коде не используется |
-| Сессия | `SessionProvider` (next-auth/react) с сессией, собранной из MST `Profile` |
-| Секрет | `NEXTAUTH_SECRET` (env) |
+| Параметр  | Значение                                                                  |
+| --------- | ------------------------------------------------------------------------- |
+| Провайдер | Yandex OAuth (план)                                                       |
+| JWT       | `jose@^6.0.11` — установлен, в коде не используется                       |
+| Сессия    | `SessionProvider` (next-auth/react) с сессией, собранной из MST `Profile` |
+| Секрет    | `NEXTAUTH_SECRET` (env)                                                   |
 
 ### Интеграция с MST
 
 ```typescript
 // entities/profile/model/profile.model.ts
-Profile = t.model('Profile', {
-  expires: t.maybeNull(t.union(t.Date, t.string)),
-  name: t.maybeNull(t.string),
-  image: t.maybeNull(t.string),
-  email: t.maybeNull(t.string),
-}).actions((self) => ({
-  setProfile(session: SessionContextValue) { /* копирует expires и user */ },
-}))
+Profile = t
+	.model('Profile', {
+		expires: t.maybeNull(t.union(t.Date, t.string)),
+		name: t.maybeNull(t.string),
+		image: t.maybeNull(t.string),
+		email: t.maybeNull(t.string),
+	})
+	.actions((self) => ({
+		setProfile(session: SessionContextValue) {
+			/* копирует expires и user */
+		},
+	}));
 ```
 
 Сейчас данные текут **из MST в NextAuth**, а не наоборот: `QueryProvider` читает `useStoreProfile()` и собирает из него объект `session` для `SessionProvider` (`null`, если `expires === null`). Action `setProfile` объявлен, но нигде не вызывается — профиль всегда пустой.
@@ -127,10 +131,10 @@ Providers → Provider (MST debug) → StoreProvider (MST) → QueryProvider (Re
 
 ## Бэкенд
 
-| Параметр | Значение |
-|---|---|
-| URL | `http://localhost:1337` (env `APP_URL`) — переменная объявлена, в коде не используется |
-| Предположительно | **Strapi CMS** (стандартный порт Strapi) |
-| Назначение | Хранение моделей, профилей, данных сцен (план) |
+| Параметр         | Значение                                                                               |
+| ---------------- | -------------------------------------------------------------------------------------- |
+| URL              | `http://localhost:1337` (env `APP_URL`) — переменная объявлена, в коде не используется |
+| Предположительно | **Strapi CMS** (стандартный порт Strapi)                                               |
+| Назначение       | Хранение моделей, профилей, данных сцен (план)                                         |
 
 Единственный реально используемый внешний источник сейчас — Яндекс Диск через прокси `/api/models/[...path]`.

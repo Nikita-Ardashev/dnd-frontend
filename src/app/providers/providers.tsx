@@ -1,7 +1,8 @@
 import React from 'react';
-import { StoreProvider } from './store';
-import { QueryProvider } from './query';
+
 import { Provider } from './provider';
+import { QueryProvider } from './query';
+import { StoreProvider } from './store';
 
 export const Providers = ({
 	children,

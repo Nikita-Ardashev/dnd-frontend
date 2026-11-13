@@ -135,12 +135,12 @@ export * from './ui';
 
 > [!WARNING]
 > Импорт «вглубь» слайса запрещён. Только через `index.ts`:
+>
 > ```typescript
 > // ✅ Правильно
-> import { SceneViewport } from '@/widgets/scene-viewport'
->
+> import { SceneViewport } from '@/widgets/scene-viewport';
 > // ❌ Запрещено
-> import { SceneViewport } from '@/widgets/scene-viewport/ui/scene-viewport'
+> import { SceneViewport } from '@/widgets/scene-viewport/ui/scene-viewport';
 > ```
 
 ## Кросс-entity паттерн `@x/`
@@ -159,11 +159,11 @@ entities/mesh/@x/scene.ts   # Реэкспорт для использовани
 
 ```typescript
 // shared/lib/mst/store-context.ts
-export interface IStore {}  // Пустой интерфейс
+export interface IStore {} // Пустой интерфейс
 
 // app/store/root-store.ts
 declare module '@/shared/lib/mst/store-context' {
-  interface IStore extends Instance<typeof Root> {}
+	interface IStore extends Instance<typeof Root> {}
 }
 ```
 

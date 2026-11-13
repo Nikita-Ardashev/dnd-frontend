@@ -116,6 +116,7 @@ graph TD
 ```
 
 Порядок вложенности важен:
+
 1. **Provider** — подключает MST DevTools и обработчик горячих клавиш для undo/redo
 2. **StoreProvider** — создаёт MST-стор и передаёт через React Context
 3. **QueryProvider** — оборачивает в TanStack `QueryClientProvider` и NextAuth `SessionProvider`
@@ -123,9 +124,9 @@ graph TD
 ## Хуки доступа к стору
 
 ```typescript
-useStore()         // → экземпляр Root (RootStore)
-useStoreScene()    // → store.scene
-useStoreProfile()  // → store.profile
+useStore(); // → экземпляр Root (RootStore)
+useStoreScene(); // → store.scene
+useStoreProfile(); // → store.profile
 ```
 
 `useStore` лежит в `shared/lib/mst/hooks.ts` и читает `React.useContext(StoreContext)`. Хуки частей стора принадлежат сущностям: `useStoreScene` — `entities/scene/model/hooks.ts`, `useStoreProfile` — `entities/profile/model/hooks.ts`.
@@ -139,9 +140,9 @@ useStoreProfile()  // → store.profile
 ```typescript
 // src/app/store/history.ts — история подключена к construct (кубы и модели)
 const StoreSceneHistory = withHistory(RootStore.scene.construct, [
-  '/sizes/min', // Исключить из истории
-  '/sizes/max',
-])
+	'/sizes/min', // Исключить из истории
+	'/sizes/max',
+]);
 ```
 
 - Использует `onPatch()` для записи и `applyPatch()` для воспроизведения
@@ -154,7 +155,7 @@ const StoreSceneHistory = withHistory(RootStore.scene.construct, [
 Добавляет к модели 4×4 матрицу трансформации:
 
 ```typescript
-const PositionedMesh = withMatrix4(MMesh)
+const PositionedMesh = withMatrix4(MMesh);
 ```
 
 - Хранит `matrix4` как `t.frozen<Matrix4Tuple>()` (16 чисел, по умолчанию единичная матрица) — позиция, поворот, масштаб
@@ -166,9 +167,9 @@ const PositionedMesh = withMatrix4(MMesh)
 
 ```typescript
 MUrlOrCache = {
-  url: string,
-  cacheUrl: string | null,  // альтернативный источник (например, data/blob URL)
-}
+	url: string,
+	cacheUrl: string | null, // альтернативный источник (например, data/blob URL)
+};
 // view getSource → cacheUrl, если задан, иначе url
 ```
 
@@ -178,9 +179,9 @@ MUrlOrCache = {
 
 ```typescript
 export const BuildableCube = observer(({ id }: Props) => {
-  const cube = useStoreScene().construct.cubes.get(id)
-  // Перерендерится ТОЛЬКО при изменении данных этого конкретного куба
-})
+	const cube = useStoreScene().construct.cubes.get(id);
+	// Перерендерится ТОЛЬКО при изменении данных этого конкретного куба
+});
 ```
 
 > [!TIP]
@@ -192,12 +193,12 @@ export const BuildableCube = observer(({ id }: Props) => {
 
 ```typescript
 // shared/lib/mst/use-mst-debug.ts — только при NODE_ENV === 'development'
-const extension = window.__REDUX_DEVTOOLS_EXTENSION__
+const extension = window.__REDUX_DEVTOOLS_EXTENSION__;
 const remoteDevMock = {
-  connectViaExtension: (conf) => extension.connect(conf),
-  extractState: (obj) => obj,
-}
-connectReduxDevtools(remoteDevMock, store)
+	connectViaExtension: (conf) => extension.connect(conf),
+	extractState: (obj) => obj,
+};
+connectReduxDevtools(remoteDevMock, store);
 ```
 
 Это позволяет инспектировать дерево состояния, историю действий и патчи в браузерном расширении.

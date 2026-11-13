@@ -1,3 +1,4 @@
+import { Button } from '@/shared/ui/button';
 import {
 	Drawer,
 	DrawerBackdrop,
@@ -11,8 +12,8 @@ import {
 	DrawerTrigger,
 	DrawerViewport,
 } from '@/shared/ui/drawer';
+
 import styles from './notes.module.sass';
-import { Button } from '@/shared/ui/button';
 
 export function Notes() {
 	return (

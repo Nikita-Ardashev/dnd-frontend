@@ -1,6 +1,7 @@
-import { IReturnCubePosition, TSideClick } from '../lib';
 import { ThreeElements } from '@react-three/fiber';
 import { DoubleSide, MeshStandardMaterial, PlaneGeometry } from 'three';
+
+import { IReturnCubePosition, TSideClick } from '../lib';
 
 interface IProps {
 	mesh?: ThreeElements['mesh'];

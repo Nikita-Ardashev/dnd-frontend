@@ -35,6 +35,7 @@ shared/ui/button/button.module.css   (~290 строк)
 ```
 
 Обеспечивают:
+
 - **Изоляцию** — классы автоматически скоупятся
 - **Типобезопасность** — TypeScript видит доступные классы
 
@@ -51,7 +52,7 @@ widgets/header/ui/header.module.sass
 ```typescript
 // next.config.ts
 sassOptions: {
-  prependData: `@use '@app/styles/variables' as v`
+	prependData: `@use '@app/styles/variables' as v`;
 }
 ```
 
@@ -63,19 +64,19 @@ sassOptions: {
 
 ```css
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0.006 286.029);
-  --card: oklch(1 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  /* ... */
+	--background: oklch(1 0 0);
+	--foreground: oklch(0.145 0 0);
+	--primary: oklch(0.205 0.006 286.029);
+	--card: oklch(1 0 0);
+	--destructive: oklch(0.577 0.245 27.325);
+	/* ... */
 }
 
 .dark,
 [data-theme='dark'] {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  /* ... */
+	--background: oklch(0.145 0 0);
+	--foreground: oklch(0.985 0 0);
+	/* ... */
 }
 ```
 
@@ -96,37 +97,37 @@ sassOptions: {
 // shared/ui/button/button.tsx
 // Варианты — классы из CSS Module, а не Tailwind-строки
 const buttonVariants = cva(styles.base, {
-  variants: {
-    variant: {
-      primary: styles.primary,
-      secondary: styles.secondary,
-      destructive: styles.destructive,
-      ghost: styles.ghost,
-      outline: styles.outline,
-      link: styles.link,
-    },
-    size: {
-      sm: styles.sm,
-      md: styles.md,
-      lg: styles.lg,
-      icon: styles.icon,
-    },
-  },
-  defaultVariants: {
-    variant: 'primary',
-    size: 'md',
-  },
-})
+	variants: {
+		variant: {
+			primary: styles.primary,
+			secondary: styles.secondary,
+			destructive: styles.destructive,
+			ghost: styles.ghost,
+			outline: styles.outline,
+			link: styles.link,
+		},
+		size: {
+			sm: styles.sm,
+			md: styles.md,
+			lg: styles.lg,
+			icon: styles.icon,
+		},
+	},
+	defaultVariants: {
+		variant: 'primary',
+		size: 'md',
+	},
+});
 ```
 
 ## 6. `cn()` — утилита мержа классов
 
 ```typescript
 // shared/lib/styles/cn.ts
-import { clsx, type ClassValue } from 'clsx'
+import { type ClassValue, clsx } from 'clsx';
 
 export function cn(...inputs: ClassValue[]) {
-  return clsx(inputs)
+	return clsx(inputs);
 }
 ```
 

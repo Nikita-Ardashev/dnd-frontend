@@ -3,7 +3,9 @@
 import { Menu } from '@base-ui/react/menu';
 import { ChevronRight } from 'lucide-react';
 import type { ReactNode } from 'react';
+
 import { cn } from '@/shared/lib/styles';
+
 import styles from './dropdown-menu.module.css';
 
 function DropdownMenuRoot({ ...props }: Menu.Root.Props) {

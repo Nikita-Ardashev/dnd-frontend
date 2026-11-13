@@ -1,4 +1,5 @@
 import { t } from 'mobx-state-tree';
+
 import { MUrlOrCache } from '@/shared/lib/mst';
 
 export interface ITextureMap {

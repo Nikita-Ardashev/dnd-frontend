@@ -1,5 +1,6 @@
 import { handlerKeys } from '@/shared/lib/keyboard';
 import { withHistory } from '@/shared/lib/mst';
+
 import { RootStore } from './root-store';
 
 // Объявляем добавления стора в историю

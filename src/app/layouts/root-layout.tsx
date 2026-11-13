@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 import '../styles/globals.css';
 import { Header } from '@/widgets/header';
+
 import { Providers } from '../providers';
 
 export const metadata: Metadata = {

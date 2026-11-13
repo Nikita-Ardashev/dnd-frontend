@@ -1,5 +1,5 @@
+import { IAnyType, IType, types } from 'mobx-state-tree';
 import { z } from 'zod';
-import { types, IAnyType, IType } from 'mobx-state-tree';
 
 // --- Опции конвертации ---
 export interface ZodToMstOptions {

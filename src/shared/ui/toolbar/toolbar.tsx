@@ -1,7 +1,9 @@
 'use client';
 
 import { Toolbar } from '@base-ui/react/toolbar';
+
 import { cn } from '@/shared/lib/styles';
+
 import styles from './toolbar.module.css';
 
 function ToolbarRoot({

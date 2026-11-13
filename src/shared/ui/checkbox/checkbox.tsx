@@ -1,7 +1,9 @@
 'use client';
 
 import { Checkbox } from '@base-ui/react/checkbox';
+
 import { cn } from '@/shared/lib/styles';
+
 import styles from './checkbox.module.css';
 
 function CheckboxRoot({ className, ...props }: Checkbox.Root.Props) {

@@ -1,7 +1,9 @@
 'use client';
 
 import { Tooltip } from '@base-ui/react/tooltip';
+
 import { cn } from '@/shared/lib/styles';
+
 import styles from './tooltip.module.css';
 
 function TooltipProvider({ ...props }: Tooltip.Provider.Props) {

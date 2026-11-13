@@ -1,7 +1,8 @@
-import { useStoreScene } from '../model/hooks';
 import { CameraControls } from '@react-three/drei';
 import { observer } from 'mobx-react-lite';
 import { ComponentProps } from 'react';
+
+import { useStoreScene } from '../model/hooks';
 
 export const Camera = observer(function Camera() {
 	const { camera } = useStoreScene();

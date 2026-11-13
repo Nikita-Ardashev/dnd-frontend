@@ -1,7 +1,9 @@
 'use client';
 
 import { Collapsible } from '@base-ui/react/collapsible';
+
 import { cn } from '@/shared/lib/styles';
+
 import styles from './collapsible.module.css';
 
 function CollapsibleRoot({ className, ...props }: Collapsible.Root.Props) {

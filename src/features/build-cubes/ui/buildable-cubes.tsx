@@ -1,7 +1,9 @@
 import { ThreeElements } from '@react-three/fiber';
-import { Euler } from 'three';
 import { observer } from 'mobx-react-lite';
+import { Euler } from 'three';
+
 import { useStoreScene } from '@/entities/scene';
+
 import { BuildableCube } from './buildable-cube';
 
 type TGroupProps = Omit<ThreeElements['group'], 'children'>;

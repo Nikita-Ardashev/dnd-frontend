@@ -5,22 +5,22 @@
 ```json
 // tsconfig.json
 {
-  "compilerOptions": {
-    "strict": true,
-    "target": "ES2017",
-    "module": "esnext",
-    "moduleResolution": "bundler"
-  }
+	"compilerOptions": {
+		"strict": true,
+		"target": "ES2017",
+		"module": "esnext",
+		"moduleResolution": "bundler"
+	}
 }
 ```
 
 ### Path Aliases
 
-| Алиас | Путь | Назначение |
-|---|---|---|
-| `@/*` | `./src/*` | Абсолютные импорты из src |
-| `@public/*` | `./public/*` | Публичные ассеты |
-| `@app/*` | `./src/app/*` | Нужен SASS: `prependData` в `next.config.ts` подключает `@app/styles/variables` |
+| Алиас       | Путь          | Назначение                                                                      |
+| ----------- | ------------- | ------------------------------------------------------------------------------- |
+| `@/*`       | `./src/*`     | Абсолютные импорты из src                                                       |
+| `@public/*` | `./public/*`  | Публичные ассеты                                                                |
+| `@app/*`    | `./src/app/*` | Нужен SASS: `prependData` в `next.config.ts` подключает `@app/styles/variables` |
 
 > [!NOTE]
 > В TS-коде используется только `@/*`. Алиасы `@styles`, `@stores` и `@lib` удалены вместе с webpack-алиасом `@styles` в `next.config.ts`.
@@ -43,11 +43,11 @@ shared  → ни от кого не зависит
 ### `no-restricted-imports`
 
 ```javascript
-// ❌ Запрещено — относительные импорты между слоями
-import { Button } from '../../shared/ui/button'
-
 // ✅ Только абсолютные через алиас
-import { Button } from '@/shared/ui/button'
+import { Button } from '@/shared/ui/button';
+
+// ❌ Запрещено — относительные импорты между слоями
+import { Button } from '../../shared/ui/button';
 ```
 
 ### Кросс-entity правило
@@ -56,10 +56,9 @@ Regex-правило разрешает импорты между entities **т�
 
 ```typescript
 // ✅ Разрешено
-import { MCubeMesh } from '@/entities/mesh/@x/scene'
-
+import { MCubeMesh } from '@/entities/mesh/@x/scene';
 // ❌ Запрещено
-import { MCubeMesh } from '@/entities/mesh/model/cube-mesh'
+import { MCubeMesh } from '@/entities/mesh/model/cube-mesh';
 ```
 
 ## Steiger — структурный FSD-линтинг
@@ -74,6 +73,7 @@ npm run fsd  # → steiger ./src
 - `fsd/insignificant-slice` понижен до `warn` — чтобы WIP-слайсы не роняли проверку.
 
 Проверяет:
+
 - `fsd/public-api` — наличие `index.ts` в каждом слайсе
 - `fsd/segments-by-purpose` — правильное назначение сегментов (`model/`, `ui/`, `api/`, `lib/`)
 - `fsd/insignificant-slice` — предупреждает о слишком маленьких слайсах
@@ -83,7 +83,7 @@ npm run fsd  # → steiger ./src
 ```json
 // tsconfig.json
 {
-  "plugins": [{ "name": "next" }]
+	"plugins": [{ "name": "next" }]
 }
 ```
 
@@ -93,11 +93,13 @@ npm run fsd  # → steiger ./src
 
 > [!WARNING]
 > **Тесты отсутствуют.** В проекте нет:
+>
 > - Тестового фреймворка (Jest, Vitest, Playwright, Cypress)
 > - Тестовых файлов
 > - Скриптов тестирования в `package.json`
 >
 > Рекомендуется добавить как минимум:
+>
 > - **Vitest** для unit-тестов MST-моделей
 > - **React Testing Library** для компонентных тестов
 > - **Playwright** для E2E-тестов критических сценариев

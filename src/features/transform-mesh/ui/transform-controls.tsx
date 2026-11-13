@@ -1,10 +1,11 @@
-import { useStoreScene } from '@/entities/scene';
 import { DragControls, PivotControls, PivotControlsProps } from '@react-three/drei';
 import { DragControlsProps } from '@react-three/drei/web/DragControls';
 import { ThreeEvent } from '@react-three/fiber';
 import { observer } from 'mobx-react-lite';
 import { JSX, ReactNode, useLayoutEffect, useState } from 'react';
 import { Matrix4 } from 'three';
+
+import { useStoreScene } from '@/entities/scene';
 
 type CommonByKeys<T, U> = Pick<T, Extract<keyof T, keyof U>>;
 

@@ -1,4 +1,5 @@
 import { Instance, SnapshotIn, t } from 'mobx-state-tree';
+
 import { Profile } from '@/entities/profile';
 import { createDefaultTools, Scene } from '@/entities/scene';
 
